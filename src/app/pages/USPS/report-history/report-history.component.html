@@ -1,0 +1,126 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row  pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1 pageTitle">Report log for {{clientName}} </h4>
+                        </div>
+
+                    </div><!-- end card header -->
+                </div>
+                <!--end row-->
+            </div>
+        </div>
+        <div class="px-0 pt-0 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body p-1">
+
+                            <div class="table-wrapper">
+
+                                <!-- TOP SCROLLBAR -->
+                                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                                    <div class="scroll-content"></div>
+                                </div>
+
+                                <!-- MAIN TABLE SCROLL -->
+                                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                                    <table class="metrics-table">
+                                        <thead>
+                                            <tr>
+                                             <th class=" sticky-col sticky-header">Report Type</th>
+                                                <th class=" sticky-col sticky-header">From Date</th>
+                                                <th class=" sticky-col sticky-header">To Date</th>
+                                                <th class=" sticky-col sticky-header">Requested Date</th>
+                                                <th class=" sticky-col sticky-header">Start Time</th>
+                                                <th class=" sticky-col sticky-header">End Time</th>
+                                                <th class=" sticky-col sticky-header">Report Generation Duration</th>
+                                                <th class=" sticky-col sticky-header">Download</th>
+                                                <th class="reportLogStatus sticky-col sticky-header">
+                                                    Status
+                                                    <img src="../../../../assets/images/svg/reload_icon.svg" width="14"
+                                                        height="14" style="margin-left:6px; vertical-align:middle;"
+                                                        (click)="loadUser()" class="reportLogRefresh cursor">
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr *ngFor="let reportDetailsitem of reportDetails; let i = index"
+                                                [class.odd-row]="i % 2 === 0" [class.even-row]="i % 2 !== 0">
+                                                <td class="sticky-col">{{ reportDetailsitem.reportName }}</td>
+                                                <td>{{ reportDetailsitem.fromDate | date:'MM/dd/yyyy' }}</td>
+                                                <td>{{ reportDetailsitem.toDate | date:'MM/dd/yyyy' }}</td>
+                                                <td>{{ reportDetailsitem.requesteddttm | date:'MM/dd/yyyy' }}</td>
+                                                <td>{{ reportDetailsitem.starttime | date:'MM/dd/yyyy HH:mm:ss' }}</td>
+                                                <td>{{ reportDetailsitem.endtime | date:'MM/dd/yyyy HH:mm:ss' }}</td>
+                                                <td>{{ reportDetailsitem.totaltime }}</td>
+
+                                                <td>
+                                                    <a [href]="url_path + 'UspsDownloadServlet?reportlogid=' + reportDetailsitem.reportLogId"
+                                                        target="_blank" *ngIf="reportDetailsitem.path != null">
+                                                        <img src="../../../../assets/images/svg/excel_download_icon.svg"
+                                                            *ngIf="reportDetailsitem.path.indexOf('xls') > -1"
+                                                            style="height:26px" />
+
+                                                        <img src="../../../../assets/images/svg/pdf_download.svg"
+                                                            *ngIf="reportDetailsitem.path.indexOf('pdf') > -1"
+                                                            style="height:26px" />
+
+                                                        <img src="../../../../assets/images/svg/zip_download_icon.svg"
+                                                            *ngIf="reportDetailsitem.path.indexOf('zip') > -1"
+                                                            style="height:26px" />
+                                                    </a>
+
+                                                    {{ reportDetailsitem.size }}
+                                                </td>
+
+                                                <td [ngClass]="{
+                                            'status': reportDetailsitem.status == 'COMPLETED',
+                                            'statusQueue': reportDetailsitem.status == 'IN QUEUE',
+                                            'statusProcessing': reportDetailsitem.status == 'PROCESSING',
+                                            'statusError': reportDetailsitem.status != 'PROCESSING'
+                                                           && reportDetailsitem.status != 'COMPLETED'
+                                                           && reportDetailsitem.status != 'IN QUEUE'
+                                          }">
+                                                    {{ reportDetailsitem.status }}
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngIf="reportDetails.length == 0">
+                                                <td colspan="9"
+                                                    style="text-align:center;font-weight:bold;padding-top:20px">
+                                                    No Record Found
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+
+                    <div class="row">
+                        <p class="reportlog_pone">The Grid can be sorted by clicking on the column headers. Hit Escape
+                            key to close this window</p>
+                        <p class="reportlog_ptwo">This page displays data for previous 30 days. Reports Older than 30
+                            days
+                            will be Archived and cannot be retrieved</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end col -->
+</div>
+<!-- end row -->

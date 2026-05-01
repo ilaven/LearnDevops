@@ -1,0 +1,1765 @@
+<div class="row contractsummary">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-12">
+                <h3 class="card-title mb-0 flex-grow-1 mt-3 fs-22 color_white">Contract Comparison</h3>
+                <h5 class="mt-1 fs-16 mb-1 color_white">projected savings review</h5>
+                <h5 class="fs-16 mb-1 mt-1 color_white">Date Range : <span
+                        class="btn btn-link waves-effect py-0 px-2 color_white">{{(selectedCarrierSignal().dateRange)}}
+                    </span></h5>
+                <h5 class="fs-16 mb-1 mt-1 color_white">Carrier List Rates : <span
+                        class="btn btn-link waves-effect py-0 px-2 color_white">{{(selectedCarrierSignal().year)}}</span>
+                </h5>
+            </div>
+            <div class="col-lg-6 col-md-12 col-12">
+                <div class="top-bar">
+                    <div class="left-section">
+                        <span class="label">Carrier :</span>
+                        <div class="carrier-toggle">
+                            <button *ngFor="let carrier of carrierAvailabilitySignal()"
+                                [disabled]="!carrier.isAvailable" (click)="onCarrierChange(carrier.carrierName)"
+                                [ngClass]="{
+            'active': chargetypevalue() === carrier.carrierName.toLowerCase(),
+            'inactive': !carrier.isAvailable
+          }" [title]="carrier.carrierName + ' ' + (carrier.isAvailable ? 'Data Available' : 'Data Not Available')">
+
+                                {{ carrier.carrierName }}
+                            </button>
+                        </div>
+                        <!-- <div class="carrier-toggle">
+                            <button [ngClass]="{'active': chargetypevalue()=='ups'}"
+                                (click)="onCarrierChange('ups')">UPS</button>
+                            <button [ngClass]="{'active': chargetypevalue()=='fedex'}"
+                                (click)="onCarrierChange('fedex')">FedEx</button>
+                        </div> -->
+                    </div>
+
+                    <div class="right-section  mt-4">
+                        <div class="circle-btn" (click)="excelDownloadClickHandler($event)"
+                            matTooltip="Export to Excel">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22"
+                                fill="none">
+                                <path
+                                    d="M6.61886 18.4941H16.3158V15.6387H19.5793V20.1258C19.5793 21.0269 18.8487 21.7574 17.9475 21.7574H11.0949L5.92578 20.5449L6.61886 18.4941Z"
+                                    fill="white" />
+                                <path
+                                    d="M6.62044 18.4941H3.26348V15.6387H0V20.1258C0 21.0269 0.730542 21.7574 1.63174 21.7574H11.0965C9.46279 20.8657 7.95887 19.7662 6.62044 18.4941Z"
+                                    fill="white" />
+                                <path
+                                    d="M14.2976 6.51126L11.4226 9.38613V0H8.15917V9.38613L5.28418 6.51126L2.97656 8.81879L8.63713 14.4791C8.95579 14.7977 9.37338 14.957 9.79097 14.957C10.2086 14.957 10.6261 14.7977 10.9448 14.4791L16.6054 8.81879L14.2976 6.51126Z"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                        <div class="circle-btn" (click)="clickCreateProposal('create','')"
+                            matTooltip="Add New Agreement">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9.79036 19.5833C9.27098 19.5833 8.77287 19.377 8.40561 19.0098C8.03836 18.6425 7.83203 18.1444 7.83203 17.625V1.95833C7.83203 1.43895 8.03836 0.940842 8.40561 0.573583C8.77287 0.206324 9.27098 0 9.79036 0C10.3097 0 10.8079 0.206324 11.1751 0.573583C11.5424 0.940842 11.7487 1.43895 11.7487 1.95833V17.625C11.7487 18.1444 11.5424 18.6425 11.1751 19.0098C10.8079 19.377 10.3097 19.5833 9.79036 19.5833Z"
+                                    fill="white" />
+                                <path
+                                    d="M1.95833 11.7499C1.43895 11.7499 0.940842 11.5436 0.573583 11.1763C0.206324 10.8091 0 10.311 0 9.79159C0 9.2722 0.206324 8.77409 0.573583 8.40683C0.940842 8.03958 1.43895 7.83325 1.95833 7.83325H17.625C18.1444 7.83325 18.6425 8.03958 19.0098 8.40683C19.377 8.77409 19.5833 9.2722 19.5833 9.79159C19.5833 10.311 19.377 10.8091 19.0098 11.1763C18.6425 11.5436 18.1444 11.7499 17.625 11.7499H1.95833Z"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                        <div class="circle-btn" (click)="openFilterPopup($event)" matTooltip="Filter Agreements">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M20 15H8C7.4 15 7 14.6 7 14C7 13.4 7.4 13 8 13H20C20.6 13 21 13.4 21 14C21 14.6 20.6 15 20 15Z"
+                                    fill="white" />
+                                <path
+                                    d="M17 21H11C10.4 21 10 20.6 10 20C10 19.4 10.4 19 11 19H17C17.6 19 18 19.4 18 20C18 20.6 17.6 21 17 21Z"
+                                    fill="white" />
+                                <path
+                                    d="M23 9H5C4.4 9 4 8.6 4 8C4 7.4 4.4 7 5 7H23C23.6 7 24 7.4 24 8C24 8.6 23.6 9 23 9Z"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                        <div class="circle-btn" (click)="openDeleteAgreement($event)" matTooltip="Settings">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_1459_20348" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0"
+                                    y="0" width="20" height="20">
+                                    <path d="M0 -1.71661e-05H19.48V19.48H0V-1.71661e-05Z" fill="white" />
+                                </mask>
+                                <g mask="url(#mask0_1459_20348)">
+                                    <path
+                                        d="M11.5735 2.63581C12.2462 2.80942 12.8816 3.07594 13.4651 3.42102C13.4651 3.42102 13.7462 3.13982 14.062 2.82407C14.2913 2.59457 14.6024 2.46586 14.9267 2.46586C15.2506 2.46586 15.5618 2.59457 15.791 2.82407C16.0692 3.10223 16.3773 3.41029 16.6554 3.68845C16.8849 3.91769 17.0136 4.22883 17.0136 4.5528C17.0136 4.87712 16.8849 5.18822 16.6554 5.41746C16.3396 5.73321 16.0585 6.01437 16.0585 6.01437C16.4035 6.59786 16.67 7.23328 16.8437 7.90603H17.6863C18.3615 7.90603 18.9089 8.45344 18.9089 9.12859V10.3512C18.9089 11.0263 18.3615 11.5737 17.6863 11.5737H16.8437C16.67 12.2465 16.4035 12.8819 16.0585 13.4654C16.0585 13.4654 16.3396 13.7466 16.6554 14.0623C16.8849 14.2915 17.0136 14.6027 17.0136 14.927C17.0136 15.2509 16.8849 15.5621 16.6554 15.7913C16.3773 16.0694 16.0692 16.3775 15.791 16.6557C15.5618 16.8852 15.2506 17.0139 14.9267 17.0139C14.6024 17.0139 14.2913 16.8852 14.062 16.6557C13.7462 16.3399 13.4651 16.0587 13.4651 16.0587C12.8816 16.4038 12.2462 16.6704 11.5735 16.8439V17.6866C11.5735 18.3618 11.026 18.9092 10.3509 18.9092H9.12831C8.45313 18.9092 7.90575 18.3618 7.90575 17.6866V16.8439C7.23304 16.6704 6.59758 16.4038 6.0141 16.0587C6.0141 16.0587 5.73293 16.3399 5.41718 16.6557C5.18795 16.8852 4.8768 17.0139 4.55253 17.0139C4.22856 17.0139 3.91737 16.8852 3.68818 16.6557C3.41006 16.3775 3.10195 16.0694 2.82379 15.7913C2.59429 15.5621 2.46558 15.2509 2.46558 14.927C2.46558 14.6027 2.59429 14.2915 2.82379 14.0623C3.13954 13.7466 3.42075 13.4654 3.42075 13.4654C3.07566 12.8819 2.80918 12.2465 2.63553 11.5737H1.79291C1.11773 11.5737 0.570312 11.0263 0.570312 10.3512V9.12859C0.570312 8.45344 1.11773 7.90603 1.79291 7.90603H2.63553C2.80918 7.23328 3.07566 6.59786 3.42075 6.01437C3.42075 6.01437 3.13954 5.73321 2.82379 5.41746C2.59429 5.18822 2.46558 4.87712 2.46558 4.5528C2.46558 4.22883 2.59429 3.91769 2.82379 3.68845C3.10195 3.41029 3.41006 3.10223 3.68818 2.82407C3.91737 2.59457 4.22856 2.46586 4.55253 2.46586C4.8768 2.46586 5.18795 2.59457 5.41718 2.82407C5.73293 3.13982 6.0141 3.42102 6.0141 3.42102C6.59758 3.07594 7.23304 2.80942 7.90575 2.63581V1.79315C7.90575 1.11797 8.45313 0.57059 9.12831 0.57059H10.3509C11.026 0.57059 11.5735 1.11797 11.5735 1.79315V2.63581Z"
+                                        stroke="white" stroke-width="1.25" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M9.73803 6.07228C11.7623 6.07228 13.4057 7.71571 13.4057 9.74C13.4057 11.7642 11.7623 13.4077 9.73803 13.4077C7.71375 13.4077 6.07031 11.7642 6.07031 9.74C6.07031 7.71571 7.71375 6.07228 9.73803 6.07228Z"
+                                        stroke="white" stroke-width="1.25" stroke-miterlimit="10" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="edit-toggle">
+                            <span>Edit :</span>
+                            <div class="form-check form-switch form-switch-md mb-3" dir="ltr">
+                                <input type="checkbox" class="form-check-input mt-1" id="editButton"
+                                    [checked]="editable()" (click)="validateAcc($event)" (change)="onToggle($event)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="px-0 pt-0 py-3">
+
+            <div class="px-0 pt-0 py-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body py-2 px-2">
+
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-12">
+                                        <div class="w-100 ">
+                                            <table id="tab-01" class="header_inner_table">
+                                                <thead class="main_header">
+                                                    <tr cdkDropList cdkDropListOrientation="horizontal"
+                                                        class="example-list" style="width:40%"
+                                                        (cdkDropListDropped)="dragAndDrop($event)">
+                                                        <th
+                                                            [ngStyle]="{'width':(scenariosDisplayedSignal().length == 1)?'50%':''}">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="flex-grow-1">
+                                                                    <h6 class="card-title mb-0 fs-20">Baseline Spend
+                                                                        {{(selectedCarrierSignal().agreementNo != null)
+                                                                        ? '-
+                                                                        '+selectedCarrierSignal().agreementNo:''}}</h6>
+                                                                </div>
+                                                                <div class="flex-shrink-0">
+                                                                    <ul
+                                                                        class="list-inline card-toolbar-menu d-flex align-items-center mb-0">
+                                                                        <li class="list-inline-item" matTooltip="Add Note">
+                                                                            <a class="align-middle"
+                                                                                (click)="openNoteDialog('Baseline Spend','')">
+                                                                                <img src="../../../../assets/images/svg/edit.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item" matTooltip="Reset">
+                                                                            <a class="align-middle"
+                                                                                (click)="refreshClickHandler('current')">
+                                                                                <img src="../../../../assets/images/svg/refresh.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item" matTooltip="Edit">
+                                                                            <a class="align-middle"
+                                                                                (click)="clickCreateProposal('View','')">
+                                                                                <img src="../../../../assets/images/svg/pen.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item" matTooltip="Filter">
+                                                                            <a class="align-middle"
+                                                                                href="javascript:void(0);"
+                                                                                [matMenuTriggerFor]="menuCurrent">
+                                                                                <img src="../../../../assets/images/svg/more.svg"
+                                                                                    class="gridIcon">
+                                                                            </a> <mat-menu #menuCurrent="matMenu"
+                                                                                class="customClass">
+                                                                                <section class="example-section my-0"
+                                                                                    [formGroup]="GridviewColCurrentformGroup">
+                                                                                    <p class="filter_short p-0 mb-0">
+                                                                                        <mat-checkbox
+                                                                                            *ngFor="let cd of currentColumnDefinitions"
+                                                                                            (change)="gridViewfunction()"
+                                                                                            name="cd.def" class="custom"
+                                                                                            [formControlName]="cd.def">{{cd.label}}</mat-checkbox>
+                                                                                    </p>
+                                                                                </section>
+                                                                            </mat-menu>
+
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+
+                                                        <th cdkDrag class="example-box" cdkDragLockAxis="x"
+                                                            cdkDragBoundary=".example-list"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal();let columnIndex = index;"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="flex-grow-1">
+                                                                    <h6 class="card-title mb-0 fs-20">
+                                                                        {{scenario.targetName}}{{(scenario.agreementNo
+                                                                        !=
+                                                                        null) ? '-'+scenario.agreementNo:''}}</h6>
+                                                                </div>
+                                                                <div class="flex-shrink-0">
+                                                                    <ul
+                                                                        class="list-inline card-toolbar-menu d-flex align-items-center mb-0">
+                                                                        <li class="list-inline-item" matTooltip="Add Note">
+                                                                            <a class="align-middle"
+                                                                                (click)="openNoteDialog(scenario.targetName,scenario)">
+                                                                                <img src="../../../../assets/images/svg/edit.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item" matTooltip="Reset">
+                                                                            <a class="align-middle"
+                                                                                (click)="refreshClickHandler(scenario.targetId.toString())">
+                                                                                <img src="../../../../assets/images/svg/refresh.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item" matTooltip="Edit">
+                                                                            <a class="align-middle"
+                                                                                (click)="clickCreateProposal('Edit',scenario)">
+                                                                                <img src="../../../../assets/images/svg/pen.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item" matTooltip="Filter">
+                                                                            <a class="align-middle"
+                                                                                href="javascript:void(0);"
+                                                                                [matMenuTriggerFor]="menuTarget">
+                                                                                <img src="../../../../assets/images/svg/more.svg"
+                                                                                    class="gridIcon">
+                                                                            </a>
+                                                                            <mat-menu #menuTarget="matMenu"
+                                                                                class="customClass">
+                                                                                <section class="example-section  my-0"
+                                                                                    [formGroup]="scenario.gridviewColTargetformGroup">
+                                                                                    <p class="filter_short   mb-0">
+                                                                                        <mat-checkbox
+                                                                                            *ngFor="let cd of scenario.currentColumnDefinitionsTarget"
+                                                                                            (change)="gridViewfunctionTarget(scenario)"
+                                                                                            name="cd.def" class="custom"
+                                                                                            [formControlName]="cd.def">
+                                                                                            {{cd.label}}</mat-checkbox>
+                                                                                    </p>
+                                                                                </section>
+                                                                            </mat-menu>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="sub-header headerColorCls">
+                                                            <div class="tab-net-sped  pl-2 pr-4 mt-2">
+                                                                <h5 class="fs-15 mb-1 mt-1 fw-medium  text-dark carrier_text ">Carrier
+                                                                    :
+                                                                    <span class="fw-medium clr_Text">
+                                                                        {{carrierName}}</span>
+                                                                </h5>
+                                                                <h5 class="fs-15 mb-2 mt-2 fw-medium  text-dark carrier_text">Total
+                                                                    Net Spend :
+                                                                    <span class="fw-medium clr_Text">
+                                                                        {{totalCurrentSpend |
+                                                                        currency:'USD':'symbol':'1.2-2'}}</span>
+                                                                </h5>
+                                                                <h5
+                                                                    class="fs-13 mb-2 mt-2 text-body-secondary total-spend-txt  fw-light">
+                                                                    Total Freight Spend
+                                                                    :
+                                                                    <span class="fw-light clr_Text">{{totalFreightSpend
+                                                                        |
+                                                                        currency:'USD':'symbol':'1.2-2'}}</span>
+                                                                </h5>
+                                                                <h5
+                                                                    class="fs-13 mb-2 mt-2 text-body-secondary fw-light total-spend-txt">
+                                                                    Total Accessorial
+                                                                    Spend :
+                                                                    <span class="fw-light clr_Text">{{totalAccSpend |
+                                                                        currency:'USD':'symbol':'1.2-2'}}</span>
+                                                                </h5>
+                                                            </div>
+                                                        </th>
+                                                        <th *ngFor="let scenario of scenariosDisplayedSignal();let columnIndex =  index"
+                                                            class="sub-header"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))"
+                                                            style="background: #ffffff; border-right: 1px solid #e0e0e0;padding: 0px !important;">
+                                                            <div class="tab-net-sped sub-header pl-4 pr-4">
+                                                                <h5
+                                                                    class="fs-16 fw-medium  mb-1 mt-1  text-dark carrier_text ps-3 pt-2">
+                                                                    Carrier :
+                                                                    <span class="fw-medium clr_Text">
+                                                                        {{scenario.carrierName}}</span>
+                                                                </h5>
+                                                                <h5 class="fs-16 fw-medium  mb-2 mt-2 text-dark carrier_text ps-3 ">
+                                                                    Total Net Spend :
+                                                                    <span class="fw-medium clr_Text">
+                                                                        {{scenario.totalNetSpend |
+                                                                        currency:'USD':'symbol':'1.2-2'}}</span>
+                                                                </h5>
+                                                                <div class="projectGrid">
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <h5 class="fs-16 mb-1 mt-1  color_white">
+                                                                                Project Savings :</h5>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <h5 class="fs-22 mb-2 mt-2 color_white">
+                                                                                {{(scenario.totalSavings |
+                                                                                currency:'USD':'symbol':'1.2-2')}}</h5>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <h5 class="fs-16 mb-2 mt-2 color_white text-end"
+                                                                                [ngClass]="{'header-red':(scenario.totalSavingsPercent < 0),'header-green':!(scenario.totalSavingsPercent < 0)}">
+                                                                                {{(scenario.totalSavingsPercent |
+                                                                                number:'1.2-2')+'%'}}
+                                                                                <span class="fw-bold clr_Text"
+                                                                                    [ngClass]="(scenario.totalSavingsPercent < 0)?'down':'up'">
+                                                                                    <svg width="28" height="28"
+                                                                                        style="height: 20px;"
+                                                                                        viewBox="0 0 28 28" fill="none"
+                                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path fill-rule="evenodd"
+                                                                                            clip-rule="evenodd"
+                                                                                            d="M25.1187 7.54778C25.4604 7.88949 25.4604 8.44351 25.1187 8.78522L15.7853 18.1185C15.4436 18.4602 14.8897 18.4602 14.548 18.1185L10.9125 14.4831C10.6847 14.2553 10.3153 14.2553 10.0875 14.4831L4.11872 20.4519C3.77701 20.7936 3.22298 20.7936 2.88128 20.4519C2.53957 20.1101 2.53957 19.5562 2.88128 19.2145L9.88128 12.2145C10.223 11.8728 10.777 11.8728 11.1187 12.2145L14.7541 15.8499C14.982 16.0777 15.3513 16.0777 15.5792 15.8499L23.8813 7.54778C24.223 7.20608 24.777 7.20608 25.1187 7.54778Z"
+                                                                                            fill="white" />
+                                                                                        <path fill-rule="evenodd"
+                                                                                            clip-rule="evenodd"
+                                                                                            d="M18.957 8.1665C18.957 7.68326 19.3488 7.2915 19.832 7.2915H24.4987C24.9819 7.2915 25.3737 7.68326 25.3737 8.1665V12.8332C25.3737 13.3164 24.9819 13.7082 24.4987 13.7082C24.0155 13.7082 23.6237 13.3164 23.6237 12.8332V9.62484C23.6237 9.30267 23.3625 9.0415 23.0404 9.0415H19.832C19.3488 9.0415 18.957 8.64975 18.957 8.1665Z"
+                                                                                            fill="white" />
+                                                                                    </svg>
+                                                                                </span>
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div class="col-5">
+                                                                            <h5
+                                                                                class="fs-12 mb-1 mt-1 color_white fw-light">
+                                                                                Total
+                                                                                Freight Spend</h5>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <h5
+                                                                                class="fs-12 mb-1 mt-1 color_white fw-light  text-end">
+                                                                                {{scenario.totalFreightSavings |
+                                                                                currency:'USD':'symbol':'1.2-2'}}&nbsp;&nbsp;&nbsp;&nbsp;-
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div class="col-3">
+                                                                            <h5
+                                                                                class="fs-12 mb-1 mt-1 color_white fw-light  text-end">
+                                                                                {{(scenario.totalFreightSavingsPercent |
+                                                                                number:'1.2-2')+'%'}}
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div class="col-5">
+                                                                            <h5
+                                                                                class="fs-12 mb-1 mt-1 color_white fw-light">
+                                                                                Total
+                                                                                Freight Spend</h5>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <h5
+                                                                                class="fs-12 mb-1 mt-1 color_white fw-light  text-end">
+                                                                                {{scenario.totalAccSavings |
+                                                                                currency:'USD':'symbol':'1.2-2'}}
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;-</h5>
+                                                                        </div>
+                                                                        <div class="col-3">
+                                                                            <h5
+                                                                                class="fs-12 mb-1 mt-1 color_white fw-light  text-end">
+                                                                                {{(scenario.totalAccSavingsPercent |
+                                                                                number:'1.2-2')+'%'}}
+                                                                            </h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="textWrapGRI">
+                                                    <tr
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'">
+                                                        <td [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="serviceheader">
+                                                                <h5
+                                                                    class="mb-1 fs-22 fw-semibold text-dark dark_title text-center">
+                                                                    Express Pricing
+                                                                </h5>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'"
+                                                        class="dark-table">
+                                                        <td style="padding: 0px !important;">
+                                                            <table mat-table [dataSource]="dataSourceAir"
+                                                                class="mat-elevation-z8 first_tab sub-table-header hover-cell"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_main" style="cursor: pointer;"
+                                                                        (click)="sort('air',column.fieldVal)">
+                                                                        <span class="heading"> {{
+                                                                            column.field=='Remove'?''
+                                                                            :column.field=='Service'?'Service
+                                                                            Type' :column.field }}</span>
+                                                                        <i class="{{airSortIcons[column.fieldVal]}}"
+                                                                            id="sortIcon"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_main">
+                                                                        <div
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':''}">
+                                                                          
+                                                                            <input
+                                                                                (click)="((column.field=='Service')&&(row.isNewRow == undefined)&& row.dataType != 'New Web')? popdiscount(rowIndex,row['serviceName'],'air',row['newService']):''"
+                                                                                [ngStyle]="{'color':((row[column.fieldVal] || '').toString().includes('-') && column.fieldVal == 'currentSpend' 
+                                                                                && row.isNewRow != undefined)?'red':''
+                                                 ,'cursor':((column.field=='Service')&&(row.isNewRow == undefined))?'pointer':''}"
+                                                                                [readonly]="((row.isNewRow != undefined || row.dataType == 'New Web') && editable()) || (((column.fieldVal == 'currentPercent') || column.fieldVal == 'currentSpend') && editable()==true) ? false : true"
+                                                                                (keyup)="(row.dataType == 'New Web' && column.fieldVal =='currentPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'air','current'):(row.dataType == 'New Web' && column.fieldVal =='count')?onCountChange($event,row['serviceGrouping'],rowIndex):(column.fieldVal =='currentPercent' && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'air','current'):((column.fieldVal =='count' && row.isNewRow != undefined)?onCountChange($event,row['serviceGrouping'],rowIndex):((column.fieldVal =='service' || column.fieldVal =='weightRange')?onFreightInput($event,column.fieldVal,rowIndex,'air'):''))"
+                                                                                matInput type="text"
+                                                                                matTooltip="{{row['serviceName']}}"
+                                                                                [matTooltipPosition]="'after'"
+                                                                                [matTooltipDisabled]="column.field=='Service'?false:true"
+                                                                                [ngClass]="((column.field=='Service')&&(row.isNewRow == undefined)&& row.dataType != 'New Web')?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                value="{{(column.fieldVal!='currentPercent' && column.fieldVal!='currentSpend')?
+                                                                                row[column.fieldVal]:(column.fieldVal =='currentPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' || airMinMaxList[rowIndex].disMin == undefined)? '' :(airMinMaxList[rowIndex].disMin == airMinMaxList[rowIndex].disMax)?((airMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((airMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(airMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):
+                                                                                (column.fieldVal =='currentSpend')?(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):''}}"
+                                                                                (focusout)="(column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend')?(column.fieldVal =='currentPercent')?percentageFocusout($event,rowIndex,'airMinMaxList','current',''):((column.fieldVal =='currentSpend')?onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'current',''):''):''"
+                                                                                (keydown)="(column.fieldVal =='currentPercent')?storePreviousPercentage($event):''"
+                                                                                (keypress)="(column.fieldVal == 'count' || column.fieldVal == 'currentSpend')?preventText($event):''"
+                                                                                (input)="(column.fieldVal =='currentPercent')?validatePercentage($event):(column.fieldVal =='currentSpend')?onSpendChange($event,rowIndex,'air','current'):''">
+
+                                                                            <i class="mdi mdi-close-circle delete_dark"
+                                                                                (click)="removeNewService(rowIndex,'DomesticAir')"
+                                                                                matTooltip="Delete"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.35em !important;line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 1.5px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.isNewRow != undefined"></i>
+                                                                            <i class="mdi mdi-delete-outline align-middle"
+                                                                                (click)="deleteServiceList(rowIndex,row['newService'],'air')"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.45em !important; line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 0.0px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.dataType == 'New Web' && editable()==true"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-header-row *matHeaderRowDef="displayedColumns;">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; columns: displayedColumns;">
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+
+                                                        <td style="padding: 0px !important;"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal(); let columnIndex = index"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table [dataSource]="scenario.dataSourceAirTarget"
+                                                                matSort
+                                                                class="mat-elevation-z8 third_tab sub-table-header"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_sub" style="cursor: pointer;"
+                                                                        (click)="sortTarget('air',column.fieldVal,columnIndex)">
+                                                                        <span class="heading"> {{ column.field }}</span>
+                                                                        <i
+                                                                            class="{{scenario.airSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row ; let rowIndex = index"
+                                                                        class="heading_sub">
+                                                                        <input matInput type="text"
+                                                                            [ngStyle]="{'color':(row[column.fieldVal]?.toString()?.includes('-'))?'red':'black'}"
+                                                                            [ngClass]="(scenario.displayedColumnsTarget.length > 1)?getClassTarget(row[column.fieldVal],column.fieldVal):''"
+                                                                            style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                            value="{{(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :((column.fieldVal =='targetPercent')?((scenario.airMinMaxList[rowIndex].disMin == scenario.airMinMaxList[rowIndex].disMax)?((scenario.airMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((scenario.airMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(scenario.airMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):(row[column.fieldVal] | number:'1.2-2')+'%')):(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')}}"
+                                                                            (keydown)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?storePreviousPercentage($event):''"
+                                                                            (input)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?validatePercentage($event):onSpendChange($event,rowIndex,'air','target',columnIndex)"
+                                                                            (keypress)="preventText($event)"
+                                                                            (keyup)="(row.dataType == 'New Web' && column.fieldVal =='targetPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'air','target',columnIndex):((column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent') && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'air','target',columnIndex):''"
+                                                                            (focusout)="(column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend')?(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?percentageFocusout($event,rowIndex,'airMinMaxList','target',columnIndex):onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'target',columnIndex):''"
+                                                                            [readonly]="((row.isNewRow != undefined || row.dataType == 'New Web') && editable()==true) || ((column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend') && editable()==true) ? false : true">
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="scenario.displayedColumnsTarget">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="tfoot"
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'">
+
+                                                        <td class="p-0">
+                                                            <table mat-table [dataSource]="dataSourceCurrentAirTotal"
+                                                                matSort class="tot_tab tot-tab-dark" cdkDropListGroup
+                                                                matSort cdkDropList cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':'','color':((row[column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                            matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            value="{{(column.fieldVal == 'currentSpend')?(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):(column.fieldVal == 'count')?(row[column.fieldVal] | number:'1.0'):row[column.fieldVal]}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                        <td class="p-0"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal()"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceTargetAirTotal" matSort
+                                                                class="tot_tab tot-tab-dark" cdkDropListGroup matSort
+                                                                cdkDropList cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(row[column.fieldVal])"
+                                                                            [ngStyle]="{'color':((row[column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                            value="{{(column.fieldVal != 'targetSavingsPercent')?(((row[column.fieldVal] || '').toString().includes('-'))?'('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')':(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tadd add-dark"
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'">
+                                                        <td class="p-0"
+                                                            [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="row">
+                                                                <div class="col s12 m2 l1 pl-1 pr-1">
+
+                                                                    <button class="add_btn ms-1 p-1 mt-1 mb-1 "
+                                                                        mat-icon-button
+                                                                        (click)="(editable())?AddNewRowAir():enableEdit()">
+                                                                        <img src="../../../../assets/images/svg/add_btn.svg"
+                                                                            class="add_btn_icon" alt="add">
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'">
+                                                        <td [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="serviceheader">
+                                                                <h5
+                                                                    class="mb-1 fs-22 fw-semibold text-dark dark_title text-center">
+                                                                    Pricing</h5>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="next-tab mt-2"
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'"
+                                                        class="dark-table">
+                                                        <td style="padding: 0px !important;">
+                                                            <table mat-table [dataSource]="dataSourceGround"
+                                                                class="mat-elevation-z8 first_tab sub-table-header hover-cell "
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_main" style="cursor: pointer;"
+                                                                        (click)="sort('ground',column.fieldVal)">
+                                                                        <span class="heading">{{
+                                                                            column.field=='Service'?'Service
+                                                                            Type':column.field }}
+                                                                        </span>
+                                                                        <i class="{{groundSortIcons[column.fieldVal]}}"
+                                                                            id="sortIcon"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row;let rowIndex = index"
+                                                                        class="heading_main"
+                                                                        [attr.rowspan]="getRowSpan(column.fieldVal, rowIndex)"
+                                                                        [style.display]="getRowSpan(column.fieldVal, rowIndex) || row[column.fieldVal]== ''  ? '' : 'none'">
+                                                                        <div
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':''}">
+                                                                            <!-- <span > -->
+                                                                            <input
+                                                                                *ngIf="row['weightRange'] != 'Sub Total'"
+                                                                                matInput type="text"
+                                                                                matTooltip="{{row['serviceName']}}"
+                                                                                [matTooltipPosition]="'after'"
+                                                                                [matTooltipDisabled]="column.field=='Service'?false:true"
+                                                                                (click)="((column.field=='Service')&&(row.isNewRow == undefined)&&(row['service'] != 'Ground (Freight Pricing)' && row.dataType != 'New Web'))?popdiscount(rowIndex,row['serviceName'],'ground',row['newService']):''"
+                                                                                [ngStyle]="{'color':((row[column.fieldVal] || '').toString().includes('-') && column.fieldVal == 'currentSpend' && row.isNewRow != undefined)?'red':'','cursor':((column.field=='Service')&&(row.isNewRow == undefined))?'pointer':'','width':(column.field == 'Service')?'160px':'100%'}"
+                                                                                [ngClass]="((column.field=='Service')&&(row.isNewRow == undefined)&&(row['service'] != 'Ground (Freight Pricing)' && row.dataType != 'New Web'))?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                [readonly]="(row['service'] == 'Ground (Freight Pricing)')?true:((row.isNewRow != undefined || row.dataType == 'New Web') && editable() ==true) || (((column.fieldVal == 'currentPercent') || column.fieldVal == 'currentSpend') && editable()==true) ? false : true"
+                                                                                value="{{(column.fieldVal!='currentPercent' && column.fieldVal!='currentSpend')?row[column.fieldVal]:(column.fieldVal =='currentPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :(groundMinMaxList[rowIndex].disMin == groundMinMaxList[rowIndex].disMax)?((groundMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((groundMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+groundMinMaxList[rowIndex].disMax+'%')):(column.fieldVal =='currentSpend')?(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2'):''}}"
+                                                                                (focusout)="(row['service'] == 'Ground (Freight Pricing)')?'':(column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend')?(column.fieldVal =='currentPercent')?percentageFocusout($event,rowIndex,'groundMinMaxList','current',''):((column.fieldVal =='currentSpend')?onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'current',''):''):''"
+                                                                                (keydown)="(row['service'] == 'Ground (Freight Pricing)')?'':(column.fieldVal =='currentPercent')?storePreviousPercentage($event):''"
+                                                                                (keypress)="(row['service'] == 'Ground (Freight Pricing)')?'':(column.fieldVal == 'count' || column.fieldVal == 'currentSpend')?preventText($event):''"
+                                                                                (input)="(row['service'] == 'Ground (Freight Pricing)')?'':(column.fieldVal =='currentPercent')?validatePercentage($event):(column.fieldVal =='currentSpend')?onSpendChange($event,rowIndex,'ground','current'):''"
+                                                                                (keyup)="(row.dataType == 'New Web' && column.fieldVal =='currentPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'ground','current'):(row.dataType == 'New Web' && column.fieldVal =='count')?onCountChange($event,row['serviceGrouping'],rowIndex):(row['service'] == 'Ground (Freight Pricing)')?'':(column.fieldVal =='currentPercent' && row.isNewRow == undefined && editable() == true)?onDiscountChange($event.target.value,rowIndex,row['service'],'ground','current'):(column.fieldVal =='count' && row.isNewRow != undefined)?onCountChange($event,row['serviceGrouping'],rowIndex):((column.fieldVal =='service' || column.fieldVal =='weightRange')?onFreightInput($event,column.fieldVal,rowIndex,'ground'):'')">
+
+                                                                            <i class="mdi mdi-close-circle delete_dark"
+                                                                                (click)="removeNewService(rowIndex,'DomesticGround')"
+                                                                                matTooltip="Delete"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.35em !important;line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 1.5px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.isNewRow != undefined"></i>
+                                                                            <i class="mdi mdi-delete-outline align-middle pr-4"
+                                                                                (click)="deleteServiceList(rowIndex,row['newService'],'ground')"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.45em !important; line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 0.0px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.dataType == 'New Web' && editable()==true"></i>
+                                                                        </div>
+
+                                                                        <div *ngIf="row['weightRange'] == 'Sub Total'"
+                                                                            style="display: flex;justify-content: right;font-size:1.1em;">
+                                                                            <span
+                                                                                *ngIf="(column.fieldVal == 'currentSpend')||(column.fieldVal == 'count')"
+                                                                                [ngStyle]="{'color':((currentSavingsGroundSubTotalList[rowIndex][column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                                style="font-weight:bolder;justify-content: end;">
+                                                                                {{(column.fieldVal ==
+                                                                                'currentSpend')?(currentSavingsGroundSubTotalList[rowIndex][column.fieldVal]
+                                                                                | currency:'USD':'symbol':'1.2-2') :
+                                                                                (currentSavingsGroundSubTotalList[rowIndex][column.fieldVal]
+                                                                                |
+                                                                                number:'1.0-2') }}
+                                                                            </span>
+                                                                        </div>
+
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row *matHeaderRowDef="displayedColumns;">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+                                                        <td style="padding: 0px !important;"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal(); let columnIndex = index"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceGroundTarget"
+                                                                class="mat-elevation-z8 second_tab sub-table-header"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_sub" style="cursor: pointer;"
+                                                                        (click)="sortTarget('ground',column.fieldVal,columnIndex)">
+                                                                        <span class="heading"> {{ column.field }}
+                                                                        </span>
+                                                                        <i
+                                                                            class="{{scenario.groundSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_sub">
+
+                                                                        <span *ngIf="row['weightRange'] != 'Sub Total'">
+                                                                            <input matInput type="text"
+                                                                                [ngStyle]="{'color':(row[column.fieldVal]?.toString()?.includes('-'))?'red':'black'}"
+                                                                                value="{{(scenario.groundMinMaxList[rowIndex] != undefined) ?((column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :((column.fieldVal =='targetPercent')?((scenario.groundMinMaxList[rowIndex].disMin == scenario.groundMinMaxList[rowIndex].disMax)?((scenario.groundMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((scenario.groundMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(scenario.groundMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):(row[column.fieldVal] | number:'1.2-2')+'%')):(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')) : ''}}"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                [ngClass]="getClassTarget(row[column.fieldVal],column.fieldVal)"
+                                                                                (keypress)="(row['service'] == 'Ground (Freight Pricing)')?true:preventText($event)"
+                                                                                (keydown)="(row['service'] == 'Ground (Freight Pricing)')?true:(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?storePreviousPercentage($event):''"
+                                                                                (input)="(row['service'] == 'Ground (Freight Pricing)')?true:(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?validatePercentage($event):onSpendChange($event,rowIndex,'ground','target',columnIndex)"
+                                                                                (keyup)="(row.dataType == 'New Web' && column.fieldVal =='targetPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'ground','target',columnIndex):(row['service'] == 'Ground (Freight Pricing)')?true:((column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent') && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'ground','target',columnIndex):''"
+                                                                                (focusout)="(row['service'] == 'Ground (Freight Pricing)' || row['weightRange'] == 'Sub Total')?true:(column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend')?(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?percentageFocusout($event,rowIndex,'groundMinMaxList','target',columnIndex):onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'target',columnIndex):''"
+                                                                                [readonly]="(row['service'] == 'Ground (Freight Pricing)' || row['weightRange'] == 'Sub Total')?true:((row.isNewRow != undefined || row.dataType == 'New Web') && editable() ==true) || (((column.fieldVal == 'targetPercent') || column.fieldVal == 'targetSpend') && editable()==true) ? false : true">
+                                                                        </span>
+                                                                        <div *ngIf="row['weightRange'] == 'Sub Total'"
+                                                                            style="display: flex;justify-content: right;">
+                                                                            <span
+                                                                                *ngIf="(column.fieldVal == 'targetSpend')||(column.fieldVal == 'savingsAmount')||(column.fieldVal == 'targetSavingsPercent')"
+                                                                                [ngStyle]="{'color':((scenario.targetSavingsGroundSubTotalList[rowIndex][column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                                style="font-weight:bolder;justify-content: end;font-size:1.1em;">
+                                                                                {{(column.fieldVal == 'targetSpend' ||
+                                                                                column.fieldVal ==
+                                                                                'savingsAmount')?((scenario.targetSavingsGroundSubTotalList[rowIndex][column.fieldVal].toString().includes('-'))?'('+(scenario.targetSavingsGroundSubTotalList[rowIndex][column.fieldVal]
+                                                                                |
+                                                                                currency:'USD':'symbol':'1.2-2')+')':(scenario.targetSavingsGroundSubTotalList[rowIndex][column.fieldVal]
+                                                                                |
+                                                                                currency:'USD':'symbol':'1.2-2')):(column.fieldVal
+                                                                                ==
+                                                                                'targetSavingsPercent')?(scenario.targetSavingsGroundSubTotalList[rowIndex][column.fieldVal]
+                                                                                | number :'1.2-2')+'%':''}}
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+
+                                                                </ng-container>
+
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="scenario.displayedColumnsTarget;">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tfoot"
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'">
+
+                                                        <td class="p-0">
+                                                            <table mat-table [dataSource]="dataSourceCurrentGroundTotal"
+                                                                matSort class="mat-elevation-z8 tot_tab tot-tab-dark"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input matInput
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':'','color':((row[column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                            type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            value="{{(column.fieldVal == 'currentSpend')?(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):(column.fieldVal == 'count')?(row[column.fieldVal] | number:'1.0'):row[column.fieldVal]}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                        <td class="p-0"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal()"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceTargetGroundTotal"
+                                                                matSort class="mat-elevation-z8 tot_tab tot-tab-dark"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            [ngStyle]="{'color':((row[column.fieldVal])?.toString()?.includes('-'))?'rgb(192,0,0)':''}"
+                                                                            value="{{(column.fieldVal != 'targetSavingsPercent')?(((row[column.fieldVal] || '').toString().includes('-'))?'('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')':(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tadd add-dark"
+                                                        *ngIf="selectedCategory()=='Freight' || selectedCategory()=='ALL'">
+                                                        <td class="p-0"
+                                                            [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="row">
+                                                                <div class="col s12 m2 l1 pl-1 pr-1">
+                                                                    <button class="add_btn ms-1 p-1 mt-1 mb-1 "
+                                                                        mat-icon-button
+                                                                        (click)="(editable())?AddNewRowGround():enableEdit()">
+                                                                        <img src="../../../../assets/images/svg/add_btn.svg"
+                                                                            class="add_btn_icon" alt="add">
+                                                                    </button>
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    <tr
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')">
+                                                        <td [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="serviceheader">
+                                                                <h5
+                                                                    class="mb-1 fs-22 fw-semibold text-dark dark_title text-center">
+                                                                    HundredWeight Pricing</h5>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <!--Hundred Weight Service Level-->
+                                                    <tr *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')"
+                                                        style="height: 56px;" class="dark-table table-topheader ">
+                                                        <td style="padding: 0px !important;"
+                                                            class="mat-elevation-z8 first_tab heading_main hwt_header">
+                                                            <div class="input-container">
+                                                                <span class="table-topheader-titel">Current
+                                                                    Hundredweight Tier
+
+
+                                                                    <i class="mdi align-middle mdi-eye-outline"
+                                                                        *ngIf="(currentTier !='')"
+                                                                        (click)="popHWTTier('create','')"></i>
+                                                                </span>
+                                                                <span> : </span>
+                                                                <span *ngIf="(currentTier != '');else noTier"
+                                                                    style="margin-left: 5px;font-weight: 800;width:50px;font-size:1.2em;">
+                                                                    <mat-select [(ngModel)]="currentTier"
+                                                                        (ngModelChange)="onHWTTierChange('current')"
+                                                                        [disabled]="!editable" class="mattierSelect">
+                                                                        <mat-option *ngFor="let tier of hwtTier"
+                                                                            [value]="tier">
+                                                                            {{tier}}</mat-option>
+                                                                        <mat-option *ngIf="(currentTier == '')"
+                                                                            [value]="">-</mat-option>
+                                                                    </mat-select>
+                                                                </span>
+                                                                <ng-template #noTier>
+                                                                    <span
+                                                                        style="margin-left: 5px;font-weight: 800;width:50px;font-size: 2em;margin-bottom:0.5%">-</span>
+                                                                </ng-template>
+
+                                                            </div>
+                                                        </td>
+
+                                                        <td style="padding: 0px !important;"
+                                                            class="mat-elevation-z8 first_tab heading_sub hwt_header"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal(); let columnIndex = index"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <div class="input-container">
+                                                                <span
+                                                                    class="table-topheader-titel">{{scenario.targetName}}
+                                                                    Hundredweight Tier
+                                                                    <i class="mdi align-middle mdi-eye-outline"
+                                                                        *ngIf="(scenario.targetTier != '')"
+                                                                        (click)="popHWTTier('Edit',scenario)"></i>
+                                                                </span>
+                                                                <span> : </span>
+                                                                <span
+                                                                    *ngIf="(scenario.targetTier != '');else noTargetTier"
+                                                                    style="margin-left: 5px;font-weight: 800;width:50px;font-size:1.2em;">
+                                                                    <mat-select [(ngModel)]="scenario.targetTier"
+                                                                        (ngModelChange)="onHWTTierChange(columnIndex)"
+                                                                        [disabled]="!editable" class="mattierSelect">
+                                                                        <mat-option
+                                                                            *ngFor="let tier of scenario.hwtTier"
+                                                                            [value]="tier">
+                                                                            {{tier}}</mat-option>
+                                                                        <mat-option *ngIf="(scenario.targetTier == '')"
+                                                                            [value]=''>-</mat-option>
+                                                                    </mat-select>
+                                                                </span>
+                                                                <ng-template #noTargetTier>
+                                                                    <span
+                                                                        style="margin-left: 5px;font-weight: 800;width:50px;font-size: 2em;margin-bottom:0.5%">-</span>
+                                                                </ng-template>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')"
+                                                        class="dark-table table-inp">
+                                                        <td style="padding: 0px !important;">
+                                                            <table mat-table [dataSource]="dataSourceHWT"
+                                                                class="mat-elevation-z8 first_tab sub-table-header hover-cell"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_main" style="cursor: pointer;"
+                                                                        (click)="sort('hwt',column.fieldVal)">
+                                                                        <span class="heading"> {{ column.field }}</span>
+                                                                        <i class="{{hwtSortIcons[column.fieldVal]}}"
+                                                                            id="sortIcon"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_main">
+                                                                        <div
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':''}">
+
+                                                                            <input
+                                                                                [ngStyle]="{'color':(row[column.fieldVal]?.toString()?.includes('-') && column.fieldVal == 'currentSpend' && row.isNewRow != undefined)?'red':'black','cursor':((column.field=='Service')&&(row.isNewRow == undefined))?'pointer':''}"
+                                                                                matInput type="text"
+                                                                                matTooltip="{{row['serviceName']}}"
+                                                                                [matTooltipPosition]="'after'"
+                                                                                [matTooltipDisabled]="column.field=='Service'?false:true"
+                                                                                (click)="(column.field=='Service')&&(row['service']!=''&&row.dataType != 'New Web')?popdiscount(rowIndex,row['serviceName'],'hwt',row['newService']):''"
+                                                                                [ngClass]="(column.field=='Service' && row.isNewRow == undefined && row.dataType != 'New Web')?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                [readonly]="((row.isNewRow != undefined || row.dataType == 'New Web') && editable()) || (((column.fieldVal == 'currentPercent') || column.fieldVal == 'currentSpend') && editable()==true) ? false : true"
+                                                                                value="{{(column.fieldVal!='currentPercent' && column.fieldVal!='currentSpend')?row[column.fieldVal]:(column.fieldVal =='currentPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :(hwtMinMaxList[rowIndex].disMin == hwtMinMaxList[rowIndex].disMax)?((hwtMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((hwtMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(hwtMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):(column.fieldVal =='currentSpend')?(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):''}}"
+                                                                                (focusout)="(column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend')?(column.fieldVal =='currentPercent')?percentageFocusout($event,rowIndex,'hwtMinMaxList','current',''):((column.fieldVal =='currentSpend')?onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'current',''):''):''"
+                                                                                (keydown)="(column.fieldVal =='currentPercent')?storePreviousPercentage($event):''"
+                                                                                (keypress)="(column.fieldVal == 'count' || column.fieldVal == 'currentSpend')?preventText($event):''"
+                                                                                (input)="(column.fieldVal =='currentPercent')?validatePercentage($event):(column.fieldVal =='currentSpend')?onSpendChange($event,rowIndex,'hwt','current'):''"
+                                                                                (keyup)="(row.dataType == 'New Web' && column.fieldVal =='currentPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'hwt','current',''):(row.dataType == 'New Web' && column.fieldVal =='count')?onCountChange($event,row['serviceGrouping'],rowIndex):(column.fieldVal =='currentPercent' && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'hwt','current',''):(column.fieldVal =='count' && row.isNewRow != undefined)?onCountChange($event,row['serviceGrouping'],rowIndex):((column.fieldVal =='service' || column.fieldVal =='weightRange')?onFreightInput($event,column.fieldVal,rowIndex,'hwt'):'')">
+                                                                            <i class="mdi mdi-close-circle delete_dark"
+                                                                                (click)="removeNewService(rowIndex,'HundredWeight')"
+                                                                                matTooltip="Delete"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.35em !important;line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 1.5px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.isNewRow != undefined"></i>
+                                                                            <i class="mdi mdi-delete-outline align-middle"
+                                                                                (click)="deleteServiceList(rowIndex,row['newService'],'hwt')"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.45em !important; line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 0.0px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.dataType == 'New Web' && editable()==true"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-header-row *matHeaderRowDef="displayedColumns;">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; columns: displayedColumns;">
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td style="padding: 0px !important;"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal(); let columnIndex = index"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table [dataSource]="scenario.dataSourceHWTTarget"
+                                                                matSort
+                                                                class="mat-elevation-z8 third_tab sub-table-header"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_sub" style="cursor: pointer;"
+                                                                        (click)="sortTarget('hwt',column.fieldVal,columnIndex)">
+                                                                        <span class="heading"> {{ column.field }}</span>
+                                                                        <i
+                                                                            class="{{scenario.hwtSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row ; let rowIndex = index"
+                                                                        class="heading_sub">
+                                                                        <input matInput type="text"
+                                                                            [ngStyle]="{'color':(row[column.fieldVal]?.toString()?.includes('-'))?'red':'black'}"
+                                                                            [ngClass]="(scenario.displayedColumnsTarget.length > 1)?getClassTarget(row[column.fieldVal],column.fieldVal):''"
+                                                                            style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                            value="{{(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :((column.fieldVal =='targetPercent')?((scenario.hwtMinMaxList[rowIndex].disMin == scenario.hwtMinMaxList[rowIndex].disMax)?((scenario.hwtMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):(scenario.hwtMinMaxList[rowIndex].disMin+'%-'+scenario.hwtMinMaxList[rowIndex].disMax+'%')):(row[column.fieldVal] | number:'1.2-2')+'%')):(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')}}"
+                                                                            (keydown)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?storePreviousPercentage($event):''"
+                                                                            (input)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?validatePercentage($event):onSpendChange($event,rowIndex,'hwt','target',columnIndex)"
+                                                                            (keypress)="preventText($event)"
+                                                                            (keyup)="(row.dataType == 'New Web' && column.fieldVal =='targetPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'hwt','target',columnIndex):((column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent') && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'hwt','target',columnIndex):''"
+                                                                            (focusout)="(column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend')?(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?percentageFocusout($event,rowIndex,'hwtMinMaxList','target',columnIndex):onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'target',columnIndex):''"
+                                                                            [readonly]="((row.isNewRow != undefined || row.dataType == 'New Web') && editable()) || (((column.fieldVal == 'targetPercent') || column.fieldVal == 'targetSpend') && editable()==true) ? false : true">
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="scenario.displayedColumnsTarget">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="tfoot"
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')">
+
+                                                        <td class="p-0">
+                                                            <table mat-table [dataSource]="dataSourceCurrentHWTTotal"
+                                                                matSort class="tot_tab tot-tab-dark" cdkDropListGroup
+                                                                matSort cdkDropList cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':'','color':((row[column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                            matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            value="{{(column.fieldVal == 'currentSpend')?(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):(column.fieldVal == 'count')?(row[column.fieldVal] | number:'1.0'):row[column.fieldVal]}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                        <td class="p-0"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal()"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceTargetHWTTotal" matSort
+                                                                class="tot_tab tot-tab-dark" cdkDropListGroup matSort
+                                                                cdkDropList cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(row[column.fieldVal])"
+                                                                            [ngStyle]="{'color':((row[column.fieldVal])?.toString()?.includes('-'))?'rgb(192,0,0)':''}"
+                                                                            value="{{(column.fieldVal != 'targetSavingsPercent')?(((row[column.fieldVal] || '').toString().includes('-'))?'('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')':(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr class="tadd add-dark"
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')">
+                                                        <td class="p-0"
+                                                            [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="row">
+                                                                <div class="col s12 m2 l1 pl-1 pr-1">
+                                                                    <button class="add_btn ms-1 p-1 mt-1 mb-1 "
+                                                                        mat-icon-button
+                                                                        (click)="(editable())?AddNewRowHWT():enableEdit()">
+                                                                        <img src="../../../../assets/images/svg/add_btn.svg"
+                                                                            class="add_btn_icon" alt="add">
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')">
+                                                        <td [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="serviceheader">
+                                                                <h5
+                                                                    class="mb-1 fs-22 fw-semibold text-dark dark_title text-center">
+                                                                    International Pricing</h5>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <!--Domestic International Service Level-->
+                                                    <tr class="next-tab mt-2"
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')"
+                                                        class="dark-table">
+                                                        <td style="padding: 0px !important;">
+
+                                                            <table mat-table [dataSource]="dataSourceIntl"
+                                                                class="mat-elevation-z8 first_tab sub-table-header hover-cell"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_main" style="cursor: pointer;"
+                                                                        (click)="sort('intl',column.fieldVal)">
+                                                                        <span
+                                                                            class="heading">{{column.field=='Service'?'Service
+                                                                            Type':column.field }}
+                                                                        </span>
+                                                                        <i
+                                                                            class="{{intlSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_main">
+                                                                        <div
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':''}">
+
+                                                                            <input
+                                                                                [ngStyle]="{'color':((row[column.fieldVal] || '').toString().includes('-') && column.fieldVal == 'currentSpend' && row.isNewRow != undefined)?'red':'','cursor':((column.field=='Service')&&(row.isNewRow == undefined))?'pointer':''}"
+                                                                                matInput type="text"
+                                                                                matTooltip="{{row['serviceName']}}"
+                                                                                [matTooltipPosition]="'after'"
+                                                                                [matTooltipDisabled]="column.field=='Service'?false:true"
+                                                                                [ngClass]="(column.field=='Service' && row.isNewRow == undefined && row.dataType != 'New Web')?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                (click)="((column.field=='Service')&&(row.isNewRow == undefined)&&(row['service'] != 'FedEx Intl Prty DirDist')&& row.dataType != 'New Web')?popdiscount(rowIndex,row['serviceName'],row['serviceGrouping'],row['newService']):''"
+                                                                                [readonly]="((row.isNewRow != undefined || row.dataType == 'New Web') && editable()) || (((column.fieldVal == 'currentPercent') || column.fieldVal == 'currentSpend') && editable()==true) ? false : true"
+                                                                                value="{{(column.fieldVal!='currentPercent' && column.fieldVal!='currentSpend')?row[column.fieldVal]:(column.fieldVal =='currentPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :(intlMinMaxList[rowIndex].disMin == intlMinMaxList[rowIndex].disMax)?((intlMinMaxList[rowIndex].disMin | number:'1.2-2') +'%'):((intlMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(intlMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):(column.fieldVal =='currentSpend')?(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2'):''}}"
+                                                                                (focusout)="(column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend')?(column.fieldVal =='currentPercent')?percentageFocusout($event,rowIndex,'intlMinMaxList','current',''):((column.fieldVal =='currentSpend')?onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'current',''):''):''"
+                                                                                (keydown)="(column.fieldVal =='currentPercent')?storePreviousPercentage($event):''"
+                                                                                (keypress)="(column.fieldVal == 'count' || column.fieldVal == 'currentSpend')?preventText($event):''"
+                                                                                (input)="(column.fieldVal =='currentPercent')?validatePercentage($event):(column.fieldVal =='currentSpend')?onSpendChange($event,rowIndex,'intl','current'):''"
+                                                                                (keyup)="(row.dataType == 'New Web' && column.fieldVal =='currentPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'intl','current'):(row.dataType == 'New Web' && column.fieldVal =='count')?onCountChange($event,row['serviceGrouping'],rowIndex):(column.fieldVal =='currentPercent' && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'intl','current'):(column.fieldVal =='count' && row.isNewRow != undefined)?onCountChange($event,row['serviceGrouping'],rowIndex):((column.fieldVal =='service' || column.fieldVal =='weightRange')?onFreightInput($event,column.fieldVal,rowIndex,'intl'):'')">
+                                                                            <i class="mdi mdi-close-circle delete_dark"
+                                                                                (click)="removeNewService(rowIndex,'DomesticIntl')"
+                                                                                matTooltip="Delete"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.35em !important;line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 1.5px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.isNewRow != undefined"></i>
+                                                                            <i class="mdi mdi-delete-outline align-middle"
+                                                                                (click)="deleteServiceList(rowIndex,row['newService'],row['serviceGrouping'])"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.45em !important; line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 0.0px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.dataType == 'New Web' && editable()==true"></i>
+                                                                        </div>
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row *matHeaderRowDef="displayedColumns;">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+                                                        <td style="padding: 0px !important;"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal(); let columnIndex = index"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceIntlTarget"
+                                                                class="mat-elevation-z8 second_tab sub-table-header"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_sub" style="cursor: pointer;"
+                                                                        (click)="sortTarget('intl',column.fieldVal,columnIndex)">
+                                                                        <span class="heading"> {{ column.field }}
+                                                                        </span>
+                                                                        <i
+                                                                            class="{{scenario.intlSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_sub">
+                                                                        <input matInput type="text"
+                                                                            [ngStyle]="{'color':(row[column.fieldVal]?.toString()?.includes('-'))?'red':'black'}"
+                                                                            value="{{(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :((column.fieldVal =='targetPercent')?((scenario.intlMinMaxList[rowIndex].disMin == scenario.intlMinMaxList[rowIndex].disMax)?((scenario.intlMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((scenario.intlMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(scenario.intlMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):(row[column.fieldVal] | number:'1.2-2')+'%')):(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')}}"
+                                                                            style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                            [ngClass]="getClassTarget(row[column.fieldVal],column.fieldVal)"
+                                                                            (keydown)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?storePreviousPercentage($event):''"
+                                                                            (input)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?validatePercentage($event):onSpendChange($event,rowIndex,'intl','target',columnIndex)"
+                                                                            (keypress)="(column.fieldVal == 'targetSpend' || column.fieldVal == 'savingsAmount')?preventText($event):''"
+                                                                            (keyup)="(row.dataType == 'New Web' && column.fieldVal =='targetPercent')?onDiscountChangeNewWeb($event.target.value,rowIndex,row['service'],'intl','target',columnIndex):((column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent') && row.isNewRow == undefined && editable()==true)?onDiscountChange($event.target.value,rowIndex,row['service'],'intl','target',columnIndex):''"
+                                                                            (focusout)="(column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend')?(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?percentageFocusout($event,rowIndex,'intlMinMaxList','target',columnIndex):onSpendFocusOut($event,rowIndex,row['serviceGrouping'],'target',columnIndex):''"
+                                                                            [readonly]="((row.isNewRow != undefined || row.dataType == 'New Web') && editable()) || ((column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend') && editable()==true) ? false : true">
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="scenario.displayedColumnsTarget">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tfoot"
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')">
+
+                                                        <td class="p-0">
+                                                            <table mat-table [dataSource]="dataSourceCurrentIntlTotal"
+                                                                matSort class="mat-elevation-z8 tot_tab tot-tab-dark"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':'','color':((row[column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                            matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            value="{{(column.fieldVal == 'currentSpend')?(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):(column.fieldVal == 'count')?(row[column.fieldVal] | number:'1.0'):row[column.fieldVal]}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                        <td class="p-0"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal()"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceTargetIntlTotal"
+                                                                matSort class="mat-elevation-z8 tot_tab tot-tab-dark"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            [ngStyle]="{'color':((row[column.fieldVal])?.toString()?.includes('-'))?'rgb(192,0,0)':''}"
+                                                                            value="{{(column.fieldVal != 'targetSavingsPercent')?(((row[column.fieldVal] || '').toString().includes('-'))?'('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')':(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tadd add-dark"
+                                                        *ngIf="(selectedCategory()=='Freight' || selectedCategory()=='ALL')">
+                                                        <td class="p-0"
+                                                            [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="row">
+                                                                <div class="col s12 m2 l1 pl-1 pr-1">
+                                                                    <button class="add_btn ms-1 p-1 mt-1 mb-1 "
+                                                                        mat-icon-button
+                                                                        (click)="(editable())?AddNewRowIntl():enableEdit()">
+                                                                        <img src="../../../../assets/images/svg/add_btn.svg"
+                                                                            class="add_btn_icon" alt="add">
+                                                                    </button>
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr
+                                                        *ngIf="selectedCategory()=='Accessorial' || selectedCategory()=='ALL'">
+                                                        <td [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="serviceheader">
+                                                                <h5
+                                                                    class="mb-1 fs-22 fw-semibold text-dark dark_title text-center">
+                                                                    Accessorial Pricing</h5>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!--Accessorial-->
+                                                    <tr class="next-tab mt-2"
+                                                        *ngIf="selectedCategory()=='Accessorial' || selectedCategory()=='ALL'"
+                                                        class="dark-table">
+                                                        <td style="padding: 0px !important;">
+
+                                                            <table mat-table [dataSource]="dataSourceAcc"
+                                                                class="mat-elevation-z8 first_tab sub-table-header hover-cell"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columnsAcc(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_main" style="cursor: pointer;"
+                                                                        (click)="sort('acc',column.fieldVal)">
+                                                                        <span class="heading">
+                                                                            {{column.field=='Service'?'Charge
+                                                                            Description':column.field
+                                                                            }}</span>
+                                                                        <i
+                                                                            class="{{accSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_main"
+                                                                        [ngStyle]="{'height':(row.isNewRow != undefined)?'60px':''}">
+                                                                        <div
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':''}">
+
+                                                                            <input *ngIf="column.field != 'Service'"
+                                                                                [ngStyle]="{'color':(row[column.fieldVal] == null)?'':(((row[column.fieldVal] || '').toString().includes('-') && column.fieldVal == 'currentSpend' && row.isNewRow != undefined)?'red':''),'cursor':((column.field=='Service')&&(row.isNewRow == undefined))?'pointer':''}"
+                                                                                matInput type="text"
+                                                                                matTooltip="{{row['serviceName']}}"
+                                                                                [matTooltipPosition]="'after'"
+                                                                                [matTooltipDisabled]="column.field=='Service'?false:true"
+                                                                                [ngClass]="(column.field=='Service' && row.isNewRow == undefined)?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                                (click)="(column.field=='Service')&&(row.isNewRow == undefined)?popdiscountAcc(rowIndex):''"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                [readonly]="((row.isNewRow != undefined && editable()==true) || ((column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend') && editable()==true)) && currentSavingsAccList[rowIndex].rowNumber == undefined ? false : true"
+                                                                                value="{{(column.fieldVal!='currentPercent' && column.fieldVal!='currentSpend')?row[column.fieldVal]:(column.fieldVal =='currentPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :(accMinMaxList[rowIndex].disMin == accMinMaxList[rowIndex].disMax)?((accMinMaxList[rowIndex].discountType == '%')?((accMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):(accMinMaxList[rowIndex].disMin | currency:'USD' :'symbol' :'1.2-2'))
+                                                
+                                                :(((accMinMaxList[rowIndex].discountType == '$')?(accMinMaxList[rowIndex].disMin | currency:'USD' :'symbol' :'1.2-2') :((accMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'))+'-'+((accMinMaxList[rowIndex].discountType == '$')?(accMinMaxList[rowIndex].disMax | currency:'USD':'symbol':'1.2-2'):  ((accMinMaxList[rowIndex].disMax | number:'1.2-2')+'%'))  )):(column.fieldVal =='currentSpend')?(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2'):''}}"
+                                                                                (focusout)="(column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend')
+                                                ?
+                                                (column.fieldVal =='currentPercent')?( (accMinMaxList[rowIndex].discountType == '$')?accSpendFocusOut($event,rowIndex,'accMinMaxList','current',''):percentageFocusout($event,rowIndex,'accMinMaxList','current','') )
+                                                :((column.fieldVal =='currentSpend')?onAccSpendFocusOut($event,rowIndex,'current',''):'')
+                                                :''" (keydown)="(column.fieldVal =='currentPercent')?storePreviousPercentage($event):''"
+                                                                                (keypress)="(column.fieldVal == 'count' || column.fieldVal == 'currentSpend')?preventText($event):''"
+                                                                                (input)="(column.fieldVal =='currentPercent')?validatePercentage($event):(column.fieldVal =='currentSpend')?onAccSpendChange($event,rowIndex,'current',''):''"
+                                                                                (keyup)="(column.fieldVal =='currentPercent' && row.isNewRow == undefined && editable()==true)?onAccDiscountChange($event,rowIndex,row['service'],row['serviceType'],'current',''):(column.fieldVal == 'count' && row.isNewRow != undefined)?onCountChange($event,'',rowIndex):((column.fieldVal =='service' || column.fieldVal =='serviceType')?onFreightInput($event,column.fieldVal,rowIndex,'acc'):'')">
+
+                                                                            <input list="accServices"
+                                                                                *ngIf="column.field == 'Service'"
+                                                                                [ngStyle]="{'color':(row[column.fieldVal] == null)?'':(((row[column.fieldVal] || '').toString().includes('-') && column.fieldVal == 'currentSpend' && row.isNewRow != undefined)?'red':''),'cursor':((column.field=='Service')&&(row.isNewRow == undefined))?'pointer':''}"
+                                                                                matInput type="text"
+                                                                                matTooltip="{{(row['isHover'] != undefined)? row['hoverName']:row['serviceName']}}"
+                                                                                [matTooltipPosition]="'after'"
+                                                                                [matTooltipDisabled]="column.field=='Service'?false:true"
+                                                                                [ngClass]="(column.field=='Service' && row.isNewRow == undefined)?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                                (click)="(column.field=='Service')&&(row.isNewRow == undefined)?popdiscountAcc(rowIndex):''"
+                                                                                style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                                [readonly]="(row.isNewRow != undefined && editable()==true) || ((column.fieldVal == 'currentPercent' || column.fieldVal == 'currentSpend') && editable()==true) ? false : true"
+                                                                                value="{{(column.fieldVal!='currentPercent' && column.fieldVal!='currentSpend')?row[column.fieldVal]:(column.fieldVal =='currentPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0' )? '' :(accMinMaxList[rowIndex].disMin == accMinMaxList[rowIndex].disMax)?((accMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'):((accMinMaxList[rowIndex].disMin | number:'1.2-2')+'%-'+(accMinMaxList[rowIndex].disMax | number:'1.2-2')+'%')):(column.fieldVal =='currentSpend')?(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2'):''}}"
+                                                                                (focusout)="validateAccService($event.target.value,rowIndex)"
+                                                                                (keydown)="(column.fieldVal =='currentPercent')?storePreviousPercentage($event):''"
+                                                                                (keypress)="(column.fieldVal == 'count' || column.fieldVal == 'currentSpend')?preventText($event):''"
+                                                                                (input)="(column.fieldVal =='currentPercent')?validatePercentage($event):(column.fieldVal =='currentSpend')?onAccSpendChange($event,rowIndex,'current',''):''"
+                                                                                (keyup)="(column.fieldVal =='currentPercent' && row.isNewRow == undefined && editable()==true)?onAccDiscountChange($event,rowIndex,row['service'],row['serviceType'],'current',''):(column.fieldVal == 'count' && row.isNewRow != undefined)?onCountChange($event,'',rowIndex):((column.fieldVal =='service' || column.fieldVal =='serviceType')?onFreightInput($event,column.fieldVal,rowIndex,'acc'):'')">
+
+
+                                                                            <datalist id="accServices">
+                                                                                <option
+                                                                                    *ngFor="let service of allAccServices"
+                                                                                    [value]="service">
+                                                                            </datalist>
+
+                                                                            <i class="mdi mdi-close-circle delete_dark"
+                                                                                (click)="removeNewService(rowIndex,'Accessorial')"
+                                                                                matTooltip="Delete"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.35em !important;line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 1.5px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.isNewRow != undefined"></i>
+                                                                            <i class="mdi mdi-delete-outline align-middle"
+                                                                                (click)="deleteServiceList(rowIndex,row['newService'],'Accessorial')"
+                                                                                matTooltipPosition="right"
+                                                                                style="font-size: 1.45em !important; line-height: 40px; margin-left: 10px;cursor: pointer;color: red;-webkit-text-stroke: 0.0px #F4F8FB;"
+                                                                                *ngIf="column.field=='Service' && row.dataType == 'New Web' && editable()==true"></i>
+                                                                        </div>
+                                                                        <p style="margin:0px;padding: 0px;color: red;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                                                            *ngIf="column.field == 'Service' && (isAccServiceAvailable) &&  row.rowNumber != undefined">
+                                                                            Service already exists</p>
+                                                                        <div [ngClass]="(column.field=='Service' && row.isNewRow == undefined)?'groupClassLink':getClass(row[column.fieldVal])"
+                                                                            *ngIf="column.fieldVal != 'currentPercent'">
+                                                                            <p style="margin:0px;padding: 0px;color: red;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                                                                *ngIf="toggleClicked && (row[column.fieldVal] == '' && row[column.fieldVal].toString().length == 0)">
+                                                                                Enter a value</p>
+                                                                        </div>
+                                                                        <div [ngClass]="getClassTarget(row[column.fieldVal],column.fieldVal)"
+                                                                            *ngIf="column.fieldVal == 'currentPercent'">
+                                                                            <p style="margin:0px;padding: 0px;color: red;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                                                                *ngIf="toggleClicked && (accMinMaxList[rowIndex].disMin == '' && accMinMaxList[rowIndex].disMin.toString().length == 0)">
+                                                                                Enter a value</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="displayedColumnsAcc"></tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let element; columns: displayedColumnsAcc;">
+                                                                </tr>
+                                                            </table>
+
+                                                        </td>
+                                                        <td style="padding: 0px !important;"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal(); let columnIndex = index"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table [dataSource]="scenario.dataSourceAccTarget"
+                                                                class="mat-elevation-z8 second_tab sub-table-header"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="heading_sub" style="cursor: pointer;"
+                                                                        (click)="sortTarget('acc',column.fieldVal,columnIndex)">
+                                                                        <span class="heading"> {{ column.field }}</span>
+                                                                        <i
+                                                                            class="{{scenario.accSortIcons[column.fieldVal]}}"></i>
+                                                                    </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let row; let rowIndex = index"
+                                                                        class="heading_sub"
+                                                                        [ngStyle]="{'height':(row.isNewRow != undefined)?'60px':''}">
+                                                                        <input matInput type="text"
+                                                                            [ngStyle]="{'color':(row[column.fieldVal]!=null && row[column.fieldVal]?.toString()?.includes('-'))?'red':'black'}"
+                                                                            value="{{(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?((row[column.fieldVal] == '' && row[column.fieldVal] != '0')? '' :((column.fieldVal =='targetPercent')?((scenario.accMinMaxList[rowIndex].disMin == scenario.accMinMaxList[rowIndex].disMax)?((scenario.accMinMaxList[rowIndex].discountType == '$')?(scenario.accMinMaxList[rowIndex].disMin | currency:'USD':'symbol':'1.2-2'):((scenario.accMinMaxList[rowIndex].disMin | number:'1.2-2')+'%')):(   ((scenario.accMinMaxList[rowIndex].discountType == '$')?(scenario.accMinMaxList[rowIndex].disMin | currency:'USD':'symbol':'1.2-2'):((scenario.accMinMaxList[rowIndex].disMin | number:'1.2-2')+'%'))  +'-'+((scenario.accMinMaxList[rowIndex].discountType == '$')?(scenario.accMinMaxList[rowIndex].disMax | currency:'USD':'symbol':'1.2-2'):((scenario.accMinMaxList[rowIndex].disMax | number:'1.2-2')+'%'))   )):(row[column.fieldVal] | number:'1.2-2')+'%')):(((row[column.fieldVal] || '').toString().includes('-'))?('('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')}}"
+                                                                            style="border-bottom:0px !important;margin-bottom: 0px !important"
+                                                                            [ngClass]="getClassTarget(row[column.fieldVal],column.fieldVal)"
+                                                                            (keypress)="(column.fieldVal == 'targetSpend' || column.fieldVal == 'savingsAmount')?preventText($event):''"
+                                                                            (keydown)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?storePreviousPercentage($event):''"
+                                                                            (input)="(column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')?validatePercentage($event):onAccSpendChange($event,rowIndex,'target',columnIndex)"
+                                                                            (keyup)="((column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent') && row.isNewRow == undefined && editable()==true)?onAccDiscountChange($event,rowIndex,row['service'],row['serviceType'],'target',columnIndex):''"
+                                                                            (focusout)="(column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend')
+                                            ?
+                                              (column.fieldVal =='targetPercent' || column.fieldVal =='targetSavingsPercent')
+                                              ?
+                                                ((row.targetPercentType == '$')
+                                                ?accSpendFocusOut($event,rowIndex,'accMinMaxList','target',columnIndex):percentageFocusout($event,rowIndex,'accMinMaxList','target',columnIndex))
+                                              :onAccSpendFocusOut($event,rowIndex,'target',columnIndex)
+                                            :''" [readonly]="(row.isNewRow != undefined && editable()==true) || ((column.fieldVal == 'targetPercent' || column.fieldVal == 'targetSpend') && editable()==true) ? false : true">
+                                                                        <div [ngClass]="getClassTarget(row[column.fieldVal],column.fieldVal)"
+                                                                            *ngIf="column.fieldVal != 'targetPercent'">
+                                                                            <p style="margin:0px;padding: 0px;color: red;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                                                                *ngIf="toggleClicked && (row[column.fieldVal] == '' && row[column.fieldVal].toString().length == 0)">
+                                                                                Enter a value</p>
+                                                                        </div>
+                                                                        <div [ngClass]="getClassTarget(row[column.fieldVal],column.fieldVal)"
+                                                                            *ngIf="column.fieldVal == 'targetPercent'">
+                                                                            <p style="margin:0px;padding: 0px;color: red;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                                                                *ngIf="toggleClicked && (scenario.accMinMaxList[rowIndex].disMin == '' && scenario.accMinMaxList[rowIndex].disMin.toString().length == 0)">
+                                                                                Enter a value</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="scenario.displayedColumnsTarget">
+                                                                </tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tfoot"
+                                                        *ngIf="selectedCategory()=='Accessorial' || selectedCategory()=='ALL'">
+
+                                                        <td class="p-0">
+                                                            <table mat-table [dataSource]="dataSourceCurrentAccTotal"
+                                                                matSort class="mat-elevation-z8 tot_tab tot-tab-dark"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of columns(); let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input *ngIf="column.field != 'Service'"
+                                                                            matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            value="{{(column.fieldVal == 'currentSpend')?(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):(column.fieldVal == 'count')?(row[column.fieldVal] | number:'1.0'):row[column.fieldVal]}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                        <input
+                                                                            [ngStyle]="{'width':(column.field == 'Service')?'160px':'100%','display':(column.field == 'Service')?'flex':'','color':((row[column.fieldVal]).toString().includes('-'))?'rgb(192,0,0)':''}"
+                                                                            *ngIf="column.field == 'Service'" matInput
+                                                                            type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            value="{{row[column.fieldVal]}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: displayedColumns;">
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                        <td class="p-0"
+                                                            *ngFor="let scenario of scenariosDisplayedSignal()"
+                                                            [hidden]="!(filterApplied == false || checkScenarios(scenario.targetId))">
+                                                            <table mat-table
+                                                                [dataSource]="scenario.dataSourceTargetAccTotal" matSort
+                                                                class="mat-elevation-z8 tot_tab tot-tab-dark"
+                                                                cdkDropListGroup matSort cdkDropList
+                                                                cdkDropListLockAxis="x"
+                                                                cdkDropListOrientation="horizontal"
+                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                <ng-container
+                                                                    *ngFor="let column of scenario.columnsTarget; let i = index"
+                                                                    [matColumnDef]="column.fieldVal">
+                                                                    <td mat-cell *matCellDef="let row">
+                                                                        <input matInput type="text" [readonly]="true"
+                                                                            [ngClass]="getClassTotal(column.fieldVal)"
+                                                                            [ngStyle]="{'color':((row[column.fieldVal])?.toString()?.includes('-'))?'rgb(192,0,0)':''}"
+                                                                            value="{{(column.fieldVal != 'targetSavingsPercent')?(((row[column.fieldVal] || '').toString().includes('-'))?'('+(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')+')':(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                                                            style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                    </td>
+                                                                </ng-container>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; let even = even; columns: scenario.displayedColumnsTarget;">
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr class="tadd add-dark"
+                                                        *ngIf="selectedCategory()=='Accessorial' || selectedCategory()=='ALL'">
+                                                        <td class="p-0"
+                                                            [attr.colspan]="scenariosDisplayedSignal()?.length+1 || 1">
+                                                            <div class="row">
+                                                                <div class="col s12 m2 l1 pl-1 pr-1">
+                                                                    <button class="add_btn ms-1 p-1 mt-1 mb-1 "
+                                                                        mat-icon-button
+                                                                        (click)="(editable())?AddNewRowAcc():enableEdit()">
+                                                                        <img src="../../../../assets/images/svg/add_btn.svg"
+                                                                            class="add_btn_icon" alt="add">
+                                                                    </button>
+                                                                </div>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding: 0px !important;" colspan="3">
+                                                            <table id="tab-01"
+                                                                class="header_inner_table first_tab_dim sub-table-header  w-100">
+                                                                <tbody>
+                                                                    <tr class="next-tab mt-2">
+                                                                        <td style="padding: 0px !important;">
+
+                                                                            <table mat-table
+                                                                                [dataSource]="dataSourceDimFactor"
+                                                                                class="mat-elevation-z8 first_tab MinReduction"
+                                                                                cdkDropListGroup matSort cdkDropList
+                                                                                cdkDropListLockAxis="x"
+                                                                                cdkDropListOrientation="horizontal"
+                                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                                <ng-container
+                                                                                    *ngFor="let column of columnsDimFactor(); let i = index"
+                                                                                    [matColumnDef]="column.fieldVal">
+                                                                                    <th mat-header-cell
+                                                                                        *matHeaderCellDef
+                                                                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub'}}"
+                                                                                        [ngStyle]="{'width':(i <= 1)?'20%':''}">
+                                                                                        <span
+                                                                                            class="heading">{{column.field
+                                                                                            }} </span>
+                                                                                    </th>
+                                                                                    <td mat-cell *matCellDef="let row"
+                                                                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub'}}">
+                                                                                        <span
+                                                                                            (click)="(column.fieldVal =='criteria') ||((column.fieldVal =='targetDimDivisor' || column.fieldVal =='proposalDimDivisor')&& editable()==true)?popDimFactor(column.fieldVal,column.field,i):''"
+                                                                                            [ngStyle]="{'cursor':((column.fieldVal=='criteria' ||((column.fieldVal =='targetDimDivisor' || column.fieldVal =='proposalDimDivisor')&& editable()==true)))?'pointer':''}"
+                                                                                            [ngClass]="(column.fieldVal=='criteria') ||((column.fieldVal =='targetDimDivisor' || column.fieldVal =='proposalDimDivisor')&& editable()==true)?'groupClassLink':''">{{(row[column.fieldVal]
+                                                                                            !=
+                                                                                            null)?row[column.fieldVal]:'0'}}</span>
+                                                                                    </td>
+                                                                                </ng-container>
+
+                                                                                <tr mat-header-row
+                                                                                    *matHeaderRowDef="displayedColumnsDIM">
+                                                                                </tr>
+                                                                                <tr mat-row
+                                                                                    *matRowDef="let row; let even = even; columns: displayedColumnsDIM;">
+                                                                                </tr>
+
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="col s12 m12 l12 pl-1 pr-1"
+                                                                style="text-align: end;height:50px;">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="padding: 0px !important;" colspan="3">
+                                                            <table id="tab-01"
+                                                                class="header_inner_table min-table sub-table-header  w-100">
+                                                                <tbody>
+                                                                    <tr class="next-tab mt-2">
+                                                                        <td style="padding: 0px !important;">
+
+                                                                            <table mat-table
+                                                                                [dataSource]="dataSourceMinReduction"
+                                                                                class="mat-elevation-z8 MinReduction w-100"
+                                                                                cdkDropListGroup matSort cdkDropList
+                                                                                cdkDropListLockAxis="x"
+                                                                                cdkDropListOrientation="horizontal"
+                                                                                (cdkDropListDropped)="drop($event)">
+
+                                                                                <ng-container
+                                                                                    *ngFor="let column of columnsMinReduction(); let i = index"
+                                                                                    [matColumnDef]="column.fieldVal">
+                                                                                    <th mat-header-cell
+                                                                                        *matHeaderCellDef
+                                                                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub'}}"
+                                                                                        [ngStyle]="{'width':(i <= 1)?'20%':''}">
+                                                                                        <span class="heading">
+                                                                                            {{column.field }} </span>
+                                                                                    </th>
+                                                                                    <td mat-cell
+                                                                                        *matCellDef="let row;let rowIndex = index"
+                                                                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub'}}">
+                                                                                        <span
+                                                                                            *ngIf="column.field=='Service'"
+                                                                                            [ngStyle]="{'cursor':'pointer',color:'black'}"
+                                                                                            [ngClass]="'groupClassLink'"
+                                                                                            (click)="popMinReduction(row['service'],row['serviceType'])">
+                                                                                            {{row.service}}</span>
+
+                                                                                        <span
+                                                                                            *ngIf="column.fieldVal == 'currentMin'">
+                                                                                            <input matInput type="text"
+                                                                                                [readonly]="!editable"
+                                                                                                (keydown)="storePreviousMin($event)"
+                                                                                                (keypress)="preventText($event)"
+                                                                                                (input)="validateMin($event)"
+                                                                                                (keyup)="onMinChange($event,rowIndex,column.fieldVal,'current','')"
+                                                                                                (focusout)="minFocusout($event, rowIndex,'current')"
+                                                                                                value="{{(row.currentMin == row.currentMax)?(row.currentMin):((row.currentMin)+' - '+(row.currentMax))}}"
+                                                                                                style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                                        </span>
+
+                                                                                        <span
+                                                                                            *ngIf="column.fieldVal == 'targetMin1'">
+                                                                                            <input matInput type="text"
+                                                                                                [readonly]="!editable"
+                                                                                                (keydown)="(editable())?storePreviousMin($event):''"
+                                                                                                (keypress)="preventText($event)"
+                                                                                                (input)="validateMin($event)"
+                                                                                                (keyup)="(editable())?onMinChange($event,rowIndex,column.fieldVal,'target',column.columnNumber):''"
+                                                                                                (focusout)="(editable())?minFocusout($event, rowIndex,'target1'):''"
+                                                                                                value="{{(row.target1Min == row.target1Max)?(row.target1Min):((row.target1Min)+' - '+(row.target1Max))}}"
+                                                                                                style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                                        </span>
+                                                                                        <span
+                                                                                            *ngIf="column.fieldVal == 'targetMin2'">
+                                                                                            <input matInput type="text"
+                                                                                                [readonly]="!editable"
+                                                                                                (keydown)="(editable())?storePreviousMin($event):''"
+                                                                                                (keypress)="preventText($event)"
+                                                                                                (input)="validateMin($event)"
+                                                                                                (keyup)="(editable())?onMinChange($event,rowIndex,column.fieldVal,'target',column.columnNumber):''"
+                                                                                                (focusout)="(editable())?minFocusout($event, rowIndex,'target2'):''"
+                                                                                                value="{{(row.target2Min == row.target2Max)?(row.target2Min):((row.target2Min)+' - '+(row.target2Max))}}"
+                                                                                                style="margin-bottom: 0px;border-bottom:0px !important">
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </ng-container>
+
+                                                                                <tr mat-header-row
+                                                                                    *matHeaderRowDef="displayedColumnsMin">
+                                                                                </tr>
+                                                                                <tr mat-row
+                                                                                    *matRowDef="let row; let even = even; columns: displayedColumnsMin;">
+                                                                                </tr>
+
+                                                                            </table>
+
+                                                                        </td>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="editButtonVisibility()">
+    <button class="floatingEdit" (click)="validateAcc($event);onToggle()" mat-button>
+        {{editText()}}
+    </button>
+</div>

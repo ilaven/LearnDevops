@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+              <div class="row header_section pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center  flex-lg-row flex-column">
+                        <div class="col-3">
+                            <h4 class="fs-16 mb-1 pageTitle">Average Discount</h4>
+                        </div>
+                        <div class=" col-6 mt-3 mt-lg-0"></div>
+                        <div class="col-3 mt-3 mt-lg-0">
+                            <div class="row g-3 mb-0 align-items-center justify-content-end"> 
+                                <!--end col-->
+                                <div class="col-8">
+                                    <app-average-discount-search></app-average-discount-search>    
+                                </div>                                
+                            </div>   
+                            <!--end row-->
+                        </div>
+                    </div><!-- end card header -->
+                </div>
+                <!--end row-->
+            </div>
+        </div>
+        <div class="px-0 pt-0 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body p-1">
+                            <div class="table-wrapper">
+                                <!-- TOP SCROLLBAR -->
+                                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                                    <div class="scroll-content"></div>
+                                </div>
+                                <!-- MAIN TABLE SCROLL -->
+                                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                                    <table class="metrics-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="sticky-col sticky-header">LJM Account Number</th>
+                                                <th class="sticky-header">Client Name</th>
+                                                <th class="sticky-header">Charge Description</th>
+                                                <th class="sticky-header">Total Client Net Spend</th>
+                                                <th class="sticky-header">Total Service Spend (FRT+ACC)</th>
+                                                <th class="sticky-header">Total Service Spend (FRT Only)</th>
+                                                <th class="sticky-header">Minimum Reduction (PKG Only)</th>
+                                                <th class="sticky-header">Minimum Net Charge (PKG Only)</th>
+                                                <th class="sticky-header">Letter Total FRT Spend</th>
+                                                <th class="sticky-header">Letter FRT Discount</th>
+                                                <th class="sticky-header">1 to 5 lbs Total FRT Spend</th>
+                                                <th class="sticky-header">1 to 5 lbs FRT Discount</th>
+                                                <th class="sticky-header">6 to 10 lbs Total FRT Spend</th>
+                                                <th class="sticky-header">6 to 10 lbs FRT Discount</th>
+                                                <th class="sticky-header">11 to 20 lbs Total FRT Spend</th>
+                                                <th class="sticky-header">11 to 20 lbs FRT Discount</th>
+                                                <th class="sticky-header">21 to 30 lbs Total FRT Spend</th>
+                                                <th class="sticky-header">21 to 30 lbs FRT Discount</th>
+                                                <th class="sticky-header">31 to 50 lbs Total FRT Spend</th>
+                                                <th class="sticky-header">31 to 50 lbs FRT Discount</th>
+                                                <th class="sticky-header">51 to 70 lbs Total FRT Spend</th>
+                                                <th class="sticky-header">51 to 70 lbs FRT Discount</th>
+                                                <th class="sticky-header">71 lbs above Total FRT Spend</th>
+                                                <th class="sticky-header">71 lbs above FRT Discount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let avgDiscntObj of averageDiscountACList"> 
+                                            <td>{{avgDiscntObj.crmAccountNumber}}</td>
+                                            <td>{{avgDiscntObj.clientName}}</td>
+                                            <td>{{avgDiscntObj.chargeDescription}}</td>
+                                            <td>{{avgDiscntObj.total_Spend}}</td>
+                                            <td>{{avgDiscntObj.total_Spend_frt_Acc}}</td>
+                                            <td>{{avgDiscntObj.total_Spend_frt}}</td>
+                                            <td>{{avgDiscntObj.incentiveAmount}}</td>
+                                            <td>{{avgDiscntObj.netAmount}}</td>
+                                            <td>{{avgDiscntObj.ltr_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.ltr_Discount}}</td>
+                                            <td>{{avgDiscntObj.oneto5lbs_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.oneto5_lbs_Discount}}</td>
+                                            <td>{{avgDiscntObj.sixto10_lbs_Totalspent}}</td>
+                                            <td>{{avgDiscntObj.sixto10_lbs_Discount}}</td>
+                                            <td>{{avgDiscntObj.elevento20_lbs_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.elevento20_lbs_Discount}}</td>
+                                            <td>{{avgDiscntObj.twentyoneto30_lbs_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.twentyoneto30_lbs_Discount}}</td>
+                                            <td>{{avgDiscntObj.thirtyoneto50_lbs_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.thirtyoneto50_lbs_Discount}}</td>
+                                            <td>{{avgDiscntObj.fiftyoneto70_lbs_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.fiftyoneto70_lbs_Discount}}</td>
+                                            <td>{{avgDiscntObj.above70lbs_TotalSpent}}</td>
+                                            <td>{{avgDiscntObj.above70lbs_Discount}}</td>
+                                            </tr> 
+                                        </tbody> 
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

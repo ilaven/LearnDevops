@@ -1,0 +1,108 @@
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div id="main">
+  <div class="compare-dialog-header p-0">
+    <a class="close_btn close_btn_pop" (click)="close()">
+      <span>CLICK HERE TO CLOSE SCREEN</span>
+      <img src="assets/images/svg/close_1.svg">
+    </a>
+  </div>
+  <div class="row">
+    <div class="col s12 cntrct_revOne">
+      <div class="col s12 m12 l12 xl12 plr-8">
+        <div class="gradient-45deg-red-white gradient-shadow min-height-100 white-text animate fadeLeft">
+          <div class="padding-0">
+            <div class="col s12 m12 center-align pl-0 pr-0"
+              style="position: relative; display: flex; justify-content: space-between; align-items: center; height: 100px;">
+              <div class="col s3" style="margin-left: 0; text-align: left;">
+                <img *ngIf="panelClass === 'page-dark'" src="assets/images/Ratingscale_dark.png" class="rating"
+                  style="width: 25vw" />
+                <img *ngIf="panelClass !== 'page-dark'" src="assets/images/Ratingscale.png" class="rating"
+                  style="width: 25vw" />
+              </div>
+
+              <div class="col s6 text-center">
+                <h2 class="header mt-1" [ngStyle]="{ color: panelClass === 'page-dark' ? 'white' : '' }">
+                  Contract Analysis Review For
+                </h2>
+                <h2 class="header card-title mt-1 fs-18 fw-600 text-center" [ngStyle]="{ color: panelClass === 'page-dark' ? 'white' : '' }">
+                  {{ clientName }}
+                </h2>
+              </div>
+
+              <div class="col s3">
+                <div style="display: flex; float: right;">
+                  <div style="margin-right: 10px">
+                    <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                      <mat-select required multiple [formControl]="selectedChart" (closed)="setChart()"
+                        (selectionChange)="selectionChange()" >
+                        <mat-select-trigger>
+                          Select Contract Analysis Ratings
+                        </mat-select-trigger>
+
+                        <mat-option *ngFor="let chart of chartNames" [value]="chart.lookup_Id + ''">
+                          {{ chart.lookup_Value }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="ele_position right-col" (click)="savePDF()">
+                    <span>
+                      <img src="assets/images/svg/pdf_download.svg" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col s12 mb-2">
+    <div class="container">
+      <div id="sales-chart">
+        <div class="row cntrct_revTwo">
+          <div class="col s12 m12 l12"
+            style="text-align: center; display: flex; justify-content: center; width: 100%; flex-wrap: wrap; padding: 0;"
+            [style.height]="charts.length < 3 ? '72vh' : null">
+            <div *ngFor="let chart of charts" [ngStyle]="setStyles()" class="card card-background animate fadeUp">
+              <div class="card-content p-2" style="height: 80%;">
+                <button class="btn btn-info waves-light blue" style="text-align: center; display: flex;"
+                  (click)="rateCharts(chart.lookup_Id)">
+                  Rate Now
+                </button>
+
+                <div class="col s12 m4 l12 pl-0 pr-0">
+                  <h4 class="card-title fs-20 text-uppercase mt-0" >
+                    {{ chart.lookup_Value }}
+                  </h4>
+                </div>
+
+                <div class="row" style="height: 100%; display: flex; align-items: center;">
+                  <div class="col s12">
+                    <div [id]="'chartdiv' + chart.id" [style.width]="'100%'"
+                      [style.height]="charts.length === 1 ? '400px' : '320px'"
+                      [style.transform]="charts.length === 1 ? 'scale(1)' : null">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="charts.length === 0" class="col s12" style="margin-top: 30px;">
+              <h5>No charts selected</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

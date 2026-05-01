@@ -1,0 +1,105 @@
+.customer-select {
+    width: 160px;
+}
+
+.carrier-icons img {
+    width: 40px;
+    margin-left: 6px;
+    border-radius: 50%;
+}
+
+
+
+.section-title {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.pill-group {
+    display: flex;
+    gap: 8px;
+}
+
+.pill {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    color: #fff;
+    padding: 4px 14px;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.margin-alignment {
+    margin-left: 5vw;
+}
+
+.pill.active {
+    background: #fff;
+    color: #0079F2;
+}
+
+.stat-card {
+    padding: 16px;
+    border-radius: 14px;
+    height: 100%;
+    box-shadow: 0px 8px 8px 0px #5AA7B840;
+    text-align: center;
+    background: radial-gradient(99.69% 99.69% at 52.92% 41.82%, #FFFFFF 0%, #C4EEFF 100%);
+
+}
+.datadisplayedCls{
+    color:#040405;
+    font-size: 15px;
+    font-weight: 500;
+}
+.stat-card .label {
+    font-size: 13px;
+    color: #474747;
+    font-weight: 500;
+}
+
+.stat-card .value {
+    font-size: 20px;
+    font-weight: 500;
+    color: #003BB5;
+}
+
+.toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-card hr {
+    box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 46%);
+    border-bottom: 1px solid rgb(0 0 0 / 19%);
+    margin: 0.2rem 0;
+
+}
+
+.toggle-pill {
+    background: #1c7ed6;
+    border-radius: 25px;
+    padding: 4px;
+    display: flex;
+}
+
+.toggle-pill span {
+    padding: 6px 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.toggle-pill .active {
+    background: #fff;
+    color: #1c7ed6;
+    border-radius: 20px;
+}
+.card,
+.card .card-header {
+    background: var(--card-dashboard);
+}
+::ng-deep .cdk-global-scrollblock {
+    overflow-y: auto !important;
+}

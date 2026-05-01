@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col">
+    <div class="px-0 py-3">
+      <div class="row header_section pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-12">
+              <h4 class="fs-16 mb-1 pageTitle">User Details</h4>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-12 mt-3 mt-lg-0"></div>
+
+            <div class="col-xl-3 col-lg-3 col-md-12 col-12 mt-3 mt-lg-0">
+              <div class="row g-3 mb-0 align-items-center">
+                <div class="col-8">
+                  <form [formGroup]="clientType() === 'UPS' ? webUserDetailsformgroup : webUserDetailsFedexformgroup">
+                    <mat-form-field appearance="outline" class="w-100 compact-field search_input">
+                      <span matPrefix class="search_icon">
+                        <i class="ri-search-line align-middle me-1"></i>
+                      </span>
+                      <input matInput placeholder="Client Name" formControlName="clientNameSelected"
+                        autocomplete="off" />
+                    </mat-form-field>
+                  </form>
+                </div>
+
+                <div class="col-4">
+                  <button type="button" class="btn excel_btn material-shadow-none" (click)="ExportTOExcel()">
+                    <img src="assets/images/excel.svg" alt="excel" />
+                    Excel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-0 pt-0 py-3">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body p-1">
+                <div class="table-wrapper">
+                  <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                    <div class="scroll-content"></div>
+                  </div>
+
+                  <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                    <table class="metrics-table">
+                      <thead>
+                        <tr>
+                          <th class="sticky-header">Client Name</th>
+                          <th class="sticky-header">LJM Account Number</th>
+                          <th class="sticky-header">Last Sign In Date</th>
+                          <th class="sticky-header">Carrier</th>
+                          <th class="sticky-header">User Name</th>
+                          <th class="sticky-header">Password</th>
+                          <th class="sticky-header">Data as of</th>
+                          <th class="sticky-header">Rep Name</th>
+                          <th class="sticky-header">Platform Status</th>
+                          <th class="sticky-header">Audit Status</th>
+                          <th class="sticky-header">Contract Status</th>
+                          <th class="sticky-header">Days to Inactive</th>
+                          <th class="sticky-header">Total Active days</th>
+                          <th class="sticky-header">Upload Logo</th>
+                          <th class="sticky-header text-center">Action</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr *ngFor="let datagrid_iditem of sortedDatagrid; let i = index" [class.odd-row]="i % 2 === 0"
+                          [class.even-row]="i % 2 !== 0">
+                          <th scope="row">{{ datagrid_iditem.clientName }}</th>
+
+                          <td>{{ datagrid_iditem.crmAccountNumber }}</td>
+                          <td>{{ datagrid_iditem.currentDate | date:'MM/dd/yyyy HH:mm' }}</td>
+                          <td>{{ clientType() === 'UPS' ? 'UPS' : 'FedEx' }}</td>
+                          <td>{{ datagrid_iditem.user_name || datagrid_iditem.userName }}</td>
+                          <td>{{ datagrid_iditem.password }}</td>
+                          <td>{{ datagrid_iditem.dataasof }}</td>
+                          <td>{{ datagrid_iditem.repname || datagrid_iditem.repName }}</td>
+                          <td><span [ngClass]="{
+  active: datagrid_iditem.status === 'ACTIVE',
+  inactive: datagrid_iditem.status === 'INACTIVE'
+}"> {{ datagrid_iditem.status }} </span> </td>
+                          <td>
+                            <span [ngClass]="{
+    active: (datagrid_iditem.auditstatus || datagrid_iditem.auditStatus) === 'ACTIVE',
+    inactive: (datagrid_iditem.auditstatus || datagrid_iditem.auditStatus) === 'INACTIVE'
+  }">
+                              {{ datagrid_iditem.auditstatus || datagrid_iditem.auditStatus }}
+                            </span>
+                          </td>
+                          <td>
+                            <span [ngClass]="{
+    active: (datagrid_iditem.contractstatus || datagrid_iditem.contractStatus) === 'ACTIVE',
+    inactive: (datagrid_iditem.contractstatus || datagrid_iditem.contractStatus) === 'INACTIVE'
+  }">
+                              {{ datagrid_iditem.contractstatus || datagrid_iditem.contractStatus }}
+                            </span>
+                          </td>
+                          <td>{{ datagrid_iditem.noofdaysinactive ?? 0}}</td>
+
+                          <td>
+                            <mat-form-field appearance="outline" class="w-100 compact-field dashboard-form-field">
+                              <mat-select [(ngModel)]="datagrid_iditem.noofdaystoactive"
+                                [ngModelOptions]="{ standalone: true }">
+                                <mat-option value="121">121</mat-option>
+                                <mat-option value="400">400</mat-option>
+                                <mat-option value="1200">1200</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+
+                          <td>
+                            <div class="form-group" *ngIf="datagrid_iditem.logostatus == 1; else noLogo">
+                              <button type="button" class="btn btn-yes waves-effect waves-light"
+                                (click)="clientType() === 'UPS' ? onClick(datagrid_iditem, i) : onClickFedex(datagrid_iditem, i)">
+                                <img src="assets/images/yes_icon.svg" alt="Yes" class="icon" /> YES
+                              </button>
+                            </div>
+
+                            <ng-template #noLogo>
+                              <div class="form-group">
+                                <button type="button" class="btn btn-no waves-effect waves-light"
+                                  (click)="clientType() === 'UPS' ? onClick(datagrid_iditem, i) : onClickFedex(datagrid_iditem, i)">
+                                  <img src="assets/images/no_icon.svg" alt="No" class="icon" /> NO
+                                </button>
+                              </div>
+                            </ng-template>
+                          </td>
+
+                          <td>
+                            <button type="button" class="btn btn-info waves-light orange"
+                              (click)="clientType() === 'UPS' ? burri_clickHandler(datagrid_iditem, i) : burri_clickHandlerFedex(datagrid_iditem, i)">
+                              Update
+                            </button>
+                            <button type="button" class="btn reset_btn mx-1 waves-light orange"
+                              (click)="clientType() === 'UPS' ? Reset_clickHandler(datagrid_iditem, i) : Reset_clickHandlerFedex(datagrid_iditem, i)">
+                              Reset
+                            </button>
+                          </td>
+                        </tr>
+
+                        <tr *ngIf="sortedDatagrid.length === 0">
+                          <td colspan="16" class="text-center py-3">No records found</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <input #fileUploadRef type="file" name="fileUpload" [accept]="accept" style="display: none"
+                    (change)="onFileSelected($event)" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

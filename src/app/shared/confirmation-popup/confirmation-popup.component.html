@@ -1,0 +1,19 @@
+<div class="modal-body text-center px-2 py-4 popup-design">
+    <div class="">
+        <a class="logo logo-dark">
+            <span class="logo">
+                <img src="../../../assets/images/logo-dark.svg" alt="" height="60">
+            </span>
+        </a>
+        <a class="logo logo-light">
+            <span class="logo">
+                <img src="../../../assets/images/logo-light.svg" alt="" height="60">
+            </span>
+        </a>
+        <p class="text-muted mb-4 mt-4 messageStyle"> {{message}}</p>
+        <div class="hstack gap-2 justify-content-center">
+            <button type="button" (click)="onConfirm()" class="btn rounded-0 btn_submit">Ok</button>
+            <button type="button" class="btn btn_clear waves-effect waves-light" data-bs-dismiss="modal" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+</div>

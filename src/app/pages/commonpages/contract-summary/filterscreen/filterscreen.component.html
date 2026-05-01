@@ -1,0 +1,216 @@
+<!-- <style>
+    h2.Search_title {
+        font-size: 1.25em;
+        text-transform: capitalize !important;
+        font-family: 'Lato', sans-serif !important;
+        padding-left: 12px;
+        margin-top:10px;
+    }
+
+    .image_sty {
+        position: absolute;
+        /* padding: 20px 0px; */
+    }
+
+    .mat-dialog-container {
+        overflow: unset !important;
+    }
+
+    .applybtn {
+        margin-left: 100px;
+    }
+
+    .close_btn {
+        position: absolute;
+    }
+
+    mat-option:hover .close-button {
+        -webkit-text-stroke: 1.5px #C3CBE7 !important;
+    }
+    .example-listbox-container {
+        max-height: 140px;
+        overflow-y: auto;
+        border: 1px solid #bcbcbc;
+        border-radius: 4px;
+        margin: 0px 8px;
+    }
+
+    .scenario-item {
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+        cursor: grab;
+        background-color:#ffffff;
+    }
+
+    .scenario-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color:#f4f8fb;
+        padding: 5px 15px;
+    }
+    .scenario-content1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0px 15px;
+    }
+    .row{
+        padding:0px;margin:0px;
+    }
+    .mat-select-box mat-label {
+        padding-left: 12px;
+        font-weight: 400; 
+        color: #000000; 
+        font-size: 1em; 
+        font-family: 'Lato', sans-serif !important;
+    }
+    .mat-select {
+        height: 25px !important;
+        padding-top: 0px !important;
+        /* border: 1px solid #000000 !important; */
+    }
+    .filter-modalbox .mat-select-box .mat-form-field-infix {
+        background: #ffffff !important;
+        padding: 0px;
+        border-radius: 3px;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+        padding: .25em 0.25em 0 .75em;
+    }
+    .mat-form-field-wrapper {
+        padding-bottom: 1em;
+    }
+    mat-checkbox.mat-checkbox-disabled {
+        border: 0px solid #ffff !important;
+    }
+    
+</style>
+
+<i style="text-align: right;float: right;font-size: 20px" class="fa fa-close" (click)="close()"></i>
+<div class="container">
+    <div>
+        <div class="col s12 l11 contact_title_discount header_bg p-0">
+            <img src="app-assets/images/icon/search_icon.png" alt="image" class="image_sty">
+            <h2 class="Search_title">Filter</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 l12 contact_title_discount header_bg p-0 mat-select-box">
+
+            <mat-label>Spend Category</mat-label>
+            <mat-form-field appearance="fill">
+                <mat-select [(value)]="selectedSpend">
+                    <mat-option *ngFor="let spend of spendCategory" [value]="spend.value" selected="ALL">
+                        {{spend.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-label>Scenarios Displayed</mat-label>
+            <p style="margin-left: 12px; margin-top: 0px;margin-bottom: 0px;">
+                <small *ngIf="applyClicked && (selected.length < 2)" style="color: red;">Select atleast one
+                    Scenarios</small>
+            </p>
+                  
+            <div cdkDropList 
+                [cdkDropListData]="scenariosDisplayed" 
+                (cdkDropListDropped)="drop($event)" 
+                class="scenario-drop-list example-listbox-container">
+
+                <div class="flex flex-inline scenario-content">
+                    <div>Agreement</div> <div class="text-align-right">  Display  </div>   
+                </div>
+                <div class="scenario-item" *ngFor="let scenario of scenariosDisplayed; let i = index" cdkDrag>    
+                    <div class="scenario-content1"> {{ scenario.targetName }}                     
+                    <mat-checkbox [checked]="scenario.isSelected"  [disabled]="!scenario.isSelected && selected.length >= 2"
+                                (change)="toggleSelection($event, i)" class="checkboxcolor text-align-right">
+                    </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="col s12 l12 m2" style="text-align: center;padding:7px">
+            <button mat-flat-button="" class="btn waves-effect waves-light accent-2 "
+                (click)="applyfilterbtn_clickHandler()"> Apply and Save
+            </button>
+        </div>
+
+        
+    </div>
+</div> -->
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2 py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Filter</h2>
+                <h6 class="sub-title-txt"></h6>
+            </div>
+            <div class="col-2 p-0">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="input_sty px-2 py-2">
+        <div class="row">
+            <div class="col-md-12 ">
+
+                <mat-label>Spend Category</mat-label>
+                <!-- <mat-form-field class="w-100">
+                    <input matInput>
+                </mat-form-field> -->
+                <mat-form-field class="w-100 filter-dropdown">
+                    <mat-select [(value)]="selectedSpend" class="selectCls">
+                        <mat-option *ngFor="let spend of spendCategory" [value]="spend.value" selected="ALL">
+                            {{spend.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-12 mt-2">
+                <mat-label>Scenarios Displayed</mat-label>
+                <div cdkDropList [cdkDropListData]="scenariosDisplayedSignal()" (cdkDropListDropped)="drop($event)"
+                    class="scenario-drop-list example-listbox-container filterDisplayed">
+
+                    <div class="d-flex flex-inline scenario-content scenario-content-stackey">
+                        <div>Agreement </div>
+                        <div> Display </div>
+                    </div>
+                    <div class=" scenario-item" *ngFor="let scenario of  this.scenariosDisplayedSignal(); let i = index"
+                        cdkDrag>
+                        <div class="d-flex flex-inline scenario-content1">
+                            <div> {{ scenario.targetName }}</div>
+                            <div> <mat-checkbox [checked]="scenario.isSelected"
+                                    [disabled]="!scenario.isSelected && selected.length >= 2"
+                                    (change)="toggleSelection($event, i)" class="checkboxcolor custom_checkbox1 x text-align-right">
+                                </mat-checkbox></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-12 mt-3 text-center">
+                <button mat-raised-button color="primary" (click)="applyfilterbtn_clickHandler()"
+                    class="btn_save_apply  ms-0"> Apply and Save</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

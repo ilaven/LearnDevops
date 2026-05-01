@@ -1,0 +1,310 @@
+<div class="row">
+  <div class="col">
+    <div class="x-0 py-3">
+      <div class="row pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+            <div class="flex-grow-1">
+              <h4 class="fs-16 mb-1 pageTitle"> Service Level Usage Summary</h4>
+            </div>
+
+
+
+            <div class="mt-3 mt-lg-0">
+              <div class="row g-3 mb-0 align-items-center">
+                <div class="col-auto">
+                  <div class="customizer-setting d-none d-md-block" style="top: 99px;">
+                    <div class="btn-info shadow-lg btn btn-lg p-2 sideBarSearchBtn d-flex"
+                      (click)="openEnd(filtetcontent)">
+                      <i class="mdi mdi-filter-outline search-widget-icon fs-20 pe-2"></i> Filter
+                    </div>
+                  </div>
+
+                  <ng-template #filtetcontent let-offcanvas>
+                    <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+                      <h5 class="m-0 me-2 text-white">Filter</h5>
+                      <button type="button" class="btn-close btn-close-white ms-auto"
+                        (click)="offcanvas.dismiss('Cross click')"></button>
+                    </div>
+
+                    <div class="offcanvas-body p-0 right-sidebar">
+                      <ngx-simplebar class="h-100">
+                        <div class="p-4" [formGroup]="apiControllerFormGroup">
+                          <div class="row">
+                            <div class="col-md-12 col-12">
+                              <label class="mt-3 mb-1">Account Number</label>
+                              <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                <mat-select formControlName="accNo" (selectionChange)="account_clickHandler()">
+                                  <mat-option value="null">All</mat-option>
+                                  <mat-option *ngFor="let account of account_details" [value]="account.accountNo">
+                                    <div class="nickName" [innerHTML]="account.nickName"></div>
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 mt-3">
+
+                              <mat-radio-group formControlName="dataLoadedType" class="services-level-radio"
+                                (change)="changeDataloadedType()">
+
+                                <mat-radio-button value="Shipment Count" class="d-block mb-2" value="Shipment Count">
+                                  Shipment Count
+                                </mat-radio-button>
+
+                                <mat-radio-button value="Net Spend (FRT)" class="d-block mb-2" value="Net Spend (FRT)">
+                                  Net Spend (FRT)
+                                </mat-radio-button>
+
+                                <mat-radio-button value="Average Cost (FRT)" class="d-block mb-2 "
+                                  value="Average Cost (FRT)">
+                                  Average Cost (FRT)
+                                </mat-radio-button>
+
+                                <mat-radio-button value="Average Weight (Lbs)" class="d-block mb-2 "
+                                  value="Average Weight (Lbs)">
+                                  Average Weight (Lbs)
+                                </mat-radio-button>
+
+                                <mat-radio-button value="Average Weight (Lbs)" class="d-block mb-2 "
+                                  value="Average Cost (FRT+ACC)">
+                                  Average Cost (FRT+ACC)
+                                </mat-radio-button>
+
+                              </mat-radio-group>
+
+
+
+
+
+                            </div>
+                            <div class="col-12 mt-3">
+                              <!-- Tabs -->
+                              <label class="mt-3 mb-1">Time Period</label>
+                              <mat-tab-group class="custom-tabs time_period " mat-stretch-tabs
+                                (selectedTabChange)="onTabChange($event)" [selectedIndex]="selectedTabIndex()">
+
+                                <!-- Year Tab -->
+                                <mat-tab label="Year">
+                                  <div class="row">
+                                    <div class="col-12" *ngFor="let year of yearArray()">
+                                      <mat-checkbox class="custom_checkbox" [checked]="isYearChecked(year)"
+                                        (change)="toggleYearCheckbox(year, $event.checked)">
+                                        {{ year }}
+                                      </mat-checkbox>
+                                    </div>
+                                  </div>
+                                </mat-tab>
+
+                                <!-- Month Tab -->
+                                <mat-tab label="Month">
+                                  <div class="row mt-4">
+                                    <div class="col-12">
+                                      <h5 class="selectmonthtest mb-3">Month
+                                        Selection</h5>
+
+                                      <div *ngFor="let year of yearArray()" class="year-accordion mb-2">
+                                        <div
+                                          class="year-header d-flex align-items-center justify-content-between p-2 border rounded bg-white cursor-pointer"
+                                          (click)="toggleYearExpansion(year)">
+                                          <mat-checkbox class="custom_checkbox" [checked]="isYearChecked(year)"
+                                            (change)="toggleYearCheckbox(year, $event.checked)"
+                                            (click)="$event.stopPropagation()">
+                                            {{ year }}
+                                          </mat-checkbox>
+                                          <i class="mdi fs-20"
+                                            [ngClass]="isYearExpanded(year) ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                        </div>
+                                        <div *ngIf="isYearExpanded(year)"
+                                          class="year-content mt-0 p-3 border border-top-0 rounded-bottom bg-light bg-opacity-10">
+                                          <div class="month-grid">
+                                            <mat-checkbox class="custom_checkbox"
+                                              *ngFor="let month of getMonthsForYear(year)" [checked]="month.selected"
+                                              (change)="toggleMonth(month, $event.checked, year)">
+                                              {{ month.name }}
+                                            </mat-checkbox>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </mat-tab>
+
+                                <!-- Week Tab -->
+                                <mat-tab label="Week">
+                                  <div class="row mt-4">
+                                    <div class="col-12">
+                                      <h5 class="selectmonthtest mb-3">Week
+                                        Selection</h5>
+
+                                      <div *ngFor="let year of yearArray()" class="year-accordion mb-2">
+                                        <div
+                                          class="year-header d-flex align-items-center justify-content-between p-2 border rounded bg-white cursor-pointer"
+                                          (click)="toggleYearExpansion(year)">
+                                          <mat-checkbox class="custom_checkbox" [checked]="isYearChecked(year)"
+                                            (change)="toggleYearCheckbox(year, $event.checked)"
+                                            (click)="$event.stopPropagation()">
+                                            {{ year }}
+                                          </mat-checkbox>
+                                          <i class="mdi fs-20"
+                                            [ngClass]="isYearExpanded(year) ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                        </div>
+                                        <div *ngIf="isYearExpanded(year)"
+                                          class="year-content mt-0 p-3 border border-top-0 rounded-bottom bg-light bg-opacity-10">
+                                          <!-- Month accordion (mirrors year accordion pattern) -->
+                                          <div *ngFor="let month of getMonthsForYear(year)"
+                                            class="month-accordion mb-2">
+                                            <!-- Month header: checkbox + chevron -->
+                                            <div
+                                              class="month-header d-flex align-items-center justify-content-between p-2 border rounded bg-white cursor-pointer"
+                                              (click)="toggleWeekMonthExpansion(year, month.name)">
+                                              <mat-checkbox class="custom_checkbox fw-bold"
+                                                [checked]="isAllSelected(month)"
+                                                [indeterminate]="isIndeterminate(month)"
+                                                (change)="toggleMonth(month, $event.checked, year)"
+                                                (click)="$event.stopPropagation()">
+                                                {{ month.name }}
+                                              </mat-checkbox>
+                                              <i class="mdi fs-18"
+                                                [ngClass]="isWeekMonthExpanded(year, month.name) ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                            </div>
+                                            <!-- Week checkboxes (shown when month is expanded) -->
+                                            <div *ngIf="isWeekMonthExpanded(year, month.name)"
+                                              class="month-content ps-3 pt-2 pb-1 border border-top-0 rounded-bottom ">
+                                              <mat-checkbox class="custom_checkbox d-block mb-1"
+                                                *ngFor="let date of month.dates" [checked]="date.selected"
+                                                (change)="toggleDate(month, date, $event.checked, year)">
+                                                {{ date.label }}
+                                              </mat-checkbox>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </mat-tab>
+
+                              </mat-tab-group>
+
+                            </div>
+                            <div class="col-12 mt-4">
+                              <div class="d-flex justify-content-between align-items-center">
+
+                                <!-- Left Side: Date -->
+                                <div class="date-text-popup">
+                                  <label class="mb-0">
+                                    Data as of: <strong>{{ dataasof }}</strong>
+                                  </label>
+                                </div>
+
+                                <!-- Right Side: Excel Button -->
+                                <!-- <button type="button" class="btn p-0 download_btn material-shadow-none"
+                                  aria-label="Download Excel file" (click)="generateExcel()">
+                                  <img src="assets/images/excel.svg" alt="Excel icon">
+                                  <span> Excel</span>
+                                </button> -->
+<div class="more_btn_drop ">
+                                                <button type="button" (click)="toggleColumnPicker()"
+                                                    class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                    <!-- <i class=" ri-arrow-right-up-line  align-middle"></i> -->
+                                                    <!-- <img  src="assets/images/excel.svg"> -->
+                                                    <i class="ri-more-line fs-18 align-middle"></i>
+
+                                                </button>
+                                                <div *ngIf="showColumnPicker"  class="view_more showColumnPicker">
+
+
+
+                                                    <button type="button" class="btn p-0"
+                                                      (click)="generateExcel()"><img
+                                                            src="assets/images/excel.svg"> <span>Export to Excel</span>
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                      </ngx-simplebar>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <!--end row-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table-wrapper">
+
+  <!-- TOP SCROLLBAR -->
+  <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+    <div class="scroll-content"></div>
+  </div>
+
+  <!-- MAIN TABLE SCROLL -->
+  <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+
+    <table class="metrics-table">
+
+      <!-- HEADER -->
+      <thead>
+        <tr>
+          <ng-container *ngFor="let dataGrid of dataGrid_columns; let colIdx = index">
+            <th class=" sticky-col sticky-header"> {{ dataGrid?.headerText }}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+
+      <!-- BODY -->
+      <tbody>
+
+        <ng-container *ngFor="let group of [
+    {title:'DOMESTIC GROUND', css:'group-ground'},
+    {title:'DOMESTIC AIR', css:'group-air'},
+    {title:'INTERNATIONAL', css:'group-international'}
+  ]">
+
+          <!-- GROUP HEADER -->
+          <tr class="group-row" [ngClass]="group.css">
+            <td class="sticky-col group-title">
+              {{ group.title }}
+            </td>
+            <td class="group-fill" [attr.colspan]="dataGrid_columns.length"></td>
+          </tr>
+
+          <!-- DATA ROWS -->
+          <tr *ngFor="let fetchACDD of dpAC; let i = index" [hidden]="fetchACDD.category !== group.title"
+            [class.odd-row]="i % 2 === 0" [class.even-row]="i % 2 !== 0">
+
+            <ng-container *ngFor="let dataGrid of dataGrid_columns; let colInd = index">
+
+              @if(colInd === 0){
+              <td class="sticky-col group-row" [ngClass]="group.css">
+                {{ fetchACDD[dataGrid.dataField] }}
+              </td>
+              }@else{
+              <td class="group-row " [ngClass]="group.css">
+                {{ getExcelFormattedValue(fetchACDD[dataGrid.dataField]) }}
+              </td>
+              }
+
+            </ng-container>
+
+          </tr>
+
+        </ng-container>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>

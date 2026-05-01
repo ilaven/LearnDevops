@@ -1,0 +1,236 @@
+<div id="main">
+   <div class="row" id="compareservicechart">
+      <div class="col s12">
+
+
+         <div class="col s12 m12 l12 xl12 plr-8">
+            <div class="gradient-45deg-red-white  gradient-shadow min-height-100 white-text animate fadeLeft">
+               <div class="padding-0 trackin-clss">
+                  <a class="close_btn" (click)="close()" mat-button mat-dialog-close><span>CLICK HERE TO CLOSE SCREEN
+                     </span><i class="material-icons">close</i></a>
+                  <div class="col s12 m12 center-align pl-0  pr-0">
+                     <h2 class="header mt-1" style="font-size:25px;">Service Comparison For {{ServiceTextVAl}}</h2>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+
+      <div class="row">
+         <div class="col s12 m3 l3">
+            <div id="chartjs" class="card pt-0 pb-0" style="cursor: pointer" matTooltip="CLICK TO VIEW MORE"
+               matTooltipPosition="below" matTooltipClass="custom-tooltip">
+               <div class="padding-2 ml-2" (click)="createCardValues('Additional Handling')">
+                  <span class="badge mr-4 color_1" style="left: -2px;"><i
+                        class="material-icons dp48 icon_color">attach_money</i></span>
+                  <p class="cardHeader mt-2 mb-10 font-weight-400">Additional Handling</p>
+                  <div class="row valuesection">
+                     <div class="col s12 m7 l6" style="text-align: center;">
+                        <p class="img_cls"><img src="app-assets/images/logo/ups.png" class="ups-img"></p>
+                        <b class="ups-costs amt_cls">{{addlHandlCost | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                     <div class="col s12 m7 l6 fedexcls">
+                        <p class="img_cls"><img src="app-assets/images/logo/fedex.png" class="ups-fedex"></p>
+                        <b class="fedex-costs amt_cls ">{{addlHandlCostFedex | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                  </div>
+
+               </div>
+
+            </div>
+         </div>
+         <div class="col s12 m3 l3">
+            <div id="chartjs" class="card pt-0 pb-0" style="cursor: pointer" matTooltip="CLICK TO VIEW MORE"
+               matTooltipPosition="below" matTooltipClass="custom-tooltip">
+               <div class="padding-2 ml-2" (click)="createCardValues('Address Correction')">
+                  <span class="badge mr-4  color_2" style="left: -2px;"><i
+                        class="material-icons dp48 icon_color">attach_money</i></span>
+                  <p class="cardHeader mt-2 mb-10 font-weight-400">Address Correction</p>
+                  <div class="row valuesection">
+                     <div class="col s12 m7 l6" style="text-align: center;">
+                        <p class="img_cls"><img src="app-assets/images/logo/ups.png" class="ups-img"></p>
+                        <b class="ups-costs amt_cls">{{addressCorrCost | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                     <div class="col s12 m7 l6 fedexcls">
+                        <p class="img_cls"><img src="app-assets/images/logo/fedex.png" class="ups-fedex"></p>
+                        <b class="fedex-costs amt_cls ">{{addressCorrCostFedex | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                  </div>
+
+               </div>
+
+            </div>
+         </div>
+         <div class="col s12 m3 l3">
+            <div id="chartjs" class="card pt-0 pb-0" style="cursor: pointer" matTooltip="CLICK TO VIEW MORE"
+               matTooltipPosition="below" matTooltipClass="custom-tooltip">
+               <div class="padding-2 ml-2" (click)="createCardValues('Large Package Surcharge')">
+                  <span class="badge mr-4  color_3" style="left: -2px;"><i
+                        class="material-icons dp48 icon_color">attach_money</i></span>
+                  <p class="cardHeader mt-2 mb-10 font-weight-400">Large Package Surcharge</p>
+                  <div class="row valuesection">
+                     <div class="col s12 m7 l6" style="text-align: center;">
+                        <p class="img_cls"><img src="app-assets/images/logo/ups.png" class="ups-img"></p>
+                        <b class="ups-costs amt_cls">{{largePakageCost | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                     <div class="col s12 m7 l6 fedexcls">
+                        <p class="img_cls"><img src="app-assets/images/logo/fedex.png" class="ups-fedex"></p>
+                        <b class="fedex-costs amt_cls ">{{largePakageCostFedex | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+         <div class="col s12 m3 l3">
+            <div id="chartjs" class="card pt-0 pb-0" style="cursor: pointer" matTooltip="CLICK TO VIEW MORE"
+               matTooltipPosition="below" matTooltipClass="custom-tooltip">
+               <div class="padding-2 ml-2" (click)="createCardValues('Over Maximum')">
+                  <span class="badge mr-4  color_4" style="left: -2px;"><i
+                        class="material-icons dp48 icon_color">attach_money</i></span>
+                  <p class="cardHeader mt-2 mb-10 font-weight-400">Over Maximum</p>
+                  <div class="row valuesection">
+                     <div class="col s12 m7 l6" style="text-align: center;">
+                        <p class="img_cls"><img src="app-assets/images/logo/ups.png" class="ups-img"></p>
+                        <b class="ups-costs amt_cls">{{overMaxCost | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                     <div class="col s12 m7 l6 fedexcls">
+                        <p class="img_cls"><img src="app-assets/images/logo/fedex.png" class="ups-fedex"></p>
+                        <b class="fedex-costs amt_cls ">{{overMaxCostFedex | currency:'USD':true:'1.2-2'}}</b>
+                     </div>
+                  </div>
+
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+      <div class="col s12">
+         <div class="container">
+
+            <div id="sales-chart">
+               <div class="row">
+                  <div class="col s12 m6 l6">
+
+                     <div class="card animate fadeUp  comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 SHIPPING COSTS </h4>
+
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+                                 <div id="shippingCost" style=""></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="card animate fadeUp  comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 AVG. COST / PACKAGE </h4>
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+                                 <div id="avgCostPerPackage"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="card animate fadeUp  comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 AVG. WEIGHT / PACKAGE </h4>
+
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+                                 <div id="avgWgtPerPackage"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+
+
+                  </div>
+                  <div class="col s12 m6 l6 comare-serv-size">
+
+                     <div class="card animate fadeUp  comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 PACKAGES SHIPPED </h4>
+
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+                                 <div id="packagesShipped"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="card animate fadeUp  comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 AVG. SHIPPING COST/LB </h4>
+
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+
+                                 <div id="avgShippingCostPerLB"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="card animate fadeUp  comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 AVG. ZONE</h4>
+
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+                                 <div id="avgZone"></div>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+                  <div class="col s12 m6 l6" style="position: relative;right: -27%;">
+                     <div class="card animate fadeUp comare-serv-size">
+                        <div class="card-content">
+                           <div class="col s12 m12 l12  mb-4  pl-0 pr-0">
+                              <h4 class="header mt-0">
+                                 TOTAL BILLED WEIGHT</h4>
+
+                           </div>
+                           <div class="row">
+                              <div class="col s12">
+                                 <div id="TotalBilledWgt"></div>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+            <!--end container-->
+            <!-- START RIGHT SIDEBAR NAV -->
+         </div>
+      </div>
+   </div>
+</div>

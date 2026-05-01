@@ -1,0 +1,96 @@
+button.btn-Search{
+background-color: #0386E5;
+border: none;
+font-weight: 500;
+padding: 0.75rem;
+border-radius: 5px;
+color: white;
+font-size: 14px;
+}
+button.Reset-btn{
+    background-color: #2AAAE6;
+    border: none;
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+}
+button.Export-btn{
+    background-color: #EBF1F8;
+    border: none;
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 5px;
+    color: #333333;
+    font-size: 14px;
+}
+button.Download-btn{
+    background-color: #EBF1F8;
+    border: none;
+    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 5px;
+    color: #333333;
+    font-size: 14px;
+}
+.section-title {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 28px;
+  }
+  
+  .report-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  .report-item {
+    font-size: 14px;
+  }
+  
+  @media (max-width: 900px) {
+    .report-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .report-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+.search_input .mat-mdc-input-element::placeholder{
+    color: white !important;
+        z-index: 1;
+    position: relative;
+} 
+.search_input .mat-mdc-input-element{
+    color:white !important;
+        z-index: 1;
+    position: relative;
+}
+
+ .search_input .search_icon{
+    padding: 10px 8px;
+    color: white;
+ }
+
+ .cdk-overlay-pane .mat-mdc-tooltip-panel-above .mat-mdc-tooltip-panel{
+  overflow: hidden;
+}
+::ng-deep .mat-mdc-tooltip-surface{
+  max-width: 250px !important;
+}
+
+::ng-deep .mat-mdc-tooltip-panel{
+  overflow: hidden !important;
+}

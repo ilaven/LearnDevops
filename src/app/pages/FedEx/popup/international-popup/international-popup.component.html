@@ -1,0 +1,152 @@
+<div id="main">
+   <div class="row">
+      <div class="col-sm-12 mt-2 text-end"> 
+         <a class="close_btn close_btn_pop" (click)="closeDialog()"> 
+            <span>CLICK HERE TO CLOSE SCREEN</span> <img src="assets/images/svg/close_1.svg" alt="Close"> </a> 
+      </div> 
+      <div class="col-12 mb-2 text-center">
+         <h2 class="header text-center mt-1" style="font-size:25px;">{{chargedistritxt_text}}
+         </h2>
+      </div>
+
+      <div class="col-sm-6  col-12">
+         <div class="toggle-bar mb-2 mt-2">
+            <span class="datadisplayedCls">DATA DISPLAYED FOR :</span>
+            <div class="toggle-pill">
+               <span [ngClass]="{'active': dashBoardSHP.get('chargeDescription')?.value==='FRT+ACC'}" (click)="linkfrtacc_clickHandler('FRT+ACC')">FRT
+                  + ACC</span>
+               <span [ngClass]="{'active': dashBoardSHP.get('chargeDescription')?.value==='FRT'}" (click)="linkfrt_clickHandler('FRT')">FRT</span>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6 col-12">
+         <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end">
+            <!-- <a class="excelIcon" (click)="repostExcelDownload('International_ChargeDistributionExcel')"> <i
+                  class="ri-file-excel-2-line align-middle"></i> Excel</a> -->
+         </p>
+           <div class="more_btn_drop text-end">
+                                                <button type="button" (click)="toggleColumnPicker()"
+                                                    class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                    <!-- <i class=" ri-arrow-right-up-line  align-middle"></i> -->
+                                                    <!-- <img  src="assets/images/excel.svg"> -->
+                                                    <i class="ri-more-line fs-18 align-middle"></i>
+
+                                                </button>
+                                                <div *ngIf="showColumnPicker"  class="view_more showColumnPicker">
+
+
+
+                                                    <button type="button" class="btn p-0"
+                                                      (click)="repostExcelDownload('International_ChargeDistributionExcel')"><img
+                                                            src="assets/images/excel.svg"> <span>Export to Excel</span>
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+      </div>
+   </div>
+
+   <div class="row">
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend by Weight </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="weight_disPopup" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para"> Data displays Dollar value spent by weight for {{chargedesctype_title ?
+                     chargedesctype_title : ""}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Average Cost By Pound Per Package</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="average_cost" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Average cost by pound per package for {{chargedesctype_title ?
+                     chargedesctype_title : ""}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend By Month </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="spendByMonth" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays spent value for each month for {{chargedesctype_title ?
+                     chargedesctype_title : ""}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Volume By Weight</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="volume_weight" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Count of each weight specified for {{chargedesctype_title ?
+                     chargedesctype_title : ""}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend By Account Number</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="acc_no" style="width: 100%; height: 250px;" [style.margin-top]="
+    first_id_visible === true ||
+    previous_id_visible === true ||
+    next_id_visible === true
+      ? '-30px'
+      : '0px'
+  ">
+                  </div>
+                  <div class="w-100  mb-1 pe-3 text-end">
+                     <div class="col-12" style="text-align: right;">
+                        @if (first_id_visible === true) {
+                        <button id="first_id" class="btn btn-soft-info btn-sm material-shadow-none blueBackground bdrBtnMTB"
+                           (click)="first_id_clickHandler('event')">First</button>
+                        }
+                        @if (previous_id_visible === true) {
+                        <button id="previous_id" class="btn btn-soft-info btn-sm material-shadow-none blueBackground mx-2 bdrBtnMTB"
+                           (click)="previous_id_clickHandler('event')">Previous</button>
+                        } @if (next_id_visible === true) {
+                        <button id="next_id" buttonMode="true" class="btn btn-soft-info btn-sm material-shadow-none blueBackground bdrBtnMTB"
+                           (click)="next_id_clickHandler('event')">Next</button>
+                        }
+                     </div>
+                     <p class="btm_para"> Data displays Net spend for each Account Number for {{chargedesctype_title ?
+                        chargedesctype_title : ""}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

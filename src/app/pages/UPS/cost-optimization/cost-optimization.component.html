@@ -1,0 +1,353 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1 pageTitle">Cost Optimization Insights</h4>
+                        </div>
+                        <div class="mt-3 mt-lg-0">
+                            <div class="row g-3 mb-0 align-items-center">
+                                <div class="col-auto">
+                                    <div class="customizer-setting d-none d-md-block" style="top: 99px;">
+                                        <div class="btn-info shadow-lg btn btn-lg p-2 sideBarSearchBtn d-flex"
+                                            (click)="openEnd(filtetcontent)">
+                                            <i class="mdi mdi-filter-outline search-widget-icon fs-20 pe-2"></i> Filter
+                                        </div>
+                                    </div>
+
+                                    <ng-template #filtetcontent let-offcanvas>
+                                        <div
+                                            class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+                                            <h5 class="m-0 me-2 text-white">Filter</h5>
+                                            <button type="button" class="btn-close btn-close-white ms-auto"
+                                                (click)="offcanvas.dismiss('Cross click')"></button>
+                                        </div>
+
+                                        <div class="offcanvas-body p-0 right-sidebar">
+                                            <ngx-simplebar class="h-100">
+                                                <div class="p-4" [formGroup]="apiControllerFormGroup">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-12">
+                                                            <label class="mt-3 mb-1">Account Number</label>
+                                                            <mat-form-field appearance="outline"
+                                                                class="w-100 compact-field input_change">
+                                                                <mat-select formControlName="accNo"
+                                                                    (selectionChange)="account_clickHandler()">
+                                                                    <mat-option value="null">All</mat-option>
+                                                                    <mat-option *ngFor="let account of account_details"
+                                                                        [value]="account.accountNo">
+                                                                        <div class="nickName"
+                                                                            [innerHTML]="account.nickName"></div>
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+
+                                                        <div class="col-12 mt-3">
+                                                            <label class="mt-3 mb-1">Time Period</label>
+                                                            <mat-tab-group class="custom-tabs time_period"
+                                                                mat-stretch-tabs [selectedIndex]="selectedTabIndex()"
+                                                                (selectedTabChange)="onTabChange($event)">
+
+                                                                <!-- Year Tab -->
+                                                                <mat-tab label="Year">
+                                                                    <div class="row">
+                                                                        <div class="col-12"
+                                                                            *ngFor="let year of yearArray()">
+                                                                            <mat-checkbox class="custom_checkbox"
+                                                                                [checked]="isYearChecked(year)"
+                                                                                (change)="toggleYearCheckbox(year, $event.checked)">
+                                                                                {{ year }}
+                                                                            </mat-checkbox>
+                                                                        </div>
+                                                                    </div>
+                                                                </mat-tab>
+
+                                                                <!-- Month Tab -->
+                                                                <mat-tab label="Month">
+                                                                    <div class="row mt-4">
+                                                                        <div class="col-12">
+                                                                            <h5 class="selectmonthtest mb-3">Month
+                                                                                Selection</h5>
+
+                                                                            <div *ngFor="let year of yearArray()"
+                                                                                class="year-accordion mb-2">
+                                                                                <div class="year-header d-flex align-items-center justify-content-between p-2 border rounded bg-white cursor-pointer"
+                                                                                    (click)="toggleYearExpansion(year)">
+                                                                                    <mat-checkbox
+                                                                                        class="custom_checkbox"
+                                                                                        [checked]="isYearChecked(year)"
+                                                                                        (change)="toggleYearCheckbox(year, $event.checked)"
+                                                                                        (click)="$event.stopPropagation()">
+                                                                                        {{ year }}
+                                                                                    </mat-checkbox>
+                                                                                    <i class="mdi fs-20"
+                                                                                        [ngClass]="isYearExpanded(year) ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                                                                </div>
+                                                                                <div *ngIf="isYearExpanded(year)"
+                                                                                    class="year-content mt-0 p-3 border border-top-0 rounded-bottom ">
+                                                                                    
+                                                                                    <div class="month-grid">
+                                                                                        <mat-checkbox
+                                                                                            class="custom_checkbox"
+                                                                                            *ngFor="let month of getMonthsForYear(year)"
+                                                                                            [checked]="month.selected"
+                                                                                            (change)="toggleMonth(month, $event.checked, year)">
+                                                                                            {{ month.name }}
+                                                                                        </mat-checkbox>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </mat-tab>
+
+                                                                <!-- Week Tab -->
+                                                                <mat-tab label="Week">
+                                                                    <div class="row mt-4">
+                                                                        <div class="col-12">
+                                                                            <h5 class="selectmonthtest mb-3">Week
+                                                                                Selection</h5>
+
+                                                                            <div *ngFor="let year of yearArray()"
+                                                                                class="year-accordion mb-2">
+                                                                                <div class="year-header d-flex align-items-center justify-content-between p-2 border rounded bg-white cursor-pointer"
+                                                                                    (click)="toggleYearExpansion(year)">
+                                                                                    <mat-checkbox
+                                                                                        class="custom_checkbox"
+                                                                                        [checked]="isYearChecked(year)"
+                                                                                        (change)="toggleYearCheckbox(year, $event.checked)"
+                                                                                        (click)="$event.stopPropagation()">
+                                                                                        {{ year }}
+                                                                                    </mat-checkbox>
+                                                                                    <i class="mdi fs-20"
+                                                                                        [ngClass]="isYearExpanded(year) ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                                                                </div>
+                                                                                <div *ngIf="isYearExpanded(year)"
+                                                                                    class="year-content mt-0 p-3 border border-top-0 rounded-bottom ">
+                                                                                    
+                                                                                    <!-- Month accordion (mirrors year accordion pattern) -->
+                                                                                    <div *ngFor="let month of getMonthsForYear(year)" class="month-accordion mb-2">
+                                                                                        <!-- Month header: checkbox + chevron -->
+                                                                                        <div class="month-header d-flex align-items-center justify-content-between p-2 border rounded bg-white cursor-pointer"
+                                                                                            (click)="toggleWeekMonthExpansion(year, month.name)">
+                                                                                            <mat-checkbox
+                                                                                                class="custom_checkbox fw-bold"
+                                                                                                [checked]="isAllSelected(month)"
+                                                                                                [indeterminate]="isIndeterminate(month)"
+                                                                                                (change)="toggleMonth(month, $event.checked, year)"
+                                                                                                (click)="$event.stopPropagation()">
+                                                                                                {{ month.name }}
+                                                                                            </mat-checkbox>
+                                                                                            <i class="mdi fs-18"
+                                                                                                [ngClass]="isWeekMonthExpanded(year, month.name) ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                                                                        </div>
+                                                                                        <!-- Week checkboxes (shown when month is expanded) -->
+                                                                                        <div *ngIf="isWeekMonthExpanded(year, month.name)"
+                                                                                            class="month-content ps-3 pt-2 pb-1 border border-top-0 rounded-bottom ">
+                                                                                            <mat-checkbox
+                                                                                                class="custom_checkbox d-block mb-1"
+                                                                                                *ngFor="let date of month.dates"
+                                                                                                [checked]="date.selected"
+                                                                                                (change)="toggleDate(month, date, $event.checked, year)">
+                                                                                                {{ date.label }}
+                                                                                            </mat-checkbox>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </mat-tab>
+
+                                                            </mat-tab-group>
+                                                        </div>
+
+                                                        <!-- Footer -->
+                                                        <div class="col-12 mt-4">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <!-- Left Side: Date -->
+                                                                <div class="date-text-popup">
+                                                                    <label class="mb-0">
+                                                                        Data as of: <strong>{{ dataasof }}</strong>
+                                                                    </label>
+                                                                </div>
+
+                                                                <!-- Right Side: Excel Button -->
+                                                                <!-- <button type="button"
+                                                                    class="btn p-0 download_btn material-shadow-none"
+                                                                    aria-label="Download Excel file"
+                                                                    (click)="generateExcel()">
+                                                                    <img src="assets/images/excel.svg" alt="Excel icon">
+                                                                    <span> Excel</span>
+                                                                </button> -->
+
+                                                                 <div class="more_btn_drop">
+                                                <button type="button" (click)="toggleColumnPicker()"
+                                                    class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                    <!-- <i class=" ri-arrow-right-up-line  align-middle"></i> -->
+                                                    <!-- <img  src="assets/images/excel.svg"> -->
+                                                    <i class="ri-more-line fs-18 align-middle"></i>
+
+                                                </button>
+                                                <div *ngIf="showColumnPicker"  class="view_more showColumnPicker">
+
+
+
+                                                    <button type="button" class="btn p-0"
+                                                       (click)="generateExcel()"><img
+                                                            src="assets/images/excel.svg"> <span>Export to Excel</span>
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ngx-simplebar>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-0 pt-0 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body p-1">
+
+                            <div class="table-wrapper">
+
+                                <!-- TOP SCROLLBAR -->
+                                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                                    <div class="scroll-content" #scrollContent></div>
+                                </div>
+
+                                <!-- MAIN TABLE SCROLL -->
+                                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                                    <table class="metrics-table">
+                                        <thead>
+                                            <tr>
+                                                <ng-container
+                                                    *ngFor="let dataGrid of dataGrid_columns; let colIdx = index">
+                                                    <th [class.sticky-col]="colIdx === 0"
+                                                        [class.sticky-col-2]="colIdx === 1" class="sticky-header"
+                                                        [ngClass]="{ 'sticky-header_1 text-uppercase ': colIdx === 0 || colIdx === 1  }">
+                                                        {{ dataGrid?.headerText }}
+                                                    </th>
+                                                </ng-container>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container
+                                                *ngFor="let row of dpAC; let rowIndex = index; let odd = odd; let even = even">
+
+                                                <!-- Parent row -->
+                                                <tr class="parent-row" [class.odd-row]="odd" [class.even-row]="even">
+
+                                                    <ng-container
+                                                        *ngFor="let dataGrid of dataGrid_columns; let colIdx = index">
+
+                                                        <!-- First column: sticky label + expand/collapse -->
+                                                        <td *ngIf="colIdx === 0" class="sticky-col">
+                                                            <span class="fw-bold">{{ row[dataGrid.dataField] }}</span>
+
+                                                            <a *ngIf="row.children?.length"
+                                                                class="ms-2 text-danger cursor-pointer d-inline-flex align-items-center float-end viewmore"
+                                                                (click)="toggleGroup(row.servicedesc)">
+
+                                                                <span class="me-2">
+                                                                    {{ isExpanded(row.servicedesc) ? 'View Less' : 'View
+                                                                    More' }}
+                                                                </span>
+
+                                                                <!-- Plus icon (when collapsed) -->
+                                                                <svg *ngIf="!isExpanded(row.servicedesc)"
+                                                                    enable-background="new 0 0 512 512" height="10"
+                                                                    viewBox="0 0 512 512" width="10"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <g>
+                                                                        <path
+                                                                            d="m467 211h-166v-166c0-24.853-20.147-45-45-45s-45 20.147-45 45v166h-166c-24.853 0-45 20.147-45 45s20.147 45 45 45h166v166c0 24.853 20.147 45 45 45s45-20.147 45-45v-166h166c24.853 0 45-20.147 45-45s-20.147-45-45-45z" />
+                                                                    </g>
+                                                                </svg>
+
+                                                                <!-- Minus icon (when expanded) -->
+                                                                <svg *ngIf="isExpanded(row.servicedesc)"
+                                                                    enable-background="new 0 0 300 300" height="10"
+                                                                    viewBox="0 0 300 300" width="10"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <g>
+                                                                        <path
+                                                                            d="m240.3 171.5h-180.6c-11.9 0-21.5-9.6-21.5-21.5s9.6-21.5 21.5-21.5h180.6c11.9 0 21.5 9.6 21.5 21.5s-9.6 21.5-21.5 21.5z" />
+                                                                    </g>
+                                                                </svg>
+                                                            </a>
+                                                        </td>
+
+                                                        <!-- Second column: Sticky TOTAL -->
+                                                        <td *ngIf="colIdx === 1" class="sticky-col-2">
+                                                            {{ getExcelFormattedValue(row[dataGrid.dataField], rowIndex)
+                                                            }}
+                                                        </td>
+
+                                                        <!-- All other columns: formatted value -->
+                                                        <td *ngIf="colIdx > 1"
+                                                            [ngClass]="{ 'sticky-col_1 sticky-header_1': colIdx === 1 }">
+                                                            {{ getExcelFormattedValue(row[dataGrid.dataField], rowIndex)
+                                                            }}
+                                                        </td>
+
+                                                    </ng-container>
+                                                </tr>
+
+                                                <!-- Child rows (visible when parent is expanded) -->
+                                                <tr *ngFor="let c of row.children; let childRowIndex = index"
+                                                    class="child-row" [hidden]="!isExpanded(row.servicedesc)"
+                                                    [class.odd-row]="odd" [class.even-row]="even">
+
+                                                    <ng-container
+                                                        *ngFor="let dataGrid of dataGrid_columns; let colIdx = index">
+                                                        <td *ngIf="colIdx === 0" class="ps-4 sticky-col">
+                                                            {{ c[dataGrid.dataField] }}
+                                                        </td>
+                                                        <td *ngIf="colIdx === 1" class="sticky-col-2">
+                                                            {{ getExcelFormattedValue(c[dataGrid?.dataField], rowIndex,
+                                                            childRowIndex) }}
+                                                        </td>
+                                                        <td *ngIf="colIdx > 1">
+                                                            {{ getExcelFormattedValue(c[dataGrid?.dataField], rowIndex,
+                                                            childRowIndex) }}
+                                                        </td>
+                                                    </ng-container>
+
+                                                </tr>
+
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->

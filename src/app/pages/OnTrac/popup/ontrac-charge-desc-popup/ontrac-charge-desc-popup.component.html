@@ -1,0 +1,80 @@
+<div id="main">
+   <div class="row">
+      <div class="col-12 mt-2 mb-2 text-end ">
+         <a class="close_btn close_btn_pop " (click)="closeDialog()"><span>CLICK HERE TO
+               CLOSE SCREEN </span> <img src="assets/images/svg/close_1.svg">
+         </a> 
+      </div>
+      <div class="col-12 mt-2 mb-2 text-center">
+         <h2 class="header mt-1" style="font-size:25px;">Charge Distribution and Services For {{services_title ?
+            services_title : ''}} {{yearData_title ? yearData_title : ''}} {{monthData_title ? monthData_title : ''}}
+         </h2>
+      </div>
+
+      <div class="col-sm-6  col-12">
+         <div class="toggle-bar mb-2 mt-2">
+            <span class="datadisplayedCls">DATA DISPLAYED FOR :</span>
+            <div class="toggle-pill">
+               <span [ngClass]="{'active': chargetypevalue()=='FRT+ACC'}"
+                  (click)="linkshpChange('FRT+ACC')">FRT+ACC</span>
+               <span [ngClass]="{'active': chargetypevalue()=='FRT'}" (click)="linkshpChange('FRT')">FRT</span>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6 col-12">
+         <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end">
+            <a class="excelIcon" (click)="reportExcelDownload('ChargeDistributionExcel')"><img src="assets/images/svg/excel_download_icon.svg"> Excel</a>
+         </p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend by Month </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="spendByMonth" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para"> Data displays spent value for each month for {{services_title ? services_title :
+                     ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Average Cost By Month</h4> 
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="avgCostByMonth" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Average cost by month for {{services_title ? services_title : ''}}
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Count By Month </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="countByMonth" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays count for each month for {{services_title ? services_title : ''}}
+                  </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

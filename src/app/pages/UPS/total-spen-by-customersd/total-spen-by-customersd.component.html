@@ -1,0 +1,142 @@
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-user-log-popup></app-ups-user-log-popup>
+    }
+</div> -->
+
+<div class="row">
+  <div class="col">
+    <div class="px-0 py-3">
+      <div class="row header_section pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+            <div class="col-3">
+              <h4 class="fs-16 mb-1 pageTitle">Total Spend by Customers</h4>
+            </div>
+
+            <div class="col-6 mt-3 mt-lg-0">
+            </div>
+
+            <div class="col-3 mt-3 mt-lg-0">
+              <div class="row g-3 mb-0 align-items-center justify-content-end">
+                <div class="col-8">
+                  <app-total-spen-search></app-total-spen-search>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-0 pt-0 py-3">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body p-1">
+              <div class="table-wrapper">
+                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                  <div class="scroll-content"></div>
+                </div>
+
+                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                  <table class="metrics-table">
+                    <thead>
+                      <tr>
+                        <th class="sticky-header">Client Name</th>
+                        <th class="sticky-header">LJM Account Number</th>
+                        <th class="sticky-header">Year</th>
+                        <th class="sticky-header">Quarter</th>
+                        <th class="sticky-header">Net Charge</th>
+                        <th class="sticky-header">Package Count</th>
+                        <th class="sticky-header">ASD</th>
+                        <th class="sticky-header">GSR</th>
+                        <th class="sticky-header">Voids</th>
+                        <th class="sticky-header">CADJ</th>
+                        <th class="sticky-header">Payment Processing Fee</th>
+                        <th class="sticky-header">Charge Back</th>
+                        <th class="sticky-header">SCC</th>
+                        <th class="sticky-header">SCC Audit Fee</th>
+                        <th class="sticky-header">SCC Weight Difference</th>
+                        <th class="sticky-header">Fuel Surcharge</th>
+                        <th class="sticky-header">Address Correction</th>
+                        <th class="sticky-header">Address Correction Discount</th>
+                        <th class="sticky-header">Undeliverable Returns</th>
+                        <th class="sticky-header">Service Charge</th>
+                        <th class="sticky-header">Late Payment</th>
+                        <th class="sticky-header">Missing PLD Fee</th>
+                        <th class="sticky-header">Additional Handling</th>
+                        <th class="sticky-header">Additional Handling Discount</th>
+                        <th class="sticky-header">Large Package</th>
+                        <th class="sticky-header">Large Package Discount</th>
+                        <th class="sticky-header">Over Max</th>
+                        <th class="sticky-header">Over Max Discount</th>
+                        <th class="sticky-header">Peak Surcharge</th>
+                        <th class="sticky-header">Peak Surcharge Discount</th>
+                        <th class="sticky-header">Residential Adjustment</th>
+                        <th class="sticky-header">Residential Adjustment Count</th>
+                        <th class="sticky-header">Residential Surcharge</th>
+                        <th class="sticky-header">Residential Surcharge Discount</th>
+                        <th class="sticky-header">DAS &amp; DAS Extended</th>
+                        <th class="sticky-header">DAS &amp; DAS Extended Discount</th>
+                        <th class="sticky-header">Declared Value</th>
+                        <th class="sticky-header">Declare Discount</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        *ngFor="let categoryYearACObj of categoryYearACList; let i = index"
+                        [class.odd-row]="i % 2 === 0"
+                        [class.even-row]="i % 2 !== 0"
+                      >
+                        <td>{{ categoryYearACObj.clientName }}</td>
+                        <td>{{ categoryYearACObj.crmAccountNumber }}</td>
+                        <td>{{ categoryYearACObj.year }}</td>
+                        <td>{{ categoryYearACObj.quarter }}</td>
+                        <td>{{ categoryYearACObj.net_amount }}</td>
+                        <td>{{ categoryYearACObj.packagequantity }}</td>
+                        <td>{{ categoryYearACObj.asd }}</td>
+                        <td>{{ categoryYearACObj.gsr }}</td>
+                        <td>{{ categoryYearACObj.voids }}</td>
+                        <td>{{ categoryYearACObj.cadj }}</td>
+                        <td>{{ categoryYearACObj.creditCardSurcharge }}</td>
+                        <td>{{ categoryYearACObj.chargebacks }}</td>
+                        <td>{{ categoryYearACObj.scc }}</td>
+                        <td>{{ categoryYearACObj.sccAuditFee }}</td>
+                        <td>{{ categoryYearACObj.weightdifference }}</td>
+                        <td>{{ categoryYearACObj.fuelSurcharge }}</td>
+                        <td>{{ categoryYearACObj.addresscorrection }}</td>
+                        <td>{{ categoryYearACObj.addresscorrectiondiscount }}</td>
+                        <td>{{ categoryYearACObj.rts_RT }}</td>
+                        <td>{{ categoryYearACObj.dwpickup }}</td>
+                        <td>{{ categoryYearACObj.latepaymentfee }}</td>
+                        <td>{{ categoryYearACObj.missingPLDFee }}</td>
+                        <td>{{ categoryYearACObj.additionalhandling }}</td>
+                        <td>{{ categoryYearACObj.additionalhandlingdiscount }}</td>
+                        <td>{{ categoryYearACObj.largepackagesurcharge }}</td>
+                        <td>{{ categoryYearACObj.largepackagesurchargediscount }}</td>
+                        <td>{{ categoryYearACObj.overmax }}</td>
+                        <td>{{ categoryYearACObj.overmaxdiscount }}</td>
+                        <td>{{ categoryYearACObj.peakSurcharge }}</td>
+                        <td>{{ categoryYearACObj.peakSurchargeDiscount }}</td>
+                        <td>{{ categoryYearACObj.residentialadjustmentnetamount }}</td>
+                        <td>{{ categoryYearACObj.residentialadjustmentcount }}</td>
+                        <td>{{ categoryYearACObj.residentialsurchargenetamount }}</td>
+                        <td>{{ categoryYearACObj.residentialsurchargediscount }}</td>
+                        <td>{{ categoryYearACObj.das }}</td>
+                        <td>{{ categoryYearACObj.dasdiscount }}</td>
+                        <td>{{ categoryYearACObj.declarevalue }}</td>
+                        <td>{{ categoryYearACObj.declarevaluediscount }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

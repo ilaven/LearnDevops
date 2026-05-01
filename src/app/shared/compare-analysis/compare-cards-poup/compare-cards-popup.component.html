@@ -1,0 +1,63 @@
+<style>
+   /* ::ng-deep .compare-dialog-fullscreen .mat-mdc-dialog-container,
+::ng-deep .compare-dialog-fullscreen .mat-dialog-container {
+  padding: 0 !important;
+  border-radius: 0 !important;
+} */
+
+.compare-dialog-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.compare-dialog-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px 0 24px;
+}
+
+.compare-dialog-body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.compare-chart-card {
+  width: 650px;
+  max-width: 80vw;
+  text-align: center;
+}
+
+.compare_analysis_title {
+  margin-bottom: 20px;
+}
+
+.compare-chart {
+  width: 100%;
+  height: 400px;
+}
+</style>
+
+<div class="compare-dialog-wrapper">
+  <div class="compare-dialog-header">
+    <a class="close_btn close_btn_pop" (click)="close()">
+      <span>CLICK HERE TO CLOSE SCREEN</span>
+      <img src="assets/images/svg/close_1.svg">
+    </a>
+  </div>
+
+  <div class="compare-dialog-body">
+    <div class="compare-chart-card">
+      <h4 class="header compare_analysis_title">
+        {{ eventName }}
+      </h4>
+
+      <div id="More_popup" class="compare-chart"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,211 @@
+<style>
+  span{
+  font-size:12px;
+}
+  :host ::ng-deep .mat-radio-button .mat-radio-ripple{
+      height: 20px; 
+      width: 20px;  
+      left: calc(50% - 10px); 
+      top: calc(50% - 10px);
+    } :host ::ng-deep .mat-radio-container{
+      height: 10px;
+      width: 10px;
+    } :host ::ng-deep .mat-radio-outer-circle{
+      height: 10px;
+      width: 10px;
+    } :host ::ng-deep .mat-radio-inner-circle{
+      height: 10px;
+      width: 10px;
+    }
+    .tooltiptext-inter{   
+    margin-top: 1.2em;    
+    position: relative;
+    margin-left: 4px;    
+    }
+
+    .clientnameLink {
+     float: left !important; 
+    line-height: 20px !important;
+    margin-bottom: -20px !important;
+    }
+</style>
+<div id="main">
+		<div class="row clnt_acc">
+          <!-- Search for small screen-->
+		            <a class=""  mat-button mat-dialog-close ><i class="material-icons">close</i></a>    
+             	<div class="container cntr_one">
+            		<div class="row" >
+	              		<div class="col s12 ">
+	              			<h5>Automate Report Client Details</h5>        
+	              		</div>
+            
+            		</div>
+
+          		</div><div class="row" >
+	              		<div class="col s12">
+	              			<h5>{{lbl_title}}</h5>          
+	              		</div>
+            
+            		</div>
+	        <!-- </div> -->
+	        <div class="row">
+				<div class="col s12"></div>
+				<div class="col s12">
+					<div class="container">
+						<div id="sales-chart">
+							<div class="col s12 m12 l12">
+						      <div id="Form-advance" class=" "> 
+						        
+						          <form class="col s12" [formGroup]="clientAccDetailsFormGroup">
+						          	<div >
+						               <div class="row">
+    <div class="col m4">
+   <mat-form-field>
+ <label >Client Name</label>
+                  <input type="text" aria-label="Number" matInput class="matinput"
+                          formControlName="clientNameSelected">
+                  <!-- <mat-autocomplete  #auto="matAutocomplete" (optionSelected)="search_id_clickHandler($event.option.value)">
+                    <mat-option class="matoption" *ngFor="let option of filteredOptions | async" [value]="option" 
+                    >
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>  [matAutocomplete]="auto"-->
+                </mat-form-field>
+      </div>
+       <div class=" col m4" >
+						                <label for="accNoSelected">Account Number</label>
+<mat-form-field>
+		  <mat-select   formControlName="accNoSelected" required multiple #multiSelect  > 	                          
+   <mat-option   *ngFor="let account_detail of accountAC; let i = index" [value]="account_detail.primaryAccountNumber" >        {{account_detail.primaryAccountNumber}}
+      </mat-option>      
+	</mat-select> 
+  </mat-form-field>         
+						                </div>
+       </div>
+				 <div class="row">
+        <div class="col  l3 m3 s3 x3   ">
+
+            <label for="basis" class="reportFont">Time Frame</label>
+           
+           </div>
+           <div class="col l9 m9 s9 x9   ">
+
+             <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="Timebasis"  type="radio" value="Weekly" >
+                      <span>Weekly</span>
+                    </label>
+           </p>
+                </div>
+              </div>
+              <div class="row">
+<div class="col  l3 m3 s3 x3   "></div>
+<div class="col l9 m9 s9 x9  mb-2 "><p class=" no-margin white-text lighten-3 mediam-small">
+<label>
+                    <input class="validate" required="" aria-required="true"  formControlName="Timebasis"  type="radio" value="Monthly"  >
+                    <span>Monthly</span>
+                  </label>
+                         </p>
+</div>
+</div>
+
+<div class="row">
+        <div class="col  l3 m3 s3 x3   ">
+
+            <label for="basis" class="reportFont">Status</label>
+           
+           </div>
+           <div class="col l9 m9 s9 x9   ">
+
+             <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="status"  type="radio" value="1">
+                      <span>Active</span>
+                    </label>
+           </p>
+           <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="status"  type="radio" value="0" >
+                      <span>Inactive</span>
+                    </label>
+           </p>
+                </div>
+              </div>
+              </div>	
+              	
+						<div class="col m4 s12  setting-space">
+						                	<button  class=" btn waves-effect waves-light gradient-45deg-light-blue-cyan mr1" (click)=
+						                            "btn_add_clickHandler()" *ngIf="showAddBtn">Add</button>              
+						                             <button  class=" btn waves-effect waves-light gradient-45deg-light-blue-cyan mr1" (click)=
+						                            "btn_upt_clickHandler()" *ngIf="showUpdateBtn">Update</button>                          
+						                 </div>
+						              
+                                     
+						                
+						        </form> 
+						    </div>
+						   </div>
+						  <div class="col s12">
+          <div class="container">
+            <div class="section">
+  <div class="row">
+    <div class="col s12 m2 l12">
+      <div class="col s12 no-padding">
+	
+        <div class="card animate fadeUp">
+          <div class="card-content">
+
+        <div>		 
+			<div class="row">
+		  <div class="table-responsive tableFixHead">
+                   <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Client Name</th>
+                        <th>Account Number</th>
+                        <th >Trigger</th>
+                        <th>Status</th>
+                        <th>Recipients</th>
+                        <th>Action</th>            
+                      </tr>
+                    </thead>
+                    <tbody>
+                    	<tr *ngFor="let gridObj of gridObjList;let i = index"  style="cursor: pointer;">   
+<td class="tooltip_mnglClnt"><div class="clientNameContainer" (click)="datagrid_id_doubleClickHandler(gridObj)"><span><a class="clientnameLink">{{gridObj.clientName}}</a>
+                        </span>
+                          <span class="tooltiptext_mnglClnt">Click Here To View Report Send Status</span></div></td> 
+
+                    		<!-- <td>{{gridObj.clientName}}</td> -->
+                    		<td>{{gridObj.accountNo}}</td>
+                    		<td>{{gridObj.trigger}}</td>
+                    		<td>{{gridObj.status}}</td>
+                    		<td >
+                 <button class="btn waves-effect waves-light  accent-2"(click)="openRecipientsList(gridObj)" type="submit" style="height:35px;">Recipients</button>
+              </td> 
+              <td >
+                 <button class="btn waves-effect waves-light  accent-2"(click)="openClientsDetailsEdit(gridObj)" type="submit" style="height:35px;">Edit</button>
+              </td> 
+                    	</tr>                   
+					  <tr *ngIf="gridObjList.length==0" >
+            <td colspan="6" style="text-align: center !important;font-weight:bold;padding-top: 20px">No Record Found</td>
+          </tr>
+                    </tbody>
+                  </table>
+                </div>
+         </div>
+        </div>	
+          </div>
+        </div>
+      </div>     
+    </div>
+  </div>
+</div>
+
+
+          </div>
+         
+        </div>
+						</div>
+					</div>
+				</div>
+			</div>
+    	</div>
+	</div>
+	 

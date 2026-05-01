@@ -1,0 +1,239 @@
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Discounts & Minimum Reduction</h2>
+                <h6 class="sub-title-txt">{{subGroupName}}</h6>
+            </div>
+            <div class="col-2">
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab_sty px-2 py-2">
+        <div class="row mt-2">
+            <div class="col-12">
+                <h5 class="mb-3 fs-22 fw-semibold text-titles text-left">Discounts</h5>
+                <div class="card card_shadow_box">
+                    <div class="card-body pt-0 px-0 pb-0">
+                        <div class="table-scroll tableWrap mt-0">
+                            <table mat-table [dataSource]="dataSource"
+                                class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab"
+                                cdkDropListGroup matSort cdkDropList cdkDropListLockAxis="x"
+                                cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+                                <ng-container *ngFor="let column of columnsSignal(); let i = index"
+                                    [matColumnDef]="column">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main "> {{column}} </th>
+                                    <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                        class="create-proposal-tablehead service-td edit_table_cell "
+                                        [ngClass]="{'edit_table_cell': column.replace(' ','') === 'service'}"
+                                        matTooltip="{{row[displayedColumns]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column == 'service'?false:true">
+                                        <div style="display: grid;justify-content: center;" class="tooltipCls">
+                                            @if(column.replace(' ','') != 'service'){
+                                            <div>
+                                                @if(column.replace(' ','') != 'containerType'){
+                                                <input matInput type="text" class="weightText weightRange"
+                                                    [style.width]="(row[column.replace(' ','')] != '')?(((row[column.replace(' ','')].length)*9.5) + 'px'):'80px'"
+                                                    value="{{(column.replace(' ','') == 'service' || column.replace(' ','') == 'minType' || column.replace(' ','') == 'containerType' || column.replace(' ','') == 'weightFrom' || column.replace(' ','') == 'weightTo' || row[column.replace(' ','')] == '-')?(row[column.replace(' ','')]):(row.minType == '$')?(row[column.replace(' ','')] | currency:'USD':'symbol':'1.2-2'):(row[column.replace(' ','')] != '' && row[column.replace(' ','')] != null)?((row[column.replace(' ','')] | number:'1.2-2')+'%'):''}}"
+                                                    style="border-bottom:0px !important;text-align: center;min-width:80px;"
+                                                    [ngStyle]="{'border-bottom': (saveButtonClicked && row[column] == '' && row[column] != '0')?'1px solid #078CD1':'0px'}"
+                                                    [readonly]="(column.replace(' ','') == 'service') ? true : false"
+                                                    (input)="(column.replace(' ','') != 'service' && column.replace(' ','') != 'minType' && column.replace(' ','') != 'containerType' && column.replace(' ','') != 'weightFrom' && column.replace(' ','') != 'weightTo')?validatePercentage($event):''"
+                                                    (keypress)="(column.replace(' ','') != 'service' && column.replace(' ','') != 'minType' && column.replace(' ','') != 'containerType' && column.replace(' ','') != 'weightFrom' && column.replace(' ','') != 'weightTo')?storePreviousPercentage($event,rowIndex,'discounts'):''"
+                                                    (keyup)="onChange($event.target.value,column.replace(' ',''),row['containerType'],rowIndex,'current')"
+                                                    (focusout)="(column.replace(' ','') != 'weightFrom' && column.replace(' ','') != 'weightTo')?percentageFocusout($event,column.replace(' ',''),row['containerType'],rowIndex,'current'):(column.replace(' ','') == 'weightFrom')?fromWeightFocusout($event.target.value,'weightFrom',row['containerType'],rowIndex,'current'):toWeightFocusout($event.target.value,'weightTo',row['containerType'],rowIndex,'current')">
+                                                }
+                                            </div>}
+
+                                            @if(column.replace(' ','') =='containerType'){
+                                            <mat-form-field appearance="fill" class="w-100 DIMFactor">
+                                                <mat-select [(ngModel)]="row[column.replace(' ','')]"
+                                                    style="width:80px;"
+                                                    (ngModelChange)="onChange($event,column.replace(' ',''),row['containerType'],rowIndex,'discount')"
+                                                    class="weightTextSelect">
+                                                    <mat-option *ngFor="let containerType of containerTypeList"
+                                                        [value]="containerType">
+                                                        {{containerType}}
+                                                    </mat-option>
+                                                </mat-select> </mat-form-field>}
+                                        </div>
+                                        @if(column.replace(' ','') == 'service'){ <div
+                                            style="text-transform: none;text-align: left;display: flex;"
+                                            [style.width]="((row[column.replace(' ','')].length)*9.5) + 'px'">
+                                            {{row[column.replace(' ','')]}}
+                                            <a class="align-middle delete-link" href="javascript:void(0);"
+                                                (click)="removeRow(rowIndex,'discount')" matTooltip="Delete">
+                                                <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                            </a>
+
+                                        </div>}
+                                        @if((column.replace(' ','') == 'weightFrom')){
+                                        <p class="validationText"
+                                            [hidden]="!(rowIndex == fromWeightToolTipId  && type == 'current')">Enter
+                                            a
+                                            Valid Weight
+                                            Range</p>}
+                                        @if((column.replace(' ','') == 'weightTo')){ <p class="validationText"
+                                            [hidden]="!(rowIndex == toWeightToolTipId && type == 'current')">Enter a
+                                            Valid
+                                            Weight
+                                            Range</p>}
+                                        @if(saveButtonClicked && row[column] == '' && row[column] != '0'){
+                                        <p
+                                            style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;">
+                                            Enter a Value
+                                        </p>}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                            </table>
+                        </div>
+                        <div class="col-12 mt-3 ps-1">
+                            <button class="add_btn  addbtnNewChange" (click)="AddNewRow()">
+                                <img src="../../../../assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="ms-2 add_text_discount"> Add Discounts </div>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-12">
+                <h5 class="mb-3 fs-22 fw-semibold text-titles  text-left">Minimum Reduction</h5>
+                <div class="card card_shadow_box">
+                    <div class=" card-body pt-0 px-0 pb-0">
+                        <div class="table-scroll tableWrap  mt-0">
+                            <table mat-table [dataSource]="dataSourceMin"
+                                class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab">
+                                <ng-container *ngFor="let column of columnsMinSignal(); let i = index"
+                                    [matColumnDef]="column">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main"> {{
+                                        column }}
+                                    </th>
+                                    <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                        class="create-proposal-tablehead service-td edit_table_cell"
+                                        [ngClass]="{'edit_table_cell': column.replace(' ','') === 'service'}"
+                                        matTooltip="{{row[displayedColumns]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column == 'service'?false:true">
+                                        @if(column.replace(' ','') != 'service'){ <div
+                                            style="display: grid;justify-content: center;" class="tooltipCls">
+                                            @if(column.replace(' ','') != 'service'){ <div>
+                                                @if(column.replace(' ','') !='minType' && column.replace(' ','') !=
+                                                'containerType'){
+                                                <input matInput type="text"
+                                                    [style.width]="(row[column.replace(' ','')] != '')?(((row[column.replace(' ','')].length)*9.5) + 'px'):'80px'"
+                                                    value="{{
+                                (column.replace(' ','') == 'service' || column.replace(' ','') == 'minType' || column.replace(' ','') == 'containerType' || column.replace(' ','') == 'weightFrom' || column.replace(' ','') == 'weightTo')
+                                ?(row[column.replace(' ','')])
+                                :(
+                                    (row[column.replace(' ','')] == '-')
+                                    ?((row.minType == '$')?'$0.00':'0.00%')
+                                    : (row.minType == '$')
+                                      ?(row[column.replace(' ','')] | currency:'USD':'symbol':'1.2-2')
+                                      :(row[column.replace(' ','')] != '')
+                                        ?((row[column.replace(' ','')] | number:'1.2-2')+'%')
+                                        :''
+                                )
+                                }}" style="border-bottom:0px !important;text-align: center;min-width:80px;"
+                                                    (focusout)="(column.replace(' ','') != 'weightFrom' && column.replace(' ','') != 'weightTo')?percentageFocusout($event,column.replace(' ',''),row['containerType'],rowIndex,'min'):(column.replace(' ','') == 'weightFrom')?fromWeightFocusout($event.target.value,'weightFrom',row['containerType'],rowIndex,'min'):toWeightFocusout($event.target.value,'weightTo',row['containerType'],rowIndex,'min')"
+                                                    [readonly]="(column.replace(' ','') == 'service' && row[column.replace(' ','')] != '') ? true : false"
+                                                    [ngStyle]="{'border-bottom': (saveButtonClicked && row[column.replace(' ','')] == '' && row[column.replace(' ','')] != '0')?'1px solid #078CD1':'0px'}"
+                                                    (input)="(column.replace(' ','') != 'service' && column.replace(' ','') != 'minType' && column.replace(' ','') != 'containerType' && column.replace(' ','') != 'weightFrom' && column.replace(' ','') != 'weightTo')?validatePercentage($event):''"
+                                                    (keypress)="(column.replace(' ','') != 'service' && column.replace(' ','') != 'minType' && column.replace(' ','') != 'containerType' && column.replace(' ','') != 'weightFrom' && column.replace(' ','') != 'weightTo')?storePreviousPercentage($event,rowIndex,'min'):''"
+                                                    (keyup)="onChange($event.target.value,column.replace(' ',''),row['containerType'],rowIndex,'min')">
+
+                                                }
+                                            </div>}
+
+                                            @if(column.replace(' ','') =='minType'){ <mat-form-field appearance="fill"
+                                                class="w-100 DIMFactor"> <mat-select
+                                                    [(ngModel)]="row[column.replace(' ','')]" style="width:80px;"
+                                                    (ngModelChange)="onChange($event,column.replace(' ',''),row['containerType'],rowIndex,'min')"
+                                                    class="weightTextSelect">
+                                                    <mat-option *ngFor="let minType of minTypeValues" [value]="minType">
+                                                        {{minType}}
+                                                    </mat-option>
+                                                </mat-select> </mat-form-field>}
+                                            @if(column.replace(' ','') =='containerType'){<mat-form-field
+                                                appearance="fill" class="w-100 DIMFactor"> <mat-select
+                                                    [(ngModel)]="row[column.replace(' ','')]" style="width:80px;"
+                                                    (ngModelChange)="onChange($event,column.replace(' ',''),row['containerType'],rowIndex,'min')"
+                                                    class="weightTextSelect">
+                                                    <mat-option *ngFor="let containerType of containerTypeList"
+                                                        [value]="containerType">
+                                                        {{containerType}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            }
+                                        </div> @if((column.replace(' ','') == 'weightFrom')){
+                                        <p class="validationText"
+                                            [hidden]="!(rowIndex == fromWeightToolTipId && type == 'min')">Enter a
+                                            Valid
+                                            Weight
+                                            Range</p>
+                                        }
+                                        @if((column.replace(' ','') == 'weightTo')){ <p class="validationText"
+                                            [hidden]="!(rowIndex == toWeightToolTipId && type == 'min')">Enter a
+                                            Valid
+                                            Weight
+                                            Range</p>}
+                                        }
+                                        @if(column.replace(' ','') == 'service'){ <div
+                                            style="text-transform: none;text-align: left;display: flex;"
+                                            [style.width]="((row[column.replace(' ','')].length)*9.5) + 'px'">
+                                            {{row[column.replace(' ','')]}}
+                                            <a class="align-middle delete-link" href="javascript:void(0);"
+                                                (click)="removeRow(rowIndex,'Min')" matTooltip="Delete">
+                                                <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                            </a>
+                                        </div>
+                                        }
+                                        @if(saveButtonClicked && row[column.replace(' ','')] == '' &&
+                                        row[column.replace('
+                                        ','')] != '0'){ <p
+                                            style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;">
+                                            Enter a value</p>
+                                        }
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsMin;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsMin;"></tr>
+                            </table>
+                        </div>
+
+
+                        <div class="col-12 mt-3 ps-1">
+                            <button class="add_btn addbtnNewChange" (click)="AddNewRowMin()">
+                                <img src="assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Discounts </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-3 text-end">
+                <p class="text-notes">*All discounts and minimum adjustments should be entered in as positive values</p>
+
+            </div>
+            <div class="col-12 mt-2">
+                <div class="d-flex justify-content-end">
+                    <button mat-button class="btn-cancel" (click)="reSetDisMin()">Reset</button>
+                    <button mat-raised-button color="primary" class="btn-save" (click)="onSubmit()">Save</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>

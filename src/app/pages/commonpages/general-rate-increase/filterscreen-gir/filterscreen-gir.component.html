@@ -1,0 +1,74 @@
+
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2 py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Filter</h2>
+                <h6 class="sub-title-txt"></h6>
+            </div>
+            <div class="col-2 p-0">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="input_sty px-2 py-2">
+        <div class="row">
+            <div class="col-md-12 ">
+
+                <mat-label>Spend Category</mat-label>
+                <!-- <mat-form-field class="w-100">
+                    <input matInput>
+                </mat-form-field> -->
+                <mat-form-field class="w-100 filter-dropdown">
+                    <mat-select [(value)]="selectedSpend" class="selectCls">
+                        <mat-option *ngFor="let spend of spendCategory" [value]="spend.value" selected="ALL">
+                            {{spend.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-12 mt-2">
+                <mat-label>Scenarios Displayed</mat-label>
+                <div cdkDropList [cdkDropListData]="scenariosDisplayedSignal()" (cdkDropListDropped)="drop($event)"
+                    class="scenario-drop-list example-listbox-container filterDisplayed">
+
+                    <div class="d-flex flex-inline scenario-content scenario-content-stackey">
+                        <div>Agreement </div>
+                        <div> Display </div>
+                    </div>
+                    <div class=" scenario-item" *ngFor="let scenario of  scenariosDisplayedSignal(); let i = index"
+                        cdkDrag>
+                        <div class="d-flex flex-inline scenario-content1">
+                            <div> {{ scenario.targetName }}</div>
+                            <div> <mat-checkbox [checked]="scenario.isSelected"
+                                    
+                                    (change)="toggleSelection($event, scenario)" class="checkboxcolor custom_checkbox1 text-align-right">
+                                </mat-checkbox></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-12 mt-3 text-center">
+                <button mat-raised-button color="primary" (click)="applyfilterbtn_clickHandler()"
+                    class="btn_save_apply  ms-0"> Apply and Save</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

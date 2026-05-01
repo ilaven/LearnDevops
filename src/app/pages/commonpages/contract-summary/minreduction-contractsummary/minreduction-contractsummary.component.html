@@ -1,0 +1,161 @@
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2"> {{service}} - Min Reduction/Net Minimum</h2>
+            </div>
+            <div class="col-2 ">
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab_sty px-2 py-2">
+        <div class="row">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChanged($event)">
+                <mat-tab label="Current Agreement">
+                    <div #scrollframe  >
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+
+                            <table mat-table [dataSource]="dataSource"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of columnsMinReduction(); let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub'}}">
+                                        <span class="heading"> {{column.field }} </span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row;let rowIndex = index"
+                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub create-proposal-table'}}">
+                                        <span *ngIf="column.field=='Service'">{{row[column.fieldVal]}}
+                                            <i class="mdi align-middle mdi-eye-outline"
+                                                (click)="popMinReduction(row['subGroup'],'create',carrierName,null)"
+                                                style="font-size: 1 em !important;line-height: 20px;float:right;margin-right: 40px;cursor: pointer;color: #7e7e7e;"></i>
+                                        </span>
+                                        <span
+                                            *ngIf="column.fieldVal != 'subGroup' && column.fieldVal != 'currentMinNet' && column.fieldVal != 'targetMinNet1' && column.fieldVal != 'targetMinNet2'">
+                                            {{(row[column.fieldVal] != null)?(row[column.fieldVal]):'0.00'}}
+                                        </span>
+                                        <span *ngIf="column.fieldVal == 'currentMinNet'">
+                                            {{(netAmountMinMaxList[rowIndex].currentMin ==
+                                            netAmountMinMaxList[rowIndex].currentMax)?(netAmountMinMaxList[rowIndex].currentMin
+                                            |
+                                            currency:'USD':'symbol':'1.2-2'):((netAmountMinMaxList[rowIndex].currentMin
+                                            | currency:'USD':'symbol':'1.2-2')+' -
+                                            '+(netAmountMinMaxList[rowIndex].currentMax |
+                                            currency:'USD':'symbol':'1.2-2'))}}
+                                        </span>
+                                        <span *ngIf="column.fieldVal == 'targetMinNet1'">
+                                            {{(netAmountMinMaxList[rowIndex].target1Min ==
+                                            netAmountMinMaxList[rowIndex].target1Max)?(netAmountMinMaxList[rowIndex].target1Min
+                                            |
+                                            currency:'USD':'symbol':'1.2-2'):((netAmountMinMaxList[rowIndex].target1Min
+                                            | currency:'USD':'symbol':'1.2-2')+' -
+                                            '+(netAmountMinMaxList[rowIndex].target1Max |
+                                            currency:'USD':'symbol':'1.2-2'))}}
+                                        </span>
+                                        <span *ngIf="column.fieldVal == 'targetMinNet2'">
+                                            {{(netAmountMinMaxList[rowIndex].target2Min ==
+                                            netAmountMinMaxList[rowIndex].target2Max)?(netAmountMinMaxList[rowIndex].target2Min
+                                            |
+                                            currency:'USD':'symbol':'1.2-2'):((netAmountMinMaxList[rowIndex].target2Min
+                                            | currency:'USD':'symbol':'1.2-2')+' -
+                                            '+(netAmountMinMaxList[rowIndex].target2Max |
+                                            currency:'USD':'symbol':'1.2-2'))}}
+                                        </span>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsMin"></tr>
+                                <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumnsMin;"></tr>
+
+
+                            </table>
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab *ngFor="let data of targetMinReductionListSignal()" label="{{data.targetName}}">
+                    <div #scrollframe  >
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+
+                            <table mat-table [dataSource]="dataSource"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+
+                                <ng-container *ngFor="let column of data.columns; let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub'}}">
+                                        <span class="heading"> {{column.field }} </span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row;let rowIndex = index" 
+                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'create-proposal-table':'create-proposal-table'}}">
+                                        <span *ngIf="column.field=='Service'">{{row[column.fieldVal]}}
+                                            <i class="mdi align-middle mdi-eye-outline"
+                                                (click)="popMinReduction(row['subGroup'],'Edit',data.carrierName,data.targetId)"
+                                                style="font-size: 1 em !important;line-height: 20px;float:right;margin-right: 40px;cursor: pointer;color: #7e7e7e;"></i>
+                                        </span>
+
+                                        <span
+                                            *ngIf="column.fieldVal != 'subGroup' && column.fieldVal != 'currentMinNet' && column.fieldVal != 'targetMinNet1' && column.fieldVal != 'targetMinNet2'">
+                                            {{(row[column.fieldVal] != null)?(row[column.fieldVal]):'0.00'}}
+                                        </span>
+                                        <span *ngIf="column.fieldVal == 'currentMinNet'">
+                                            {{(netAmountMinMaxList[rowIndex].currentMin ==
+                                            netAmountMinMaxList[rowIndex].currentMax)?(netAmountMinMaxList[rowIndex].currentMin
+                                            |
+                                            currency:'USD':'symbol':'1.2-2'):((netAmountMinMaxList[rowIndex].currentMin
+                                            | currency:'USD':'symbol':'1.2-2')+' -
+                                            '+(netAmountMinMaxList[rowIndex].currentMax |
+                                            currency:'USD':'symbol':'1.2-2'))}}
+                                        </span>
+                                        <span *ngIf="column.fieldVal == 'targetMinNet1'">
+                                            {{(netAmountMinMaxList[rowIndex].target1Min ==
+                                            netAmountMinMaxList[rowIndex].target1Max)?(netAmountMinMaxList[rowIndex].target1Min
+                                            |
+                                            currency:'USD':'symbol':'1.2-2'):((netAmountMinMaxList[rowIndex].target1Min
+                                            | currency:'USD':'symbol':'1.2-2')+' -
+                                            '+(netAmountMinMaxList[rowIndex].target1Max |
+                                            currency:'USD':'symbol':'1.2-2'))}}
+                                        </span>
+                                        <span *ngIf="column.fieldVal == 'targetMinNet2'">
+                                            {{(netAmountMinMaxList[rowIndex].target2Min ==
+                                            netAmountMinMaxList[rowIndex].target2Max)?(netAmountMinMaxList[rowIndex].target2Min
+                                            |
+                                            currency:'USD':'symbol':'1.2-2'):((netAmountMinMaxList[rowIndex].target2Min
+                                            | currency:'USD':'symbol':'1.2-2')+' -
+                                            '+(netAmountMinMaxList[rowIndex].target2Max |
+                                            currency:'USD':'symbol':'1.2-2'))}}
+                                        </span>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="data.displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; let even = even; columns: data.displayedColumns;"></tr>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+            @if(tabIndex != 0){
+            <div class="col-12  mt-3">
+                <div class="d-flex justify-content-end">
+                    <button mat-button class="btn-cancel" (click)="Edit('Edit')">Edit</button>
+                    <button mat-raised-button color="primary" class="btn-save" (click)="close()">Close </button>
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,266 @@
+.customer-select {
+  width: 160px;
+}
+
+.carrier-icons img {
+  width: 40px;
+  margin-left: 6px;
+  border-radius: 50%;
+}
+
+.section-title {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.pill-group {
+  display: flex;
+  gap: 8px;
+}
+
+.pill {
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  color: #fff;
+  padding: 4px 14px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.margin-alignment {
+  margin-left: 5vw;
+}
+
+.pill.active {
+  background: #fff;
+  color: #0079F2;
+}
+
+.stat-card {
+  padding: 16px;
+  border-radius: 14px;
+  height: 100%;
+  box-shadow: 0px 8px 8px 0px #5AA7B840;
+  text-align: center;
+  background: radial-gradient(99.69% 99.69% at 52.92% 41.82%, #FFFFFF 0%, #C4EEFF 100%);
+}
+
+.datadisplayedCls {
+  color: #040405;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.stat-card .label {
+  font-size: 13px;
+  color: #474747;
+  font-weight: 500;
+}
+
+.stat-card .value {
+  font-size: 20px;
+  font-weight: 500;
+  color: #003BB5;
+}
+
+.toggle-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stat-card hr {
+  box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 46%);
+  border-bottom: 1px solid rgb(0 0 0 / 19%);
+  margin: 0.2rem 0;
+}
+
+.toggle-pill {
+  background: #1c7ed6;
+  border-radius: 25px;
+  padding: 4px;
+  display: flex;
+}
+
+.toggle-pill span {
+  padding: 6px 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.toggle-pill .active {
+  background: #fff;
+  color: #1c7ed6;
+  border-radius: 20px;
+}
+
+.popheader_text {
+  color: var(--popup_title) !important;
+  font-size: 25px;
+}
+
+.close_btn_pop {
+  font-size: 12px;
+}
+
+.close_btn_pop img {
+  width: 25px !important;
+}
+
+.popup_excel_text {
+  color: #23A566 !important;
+  font-size: 14px !important;
+  text-decoration: underline !important;
+}
+
+.close_btn_pop span {
+  color: var(--close-popup-txt) !important;
+}
+
+.popup-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chart-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+.popup-chart {
+  width: 100%;
+  height: 250px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.pager-wrap button {
+  margin-left: 6px;
+}
+
+.btm_para {
+  margin-bottom: 0;
+}
+
+.blueBackground {
+  white-space: nowrap;
+}
+
+/* fullscreen dialog */
+::ng-deep .full-screen-dialog .mat-mdc-dialog-container,
+::ng-deep .full-screen-dialog .mat-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+}
+
+::ng-deep .full-screen-dialog .mdc-dialog__surface {
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  padding: 0 !important;
+}
+
+::ng-deep .full-screen-dialog .mat-mdc-dialog-content {
+  max-height: 100% !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+::ng-deep .full-screen-dialog {
+  overflow-x: hidden !important;
+}
+
+/* host */
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* single scrollbar only here */
+#main {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 6px;
+  box-sizing: border-box;
+  background: #eef8fb;
+}
+
+/* remove bootstrap horizontal overflow */
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  --bs-gutter-x: 1rem;
+}
+
+[class*="col-"] {
+  min-width: 0;
+}
+
+/* prevent chart ids from expanding width */
+#average_cost,
+#weight_disPopup,
+#spendByMonth,
+#service_weight,
+#volume_weight,
+#acc_no {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.w-100 {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+.popup-grid {
+  overflow-x: hidden;
+}
+
+.card,
+.card-body,
+.card-header {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* mobile */
+@media (max-width: 767px) {
+  #main {
+    padding: 10px;
+  }
+
+  .popheader_text {
+    font-size: 20px;
+  }
+
+  .toggle-pill span {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .popup-chart {
+    height: 220px;
+  }
+}
+
+::ng-deep .cdk-global-scrollblock {
+   overflow-y: hidden !important;
+}
+
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}

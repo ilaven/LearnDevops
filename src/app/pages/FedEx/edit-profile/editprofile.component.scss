@@ -1,0 +1,287 @@
+.table-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+/* TOP SCROLLBAR */
+.top-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 16px;
+}
+
+.scroll-content {
+  height: 1px;
+}
+
+.blue-section{
+  background: linear-gradient(121deg, #2bb1e8, #0a2c7d) !important;
+  height: 220px !important;
+}
+/* MAIN TABLE SCROLL */
+.table-scroll {
+  max-height: 450px;
+  overflow: auto;
+}
+.bgInner-section{
+  position: absolute!important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 400px !important;
+}
+
+/* TABLE STYLES */
+.metrics-table {
+  border-collapse: collapse;
+  min-width: 1600px;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}.shape {
+  position: absolute;
+  top: 12.3em;
+  right: -0.85em;
+  left: -0.85em;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* HEADER */
+thead th {
+  background:#2AAAE6;
+  color: #fff;
+  z-index: 3;
+}
+
+/* STICKY HEADER */
+.sticky-header {
+  position: sticky;
+  top: 0;
+}
+
+/* STICKY FIRST COLUMN */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #f4f6f8;
+  z-index: 2;
+  font-weight: 600;
+}
+
+/* HEADER + FIRST COLUMN */
+.sticky-col.sticky-header {
+  z-index: 4;
+  background:#2AAAE6;
+  color: #fff;
+}
+.table-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+/* TOP SCROLLBAR */
+.top-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 16px;
+}
+
+.scroll-content {
+  height: 1px;
+}
+
+/* MAIN TABLE SCROLL */
+.table-scroll {
+  max-height: 450px;
+  overflow: auto;
+}
+
+/* TABLE STYLES */
+.metrics-table {
+  border-collapse: collapse;
+  min-width: 1600px;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* HEADER */
+thead th {
+  background: #2AAAE6;
+  color: #fff;
+  z-index: 3;
+}
+
+/* STICKY HEADER */
+.sticky-header {
+  position: sticky;
+  top: 0;
+}
+
+/* STICKY FIRST COLUMN */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #f4f6f8;
+  z-index: 2;
+  font-weight: 600;
+}
+
+/* HEADER + FIRST COLUMN */
+.sticky-col.sticky-header {
+  z-index: 4;
+  background: #2AAAE6;
+  color: #fff;
+}
+/* ODD / EVEN ROW COLORS */
+.odd-row td {
+  background-color: #F4F4F4;
+}
+
+.even-row td {
+  background-color: #ffffff;
+}
+
+/* KEEP STICKY COLUMN COLOR IN SYNC */
+.odd-row .sticky-col {
+  background-color: #E5E7EB;
+}
+
+.even-row .sticky-col {
+  background-color: #fff;
+}
+
+
+
+div.header_section .mat-mdc-form-field .mdc-notched-outline.mdc-notched-outline--no-label .mat-mdc-notch-piece.mdc-notched-outline__trailing {
+    border-left: 1px solid !important;
+    border-radius: 10px !important;
+    border: 2px solid !important;
+    border-image: linear-gradient(90deg, rgba(46, 167, 255, 1) 80%, rgba(16, 157, 227, 1) 100%) 1 !important;
+}
+
+.header_section label , .header_section .mat-datepicker-input {
+color: white !important;
+} 
+
+div.header_section mat-datepicker-toggle.mat-datepicker-toggle svg.mat-datepicker-toggle-default-icon {
+    fill: white !important;
+}
+
+.search_btn{
+        background: #F06548 !important;
+    color: white;
+}
+.excel_btn{
+    color: #44BC60;
+}
+.updat_btn{
+    background: #299CDB;
+    color: white;
+}
+.textBoxStyle{
+    width: 45px !important;
+}
+.textBoxStyle input{
+    text-align: center;
+}
+.table-input.compact-field.textBoxStyle .mat-mdc-text-field-wrapper{
+ border: 1px solid #C5C7CD;
+}
+ 
+.updated_sort{
+    color: #FFCC00;
+        padding: 10px 0px;
+}
+
+.bit_eye_icon{
+        border: 0px;
+    background: transparent;
+    margin-right: 0.1rem;
+}
+
+.file_upload{
+      background: #FAFAFA;
+    /* border: 1px dashed #5DCDFC; */
+    /* margin-top: 1rem; */
+    border: 5px solid #BFEBFF;
+    box-shadow: 0 0 0 5px #2AAAE6;
+    display: inline-block;
+    /* margin: 0 auto; */
+    border-radius: 50%;
+      width: 118px;
+    height: 118px;
+}
+
+.porfile_images{
+    width: inherit;
+    height: inherit;
+    object-fit: contain;
+    padding: 2px;
+}
+.profile_images_div{
+    width: 96px;
+    height: 109px;
+    margin: auto;
+}
+.uplode_btn{
+    background: #D8F2FF;
+    padding: 0px;
+    width: 30px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+        border: 0px;
+            position: relative;
+    top: -22px;
+    margin-left: auto;
+}
+
+
+.btn_clear{
+        border: 1px solid #EBF1F8;
+    background: white;
+    color: black;
+}
+.check_lable label {
+    display: block;
+ 
+    line-height: 1.2;
+}
+
+.mat-form-field-textarea .mat-mdc-form-field-infix{
+    padding: 0px
+}
+
+.edit_bg{
+  background-image: url("src/assets/images/edit_profile_bg.svg");
+      background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+        box-shadow: 0px 0px 11px 0px #78c6ff;
+}
+.file_upload label{
+  margin: 0px;
+  display: block;;
+}
+.upload_profile_text {
+  color: #003BB5;
+}

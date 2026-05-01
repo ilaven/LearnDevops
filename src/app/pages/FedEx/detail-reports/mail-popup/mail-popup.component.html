@@ -1,0 +1,44 @@
+<form [formGroup]="mailLogFedexFormGroup" (ngSubmit)="btn_click()">
+  <div class="px-0 pt-0 py-0">
+    <!-- card -->
+    <div class="card m-0 popup-design shadow-none card-height-100">
+      <div class="card-header border-0 align-items-center d-flex">
+        <h4 class="card-title mb-0 flex-grow-1 title-sty"></h4>
+        <button matSuffix type="button" (click)="close()"
+          class="bit_eye_icon btn btn-link p-0 text-decoration-none text-muted material-shadow-none">
+          <img src="assets/images/close_icon.svg" class="close_icon" alt="close icon" />
+        </button>
+      </div><!-- end card header -->
+
+      <!-- card body -->
+      <div class="card-body pt-2 pb-3">
+
+        <div class="popup-header text-center">
+          <p class="title text-center">
+            Please provide your email address and the report will be sent to your inbox once it’s complete.
+          </p>
+
+
+          <div class="col-md-12 col-12">
+            <label class="mt-3 mb-1">Enter Your Email Address:</label>
+            <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+              <input matInput formControlName="Email" type="Email" multiple>
+            </mat-form-field>
+          </div>
+
+          <div class="button-container my-3">
+            <button mat-raised-button color="primary" matTooltip="Click Here to View Savings" type="submit"
+              class="savings-button" [disabled]="click">
+              Add
+            </button>
+          </div>
+
+          <p class="footer-text">
+            <b>Note: Add multiple emails using a comma (,) as a separator</b>
+          </p>
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+  </div>
+</form>

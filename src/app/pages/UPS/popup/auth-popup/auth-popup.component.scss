@@ -1,0 +1,12 @@
+.popup-design{
+  background-image: url("/assets/images/popup_design.png");
+    background-repeat: no-repeat;
+       background-size: 100% auto;
+    background-position: top center;
+    background-color: var( --card-dashboard);
+}
+.btn_clear , .btn_clear:hover {
+    border: 1px solid #EBF1F8;
+    background: white;
+    color: black;
+}

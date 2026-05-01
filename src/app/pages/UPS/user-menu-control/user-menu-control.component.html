@@ -1,0 +1,123 @@
+<div class="row">
+  <div class="col">
+    <div class="px-0 py-3">
+      <div class="row header_section pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+            <div class="col-12">
+              <h4 class="fs-16 mb-1 pageTitle">User Menu Control</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-0 pt-0 py-3">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body p-1">
+              <div class="table-wrapper">
+                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                  <div class="scroll-content"></div>
+                </div>
+
+                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                  <table class="metrics-table" >
+                    <thead>
+                      <tr>
+                        <th class="sticky-header">Client Name</th>
+                        <th class="sticky-header">Executive Summary</th>
+                        <th class="sticky-header">International Map</th>
+                        <th class="sticky-header">Charge Description</th>
+                        <th class="sticky-header">Tracking #</th>
+                        <th class="sticky-header">Zone Distribution</th>
+                        <th class="sticky-header">Ad Hoc</th>
+                        <th class="sticky-header text-center">Action</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let datagrid_iditem of datagrid_id; let indexValue = index; let i = index"
+                        [class.odd-row]="i % 2 === 0" [class.even-row]="i % 2 !== 0">
+                        <th scope="row">{{ datagrid_iditem.clientName }}</th>
+
+                        <td class="checkboxCss">
+                          <p class="pt1em">
+                            <label>
+                              <input type="checkbox" [(ngModel)]="datagrid_iditem.esValue"
+                                [ngModelOptions]="{ standalone: true }" />
+                              <span class="pr15"></span>
+                            </label>
+                          </p>
+                        </td>
+
+                        <td class="checkboxCss">
+                          <p class="pt1em">
+                            <label>
+                              <input type="checkbox" [(ngModel)]="datagrid_iditem.imValue"
+                                [ngModelOptions]="{ standalone: true }" />
+                              <span class="pr15"></span>
+                            </label>
+                          </p>
+                        </td>
+
+                        <td class="checkboxCss">
+                          <p class="pt1em">
+                            <label>
+                              <input type="checkbox" [(ngModel)]="datagrid_iditem.cdValue"
+                                [ngModelOptions]="{ standalone: true }" />
+                              <span class="pr15"></span>
+                            </label>
+                          </p>
+                        </td>
+
+                        <td class="checkboxCss">
+                          <p class="pt1em">
+                            <label>
+                              <input type="checkbox" [(ngModel)]="datagrid_iditem.trValue"
+                                [ngModelOptions]="{ standalone: true }" />
+                              <span class="pr15"></span>
+                            </label>
+                          </p>
+                        </td>
+
+                        <td class="checkboxCss">
+                          <p class="pt1em">
+                            <label>
+                              <input type="checkbox" [(ngModel)]="datagrid_iditem.zdValue"
+                                [ngModelOptions]="{ standalone: true }" />
+                              <span class="pr15"></span>
+                            </label>
+                          </p>
+                        </td>
+
+                        <td class="checkboxCss">
+                          <p class="pt1em">
+                            <label>
+                              <input type="checkbox" [(ngModel)]="datagrid_iditem.ahValue"
+                                [ngModelOptions]="{ standalone: true }"/>
+                              <span class="pr15"></span>
+                            </label>
+                          </p>
+                        </td>
+
+                        <td>
+                          <button type="button" class="btn btn-info waves-light orange" 
+                            (click)="burri_clickHandler(datagrid_iditem, indexValue)">Update</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="datagrid_id.length === 0">
+                        <td colspan="10" class="text-center py-3">No clients found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

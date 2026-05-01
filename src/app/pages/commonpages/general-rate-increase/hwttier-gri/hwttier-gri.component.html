@@ -1,0 +1,73 @@
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Hundredweight Tier</h2>
+            </div>
+
+            <div class="col-2 d-flex justify-content-end">
+                <div mat-dialog-actions align="end" class="close-btn p-0 justify-content-end marginRightDelet">
+                    <button mat-button (click)="delete()"><img class="closeBtn" style="height: 24px;"
+                            src="../../../../../assets/images/svg/delete.svg"></button>
+                </div>
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab_sty px-2 py-2">
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="box-shadow: none !important;">
+                    <div class="card-body pt-0 px-0">
+                        <div class="table-scroll create-tab  tableWrap">
+                            <table mat-table [dataSource]="dataSource"
+                                class="mat-elevation-z1 w-full mt-0 border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of columnsSignal(); let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main" >{{
+                                        column.field }}
+                                    </th>
+                                    <td mat-cell class="create-proposal-table"
+                                        [ngStyle]="{'padding':(column.fieldVal == 'targetDis' || column.fieldVal == 'netSpend')?'0':''}"
+                                        *matCellDef="let row; let rowIndex = index"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column.fieldVal =='service'?false:true">
+
+                                        <input [ngClass]="{'containerType':column.fieldVal == 'subGroup'}" matInput
+                                            type="text" style="border-bottom:0px !important;"
+                                            value="{{(column.fieldVal != 'targetDis' && column.fieldVal != 'netSpend')?(row[column.fieldVal]):((column.fieldVal == 'targetDis')?((row[column.fieldVal] | number:'1.2-2')+'%'):((row[column.fieldVal] == null || row[column.fieldVal] == '')?'$0.00':(row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')))}}"
+                                            [readonly]="true">
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsSignal();"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsSignal();"></tr>
+
+                            </table>
+                        </div>
+                        <p *ngIf="dataSource.length == 0" class="noData">Data Not Available.</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12" *ngIf="type == 'Edit'">
+                <div class="d-flex justify-content-end">
+                    <button mat-button class="btn-cancel" (click)="close()">Close</button>
+                    <button mat-raised-button color="primary" class="btn-save" (click)="Edit('Edit')">Edit</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>

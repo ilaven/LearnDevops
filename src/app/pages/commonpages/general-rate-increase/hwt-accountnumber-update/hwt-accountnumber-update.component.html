@@ -1,0 +1,261 @@
+<style type="text/css">
+    .heading_main {
+        background: #f4f8fb !important;
+        border-radius: 0px;
+        color: #000000 !important;
+        font-weight: 500;
+        font-size: 13px;
+        border-bottom: 1px solid #e5e5e5;
+        font-family: 'Lato', sans-serif !important;
+    }
+
+    .mat-dialog-container {
+        padding: 5px;
+    }
+
+    .close_icon {
+        font-size: 1.25em;
+        text-align: right;
+    }
+
+    .header_bg {
+        background-color: #013f78;
+    }
+
+    .p-0 {
+        padding: 0px;
+    }
+
+    .close_icon .fa-close {
+        font-size: 1.35em;
+        padding: 0.60em;
+        color: #ffffff;
+    }
+
+    .contact_title_discount p {
+        margin: 10px;
+        font-size: 1.45em;
+        color: #ffff;
+        font-weight: 500;
+        font-family: 'Lato', sans-serif !important;
+    }
+
+    table.table-bordered thead tr th {
+        border-right: 1px solid #e7e7e7 !important;
+        color: #000000;
+        text-transform: capitalize;
+        font-size: 14px;
+        font-family: 'Lato', sans-serif !important;
+        text-align: center;
+    }
+
+    .header_bg_01 {
+        background-color: #e5f3fe;
+    }
+
+    .header_bg_01 p {
+        color: #000000;
+        font-weight: 500;
+        font-size: 1.45em;
+        margin: 5px;
+        font-family: 'Lato', sans-serif !important;
+    }
+
+    button.blu-btn,
+    button.can-btn {
+        padding: 8px 47px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, rgba(73, 154, 235, 1) 0%, rgba(33, 124, 229, 1) 100%);
+        font-size: 1.35em;
+        color: white;
+        border: none;
+        margin-right: 20px;
+        font-family: 'Lato', sans-serif !important;
+        box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+    }
+
+    button.can-btn {
+        border-color: #ed968f !important;
+        background: linear-gradient(90deg, rgba(252, 117, 114, 1) 0%, rgba(242, 40, 40, 1) 100%);
+    }
+
+    .contact_title_discount.btn-discount section {
+        margin: auto;
+    }
+
+    .charge_thtr thead th:nth-child(1) {
+        width: 100px !important;
+    }
+
+    .loading_img.loader {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin-left: 0px;
+        padding-top: 0%;
+    }
+
+    .loading_img.loader img {
+        margin-top: 17%;
+    }
+
+    .heading {
+        width: 100%;
+    }
+
+    .netSpend {
+        font-weight: bolder;
+        background: #f4f8fb;
+        border-radius: 0px;
+        color: #000000 !important;
+        font-size: 13px;
+        border-bottom: 1px solid #e5e5e5;
+        font-family: 'Lato', sans-serif !important;
+        text-align: center;
+    }
+
+    .containerType {
+        background: #f4f8fb;
+        border-radius: 0px;
+        color: #000000;
+        font-size: 13px;
+        border-bottom: 1px solid #e5e5e5;
+        font-family: 'Lato', sans-serif !important;
+        text-align: Left;
+        padding-left: 24px;
+    }
+
+    .netSpendHead {
+        font-weight: bolder;
+        background: #f4f8fb !important;
+        border-radius: 0px;
+        color: #000000 !important;
+        font-size: 13px;
+        border-bottom: 1px solid #e5e5e5;
+        font-family: 'Lato', sans-serif !important;
+        text-align: center;
+    }
+
+    .containerTypeHead {
+        font-weight: bolder;
+        background: #f4f8fb !important;
+        border-radius: 0px;
+        color: #000000 !important;
+        font-size: 13px;
+        border-bottom: 1px solid #e5e5e5;
+        font-family: 'Lato', sans-serif !important;
+        text-align: Left;
+    }
+
+    .search {
+        width: 5%;
+        font-size: 1.3em;
+        font-family: 'Lato';
+        margin-top: 10px;
+    }
+    .input_sty mat-label {
+    color: var(--create-agreemenr-lable-txt);
+    font-family: "Host Grotesk";
+    font-size: 14px;
+}
+</style>
+
+
+
+<div class="px-2 py-2">
+
+      <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Hundredweight Account Number Tier - {{headerService}}</h2>
+                <h6 class="sub-title-txt"></h6>
+            </div>
+            <div class="col-2 p-0">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="input_sty px-2 py-2">
+    <div class="row" >
+        <div class="col-3">
+<mat-label >  Search</mat-label>
+
+            <mat-form-field appearance="outline" class="w-100 compact-field dashboard-form-field">
+                    <span matPrefix class="search_icon">
+                      <i class="ri-search-line align-middle me-1"></i>
+                    </span>
+                    <input matInput placeholder="Seach an account number"[(ngModel)]="accountNumber" (keyup)="onSearch($event.target.value)">
+                  </mat-form-field>
+        </div>
+         
+        
+        <!-- <div style="width:95%;font-family: 'Lato';">
+            <input matInput type="text" class="weightText" [(ngModel)]="accountNumber" 
+                placeholde="Seach an account number"
+                [style.width]="(accountNumber != '')?(((accountNumber.length)*9.5) + 'px'):'200px'"
+                style="min-width:200px;" (keyup)="onSearch($event.target.value)">
+        </div> -->
+    </div>
+</div>
+    <div style="margin-top: 15px;">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 mt-0 w-full border_table cont-sum-tab cont-sum-tab">
+            <ng-container matColumnDef="accountNumber">
+                <th mat-header-cell *matHeaderCellDef class=""
+                    style="padding: 0 20px;text-align: center; font-weight: bold; width:0px;">Account Number</th>
+                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                    [ngStyle]="{'background-color':(rowIndex%2 == 0)?'#EAEFF3':'#F4F8FB'}">
+                    <span>{{row.accountNumber}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="hwtTier">
+                <th mat-header-cell *matHeaderCellDef class=""
+                    style="padding: 0 20px;text-align: center !important; font-weight: bold; width:0px;">Tier</th>
+                    <!-- [disabled] = "currentAgreement" -->
+                <td mat-cell *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                    style="text-align: center !important;"
+                    [ngStyle]="{'background-color':(rowIndex%2 == 0)?'#EAEFF3':'#F4F8FB'}">
+                    <mat-select [(value)]="row.hwtTier" class="weightTextSelect" >
+                        <mat-option *ngFor="let hwtTier of tierValues" [value]="hwtTier">
+                            {{hwtTier}}
+                        </mat-option>
+                    </mat-select>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="netSpend">
+                <th mat-header-cell *matHeaderCellDef class=""
+                    style="padding: 0 20px;text-align: center; font-weight: bold; width:0px;">Net Spend</th>
+                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                    style="text-align: center !important;padding: 0px 20px !important;"
+                    [ngStyle]="{'background-color':(rowIndex%2 == 0)?'#EAEFF3':'#F4F8FB'}">
+                    <span>{{row.netSpend | currency:'USD':'symbol':'1.2-2'}}</span>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+ <tr *ngIf="dataSource.data.length === 0">
+             
+            </tr>
+        </table>
+        <div style="display: flex;justify-content: center;">
+            <p *ngIf="dataSource.data.length == 0">Data Not Available.</p>
+        </div>
+    </div>
+
+    <div class="row mt-9" *ngIf="type == 'Edit'">
+        <div class="col s12 m2 l12 contact_title_discount btn-discount">
+            <section>
+                <div class="example-button-row">
+                    <button class="btn rounded-0 btn_submit " type="submit" name="action"
+                        (click)="Save()">Save</button>
+                    <button style="margin-left: 10px;" class="btn waves-effect waves-light " type="button" name="action"
+                        (click)="close()">Close</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

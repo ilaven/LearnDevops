@@ -1,0 +1,84 @@
+<style>
+   ::ng-deep .cdk-global-scrollblock {
+      overflow-y: hidden !important;
+   }
+   ::ng-deep .mat-mdc-dialog-surface{
+   background-color: var( --body-background);
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}
+</style>
+<div id="main">
+   <div class="row">
+    
+            <div class="col-12 mt-2 mb-2 text-end "><a class="close_btn close_btn_pop " (click)="closeDialog()"><span>CLICK HERE TO
+               CLOSE SCREEN </span> <img src="assets/images/svg/close_1.svg">
+            </a>
+   </div>
+   </div>
+   <div class="row">
+      <div class="col-xl-6 col-md-6 col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <div class="col-md-6 col-12">
+<h4 class="card-title mb-0 flex-grow-1">Data Displayed only for Freight Charge
+                  {{yearData_title?yearData_title : ""}}
+                  {{monthData_title?monthData_title : ""}}</h4>
+               </div>
+               <div class="col-md-6 col-12" >
+
+
+                  
+                     <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end pe-3">
+                            <a class="excelIcon excel_text" (click)="reportExcelDownload('Top10FreightServiceExcel')">  <img src="assets/images/svg/excel_download_icon.svg"> Excel</a>
+                           <br> (Download Top 10 Weight Charges)
+                     </p>
+               </div>
+               
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+               
+                  <div id="pie_chart_Frt" style="width: 100%; height: 480px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para"> Data Displayed only for Freight Charge </p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-xl-6 col-md-6 col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center ">
+               <div class="row">
+                  <div class="col-md-6 col-12">
+<h4 class="card-title mb-0 flex-grow-1"> Data Displayed only for Accessorial Charges
+                  {{yearData_title?yearData_title : ""}}
+                  {{monthData_title?monthData_title : ""}}</h4>
+                  </div>
+                  <div class="col-md-6 col-12">
+ 
+                     <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end pe-3">
+                         <a class="excelIcon excel_text" (click)="reportExcelDownload('Top10AccessorialServiceExcel')">  <img src="assets/images/svg/excel_download_icon.svg"> Excel</a>
+                      <br> (Download Top 10 Extra Charges)
+                     </p>
+                  </div>
+
+               </div>
+               
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+               
+                  <div id="pie_chart_Access" style="width: 100%; height: 480px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data Displayed only for Accessorial Charges</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+</div>

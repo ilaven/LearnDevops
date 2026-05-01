@@ -1,0 +1,96 @@
+.popup-design{
+background-image: url("/assets/images/popup_design.png");
+    background-repeat: no-repeat;
+       background-size: 100% auto;
+    background-position: top center;
+      background-color: var(--card-dashboard);
+}
+.btn{
+    border-radius: 5px !important;
+    min-width: 60px !important;
+}
+.btn-light{
+        border: 1px solid #2AAAE6;
+    background: #fff;
+} 
+.messageStyle{
+font-weight: 600;
+color:var(--chart-text-alert) !important;
+font-size: 15px;
+}
+.logo{
+    line-height: 50px !important;
+}
+.custom-dialog-panel-class.cdk-overlay-pane.mat-mdc-dialog-panel{
+        max-height: 100% !important;
+}
+// .popup-container {
+//   position: relative;
+//   width: 600px;
+//   margin: auto;
+//   background: #fff;
+//   border-radius: 12px;
+//   overflow: hidden;
+//   padding: 40px 30px;
+//   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+// }
+
+// /* LEFT SIDE */
+// .popup-container::before { 
+//   background: url('../../../assets/images/bgimage.png') no-repeat left top;  
+//   content: "";
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 224px;
+//     height: 226px; 
+//     background-size: 100% 80%;
+//     opacity: 0.4;
+//     pointer-events: none;
+//     transform: rotate(-90deg);
+// }
+
+// /* RIGHT SIDE (mirror same image) */
+// .popup-container::after {
+//  content: "";
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 224px;
+//     height: 226px; 
+//     background-size: 100% 80%;
+//     opacity: 0.4;
+//     pointer-events: none;
+//     transform: rotate(-90deg);
+//   background: url('../../../assets/images/bgimage.png') no-repeat right top; 
+//   transform: scaleX(-1); 
+// }
+
+// /* CONTENT */
+// .popup-content {
+//   position: relative;
+//   z-index: 2;
+//   text-align: center;
+// }
+
+// .popup-content input {
+//   width: 100%;
+//   padding: 10px;
+//   margin: 10px 0;
+//   border: 1px solid #ccc;
+//   border-radius: 6px;
+// }
+
+// .row {
+//   display: flex;
+//   gap: 10px;
+// }
+
+// button {
+//   background: #2ea3c9;
+//   color: #fff;
+//   border: none;
+//   padding: 12px 25px;
+//   border-radius: 6px;
+//   margin-top: 15px;
+// }

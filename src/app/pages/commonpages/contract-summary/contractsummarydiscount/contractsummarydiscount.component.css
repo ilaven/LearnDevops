@@ -1,0 +1,274 @@
+h2.mat-dialog-title {
+    color: #ffffff !important;
+    padding-left: 0px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-family: "Host Grotesk";
+    margin-bottom: 0px;
+}
+
+.bg-pop-title {
+   background: var(--title-background-bg);
+    background-size: contain;
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding: 5px 15px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+}
+
+.close-btn {
+    padding-right: 0px !important;
+    margin-top: -7px;
+    margin-bottom: -7px;
+    margin-right: -10px;
+}
+
+.closeBtn {
+    height: 20px;
+}
+
+h6.sub-title-txt {
+    color: #CDEFFF;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.input_sty mat-form-field .mat-mdc-text-field-wrapper {
+    height: 5vh;
+    border: 1px solid #D5DAE7;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.service-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-small {
+    width: 220px;
+}
+
+.weight-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.weight-box {
+    width: 90px;
+}
+
+.range-text {
+    white-space: nowrap;
+}
+
+.netspend-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 180px;
+}
+
+.netspend-text {
+    white-space: nowrap;
+}
+
+.w-120 {
+    width: 120px;
+}
+
+.w-140 {
+    width: 140px;
+}
+
+/* MAIN TABLE SCROLL */
+.table-scroll {
+    max-height: 750px !important;
+    overflow: auto;
+}
+
+/* Even rows */
+::ng-deep .cont-sum-tab .mat-mdc-row:nth-child(even) {
+       background-color: var(--table-bg-even1);
+}
+
+.metrics-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.tab_sty mat-tab-group {
+    gap: 15px;
+}
+
+.table-scroll {
+
+    overflow-y: auto;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 9px;
+    font-size: 13px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* HEADER */
+thead th {
+    background: #1957A0;
+    color: #fff;
+    z-index: 3;
+}
+
+.metrics-table thead tr {
+    background: #1957A0;
+}
+
+.action-cell {
+    text-align: center;
+    width: 70px;
+}
+
+.delete-link {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.gridIcon {
+    width: 18px;
+    height: 18px;
+    height: 15px !important;
+    margin-left: 10px;
+}
+
+.netspend-text {
+    white-space: nowrap;
+}
+
+table.cont-sum-tab tbody tr td .mat-mdc-form-field-flex input {
+    text-align: center !important;
+}
+
+table.cont-sum-tab tbody tr td:first-child .mat-mdc-form-field-flex input {
+    text-align: left !important;
+}
+
+.add_btn {
+    background: white;
+
+    border: 1px solid #CDF0FF !important;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 8px;
+
+}
+
+.add_btn_icon {
+    width: 16px;
+    height: 16px;
+}
+
+.text-notes {
+    color: #FF3030;
+    margin: 0px;
+}
+
+button.btn-cancel {
+    border: 1px solid #2AAAE6;
+    color: var(--search-date) !important;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+button.btn-save {
+    background: #002776 !important;
+    border-radius: 5px;
+    color: white !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.text-titles {
+    color: var(--metrics-color) !important;
+    text-decoration: underline;
+
+}
+
+.border_table th,
+.border_table td {
+    border: 1px solid #B8D3FF
+}
+
+.edit_table_cell {
+   background-color: var(--contract-summary-headeing-main);
+}
+
+.add_text_discount {
+    color: var(--inner-title) !important;
+    font-size: 12px;
+
+}
+
+.mat-mdc-input-element {
+    font: inherit;
+    background: transparent;
+    color: currentColor;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    vertical-align: bottom;
+    text-align: inherit;
+    box-sizing: content-box;
+}
+
+.inputborderBottom,
+.weightText,
+.weightTextRange,
+.weightText {
+    border-bottom: 1px solid #b8d3ff !important;
+}
+
+.mat-mdc-input-element {
+    font: inherit;
+    background: transparent;
+    color: currentColor;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    vertical-align: bottom;
+    text-align: inherit;
+    box-sizing: content-box;
+}
+
+.inputborderBottom,
+.weightText,
+.weightTextRange,
+.weightText {
+    border-bottom: 1px solid #b8d3ff !important;
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}

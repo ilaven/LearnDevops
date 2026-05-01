@@ -1,0 +1,107 @@
+<!-- <div>
+    accountnumber
+  
+</div> -->
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-user-log-popup></app-ups-user-log-popup>
+    }
+</div> -->
+
+
+
+<div class="px-0 pt-0 py-0">
+    <!-- card -->
+    <div class="card m-0 popup-design shadow-none card-height-100">
+        <div class="card-header border-0 align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1 title-sty"> Account Number - {{
+                editAddressFormGroup.get('accountNumber')?.value }}</h4>
+            <button matSuffix type="button"
+                class="bit_eye_icon btn btn-link p-0 text-decoration-none text-muted material-shadow-none"
+                (click)="close()">
+                <!-- <img src="assets/images/close_icon.svg" class="close_icon" alt="close icon" /> -->
+                       <div class="close_icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.301791 1.75541C-0.0997985 1.35375 -0.0997366 0.702715 0.301914 0.301155C0.703565 -0.100404 1.3547 -0.100403 1.75628 0.301259L7.50013 6.04566L13.2444 0.301774C13.646 -0.0997858 14.2972 -0.0997858 14.6988 0.301774C15.1004 0.703333 15.1004 1.35447 14.6988 1.75602L8.95439 7.50002L14.6984 13.2446C15.0999 13.6462 15.0999 14.2973 14.6982 14.6989C14.2966 15.1004 13.6454 15.1004 13.2438 14.6987L7.49992 8.95427L1.75558 14.6983C1.35397 15.0998 0.702825 15.0998 0.301215 14.6983C-0.100405 14.2967 -0.100405 13.6456 0.301215 13.244L6.04577 7.49992L0.301791 1.75541Z" fill="black"/>
+</svg>
+        </div>
+            </button>
+        </div><!-- end card header -->
+
+        <!-- card body -->
+        <div class="card-body pt-2 pb-3">
+            <form [formGroup]="editAddressFormGroup">
+                <div class="row px-5">
+                    <div class="col-md-6 col-12">
+
+                        <label class="mt-3 mb-1">Company Name</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput formControlName="companyName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Address Line 1</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput formControlName="addressLine1">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Address Line 2</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput formControlName="addressLine2">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+
+                        <label class="mt-3 mb-1">City</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput formControlName="city">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">State</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <mat-select formControlName="state">
+                                <mat-option *ngFor="let state of stateCodeList" [value]="state.StateCode">
+                                    {{ state.StateCode }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+
+                        <label class="mt-3 mb-1">Postal</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput formControlName="zipCode">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Country</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <mat-select formControlName="countryCode" (selectionChange)="getStateList($event.value)">
+                                <mat-option *ngFor="let country of countryCodeList" [value]="country.CountryCode+''">
+                                    {{ country.CountryName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Comments</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput formControlName="comments">
+                        </mat-form-field>
+                    </div>
+                    <!-- Buttons -->
+                    <div class="col-12 mt-3 text-center">
+                        <button mat-raised-button color="primary" class="btn me-3 btn_submit waves-effect waves-light "
+                            type="submit" (click)="btn_submit_click()">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- end card body -->
+    </div>
+    <!-- end card -->
+</div>

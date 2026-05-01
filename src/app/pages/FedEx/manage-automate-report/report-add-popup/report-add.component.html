@@ -1,0 +1,126 @@
+
+<style>
+  span{
+  font-size:12px;
+}
+  :host ::ng-deep .mat-radio-button .mat-radio-ripple{
+      height: 20px; 
+      width: 20px;  
+      left: calc(50% - 10px); 
+      top: calc(50% - 10px);
+    } :host ::ng-deep .mat-radio-container{
+      height: 10px;
+      width: 10px;
+    } :host ::ng-deep .mat-radio-outer-circle{
+      height: 10px;
+      width: 10px;
+    } :host ::ng-deep .mat-radio-inner-circle{
+      height: 10px;
+      width: 10px;
+    }
+</style>
+<div >
+<form [formGroup]="reportSchedulerFedexFormGroup" (ngSubmit)="btn_submit_clickFedex()" *ngIf="clientType=='FedEx' ">  
+  <div class="row" >
+<div class="col l12 m12 s12 x12 mx-auto ">
+   <a _ngcontent-ayi-c8="" class="mat-button mat-button-base" mat-button="" mat-dialog-close="" type="button" tabindex="0" aria-disabled="false">
+      <span class="mat-button-wrapper sidenav-close-mail"><i _ngcontent-ayi-c8="" class="material-icons" >close</i></span>
+      <div class="mat-button-ripple mat-ripple" matripple=""></div>
+      <div class="mat-button-focus-overlay"> </div>
+    </a>
+  <h4 *ngIf="btnEdit !='yes'"  class="rep-sch-header">Add Automate Report
+  </h4>
+   <h4 *ngIf="btnEdit=='yes'" class="rep-sch-header">Update Automate Report 
+  </h4>
+  <div class="row">
+<div class="col l3 m3 s3 x3   ">
+<label for="Email"  class="reportFont">Report Name</label>
+</div>
+          <div class="col l9 m9 s9 x9  mb-2 mail-input">
+    <input type="textbox" placeholder="" formControlName="reportItem"  type="text">
+  </div>
+        </div>
+        <div class="row">
+        <div class="col  l3 m3 s3 x3   ">
+
+            <label for="basis" class="reportFont">Time Frame</label>
+           
+           </div>
+           <div class="col l9 m9 s9 x9   ">
+
+             <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="Timebasis"  type="radio" value="Weekly" >
+                      <span>Weekly</span>
+                    </label>
+           </p>
+                </div>
+              </div>
+              <div class="row">
+<div class="col  l3 m3 s3 x3   "></div>
+<div class="col l9 m9 s9 x9  mb-2 "><p class=" no-margin white-text lighten-3 mediam-small">
+<label>
+                    <input class="validate" required="" aria-required="true"  formControlName="Timebasis"  type="radio" value="Monthly"  >
+                    <span>Monthly</span>
+                  </label>
+                         </p>
+</div>
+</div>
+
+<div class="row">
+        <div class="col  l3 m3 s3 x3   ">
+
+            <label for="basis" class="reportFont">Status</label>
+           
+           </div>
+           <div class="col l9 m9 s9 x9   ">
+
+             <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="status"  type="radio" value="1">
+                      <span>Active</span>
+                    </label>
+           </p>
+           <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="status"  type="radio" value="0" >
+                      <span>Inactive</span>
+                    </label>
+           </p>
+                </div>
+              </div>
+ <div class="row">
+        <div class="col  l3 m3 s3 x3   ">
+
+            <label for="basis" class="reportFont">Report Type</label>
+           
+           </div>
+           <div class="col l9 m9 s9 x9   ">
+
+             <p class=" no-margin white-text lighten-3 mediam-small" ><label>
+                     <input class="validate" required="" aria-required="true"  formControlName="reportType"  type="radio" value="Internally" >
+                      <span>Internally</span>
+                    </label>
+           </p>
+                </div>
+              </div>
+              <div class="row">
+<div class="col  l3 m3 s3 x3   "></div>
+<div class="col l9 m9 s9 x9  mb-2 "><p class=" no-margin white-text lighten-3 mediam-small">
+<label>
+                    <input class="validate" required="" aria-required="true"  formControlName="reportType"  type="radio" value="Externally"  >
+                    <span>Externally</span>
+                  </label>
+                         </p>
+</div>
+</div>
+<div class="row">
+<div class="col l5 m5 s5 x5 "></div>
+<div class="col l7 m7 s5 x5 mail-button">
+<button *ngIf="btnEdit !='yes'" class="btn btn-primary" type="submit" name="action" [disabled]="click">Submit</button>
+
+<button *ngIf="btnEdit=='yes'" class="btn btn-primary" type="submit" name="action" [disabled]="click" >Save</button>
+</div>
+</div>
+</div>
+  </div>
+  </form>
+</div>
+

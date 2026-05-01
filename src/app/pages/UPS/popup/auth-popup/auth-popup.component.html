@@ -1,0 +1,43 @@
+<div class="modal-body text-center px-5 py-4 popup-design">
+  <div class="mt-4">
+    <form [formGroup]="authPopupFormGroup" (ngSubmit)="updateClickHandler()">
+      <h4 class="mb-3">Authentication</h4>
+
+      <div class="row">
+        <div class="col-md-12 col-12">
+          <label class="mt-3 mb-1" for="password">Password <span
+                                                        class="text-danger">*</span></label>
+         
+         <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput [type]="passwordFieldType"
+                                                       formControlName="password"/>
+
+                                                    <button matSuffix type="button" (click)="togglePasswordVisibility()"
+                                                        class="bit_eye_icon btn btn-link text-decoration-none text-muted material-shadow-none">
+                                                        <i class="mdi align-middle" [ngClass]="{'mdi-eye-outline': passwordFieldType === 'password',
+                                                            'mdi-eye-off-outline': passwordFieldType === 'text'  }">
+                                                        </i>
+                                                    </button>
+                                                </mat-form-field>
+                                                        
+          <p class="text-danger mt-2">{{ error_text }}</p>
+        </div>
+      </div>
+
+      <div class="hstack gap-2 justify-content-center">
+        <button
+          type="button"
+          class="btn btn-light btn_clear"
+          (click)="closeDialog()"
+        >
+          Close
+        </button>
+
+        <button type="submit" class="btn me-3 btn_submit waves-effect waves-light">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col">
+    <div class="px-0 py-3">
+      <div class="row header_section pb-1">
+          <div class="col-12">
+              <div class="d-flex align-items-lg-center text-md-start text-center flex-lg-row flex-column">
+                  <div class="col-lg-3 col-md-12 col-12">
+                      <h4 class="fs-16 mb-1 pageTitle">Manage Automate report</h4>
+                  </div>
+                  <div class="col-12 col-md-5 mt-3 mt-lg-0"></div>
+
+                  <div class="col-12 col-lg-4 ms-auto col-md-4 mt-3 mt-lg-0">
+                      <div class="row g-3 mb-0 align-items-center justify-content-md-end justify-content-center">
+                          <div class="col-10">
+                            <mat-form-field appearance="outline" class="w-100 compact-field search_input">
+                                <span matPrefix class="search_icon">
+                                    <i class="ri-search-line align-middle me-1"></i>
+                                </span>
+                                <input matInput placeholder="Filter Report Name" (keyup)="FilterReports_changeHandler($event)"
+                                    [(ngModel)]="FilterReports" name="Search" type="text"/>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-2 d-flex align-items-center more_btn_drop">
+                            <button type="button" class="btn btn-soft-info btn-sm material-shadow-none blueBackground p-1" (click)="openReportAdd()"                               
+                                matTooltip="CLICK HERE TO ADD REPORT"> <i class="ri-add-line fs-18 align-middle" style="color: white;" ></i> </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="px-0 pt-0 py-3">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body p-1">
+                <div class="table-wrapper">
+                  <div>
+                    <table class="metrics-table">
+                      <thead>
+                          <tr>
+                          <th class="sticky-header">Report Automation Id</th>
+                          <th class="sticky-header">Report Name</th>
+                          <th class="sticky-header">Report Status</th>
+                          <th class="sticky-header">Trigger</th>
+                          <th class="sticky-header">Type</th>
+                          <th class="sticky-header text-center">Action</th>
+                          </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr *ngFor="let datagridObj of clientListFedex; let indexValue = index"
+                          [class.odd-row]="indexValue % 2 === 0" [class.even-row]="indexValue % 2 !== 0">
+                          <td>{{ datagridObj.reportAutomationId }}</td>
+                          <td class="tooltip_mnglClnt">
+                            <div class="clientNameContainer " (click)="datagrid_id_doubleClickHandler(datagridObj)">
+                              <span matTooltip="Click Here To View Report Status"> <a>{{ datagridObj.reportName }}</a></span>
+                            </div>
+                          </td>
+                          <td> {{ datagridObj.reportStatus === '1' ? 'Active' : 'InActive' }} </td>                                                    
+                          <td> {{ datagridObj.trigger }} </td>
+                          <td> {{ datagridObj.type }} </td>
+                          <td>
+                            <button class="btn btn-info waves-light orange" type="button"
+                              (click)="openReportAutomationEdit(datagridObj)">
+                              Edit
+                            </button>
+                          </td>
+                        </tr>
+                        <tr *ngIf="clientListFedex.length === 0">
+                          <td colspan="6" class="text-center py-3">No Record Found</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,191 @@
+<!-- <div>
+    accountnumber
+  
+</div> -->
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-user-log-popup></app-ups-user-log-popup>
+    }
+</div> -->
+
+<div class="row">
+  <div class="col">
+    <div class="px-0 pt-3">
+      <div class="row header_section pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center  flex-lg-row flex-column">
+            <div class="col-lg-3 col-md-12 col-12">
+              <h4 class="fs-16 mb-1 pageTitle">Account Number</h4>
+            </div>
+            <div class=" col-lg-5 col-md-12 col-12 mt-3 mt-lg-0">
+
+
+              <!--end row-->
+            </div>
+            <div class="col-lg-4 col-md-12 col-12 mt-3 mt-lg-0">
+              <div class="row g-3 mb-0 align-items-center justify-content-lg-end justify-content-center">
+
+
+                <!--end col-->
+                <div class="col-5 text-end">
+                  <div class="d-flex flex-column">
+                    <button type="button" class="btn p-0 updated_sort material-shadow-none"
+                      (click)="excelDownloadClickHandler()">
+                      <img src="assets/images/excel.svg" />
+
+                    </button>
+                    <button type="button" class="btn pb-0 updated_sort material-shadow-none"
+                      (click)="SortOrder_Update_ClickHandlerUPS()">
+                      <div>
+                        Updated Sort Order
+                      </div>
+                    </button>
+
+                  </div>
+
+
+                </div>
+              </div>
+
+              <!--end row-->
+            </div>
+          </div><!-- end card header -->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+    <div class="px-0 pt-0 py-3">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body p-1">
+
+              <div class="table-wrapper">
+
+                <!-- TOP SCROLLBAR -->
+                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                  <div class="scroll-content"></div>
+                </div>
+
+                <!-- MAIN TABLE SCROLL -->
+                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                  <table class="metrics-table">
+                    <thead>
+                      <tr>
+                        <th class="sticky-header">Account No</th>
+                        <th class="sticky-header">Account Nickname</th>
+                        <th class="sticky-header">Address</th>
+                        <th class="sticky-header">Start Date</th>
+                        <th class="sticky-header">End Date</th>
+                        <th class="sticky-header text-center">Action</th>
+                        <th class="sticky-header">Sort By Number</th>
+                        <th class="sticky-header text-center w-20 ">Sort Order</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let account of accountAC; let i = index" [class.odd-row]="i % 2 === 0"
+                        [class.even-row]="i % 2 !== 0">
+
+                        <!-- Warehouse Code -->
+                        <td>{{account.accountNo}}</td>
+
+                        <!-- Warehouse Name -->
+                        <td>
+                          <mat-form-field appearance="outline" class="w-100 table-input compact-field input_change">
+                            <input matInput placeholder="" [(ngModel)]="account.nickName"
+                              (click)="nickName_Add_AccountNumber(account)" maxlength="25">
+                          </mat-form-field>
+                        </td>
+
+                        <!-- Address -->
+                        <td>
+                          <div class="address-row" *ngFor="let address of account.addressDetailsList; let j = index">
+                            <div class="address-text"> {{ address.companyName }}<br>
+                              {{ address.addressLine1 }}
+                              {{ address.addressLine2 }} <br>
+                              {{ address.city }} {{ address.state }} <br>
+                              {{ address.zipCode }} {{ address.CountryName }} </div>
+                            <button type="button" title="Edit Address" (click)="openEditAccountPopup(address, i, j)"
+                              class="edit-btn" *ngIf="adminFlag">
+                              <img src="assets/images/edit 2.svg" alt="Edit" />
+                            </button>
+                          </div>
+                        </td>
+
+                        <!-- Date -->
+                        <td>{{account.startDate | date:'MM-dd-yyyy'}}</td>
+
+                        <!-- Empty Column -->
+                        <td>{{account.endDate | date:'MM-dd-yyyy'}}</td>
+
+                        <!-- Update Button -->
+                        <td class="text-center">
+                          <button type="button" class="btn btn-info waves-effect waves-light"
+                            (click)="accountUpdate_ClickHandler(account,i)">Update</button>
+                        </td>
+
+                        <!-- Number Input -->
+                        <td style="text-align: center; width: 4px;" class="sort_by_number">
+                          <mat-form-field appearance="outline"
+                            class="textBoxStyle table-input compact-field input_change">
+                            <input matInput type="number" min="0" [(ngModel)]="account.sortOrder"
+                              (focusout)="onSortOrderFocusOut($event.target.value, i)">
+                          </mat-form-field>
+                        </td>
+
+                        <!-- Up/Down Arrow Buttons -->
+                        <td class="text-center td_w_20">
+                          <!-- Down arrow: show always unless last row -->
+                          <span class="arrow" style="padding-right: 9px;" *ngIf="i !== accountAC.length - 1">
+                            <button type="button" class="btn  waves-light orange" (click)="moveDown(i)">
+
+
+                              <svg width="15" height="28" viewBox="0 0 15 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                  d="M6.23536 1.29622L6.22538 23.6372L2.13173 19.4643C1.89713 19.218 1.57497 19.079 1.23853 19.079C0.128361 19.0886 -0.416772 20.4634 0.374528 21.2586L6.60261 27.6262C7.08953 28.1246 7.8802 28.1246 8.36712 27.6262L14.5952 21.2586C15.815 20.0558 13.9994 18.212 12.8283 19.4643L8.71759 23.662L8.72757 1.29622C8.74005 0.578889 8.1694 -0.00714831 7.46686 6.59002e-05C6.7748 0.00487537 6.22187 0.589614 6.23536 1.29622Z"
+                                  fill="#002776" />
+                              </svg>
+                            </button>
+                          </span>
+
+                          <!-- Up arrow: show only if not first row -->
+                          <span class="arrow" style="padding-left: 20px;" *ngIf="i !== 0">
+                            <button type="button" class="btn  waves-light orange" (click)="moveUp(i)">
+
+                              <svg width="15" height="28" viewBox="0 0 15 28" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                  d="M6.23536 26.7038L6.22538 4.36281L2.13173 8.53573C1.89713 8.78197 1.57497 8.92101 1.23853 8.92101C0.128361 8.91139 -0.416772 7.53662 0.374528 6.74142L6.60261 0.373804C7.08953 -0.124601 7.8802 -0.124601 8.36712 0.373804L14.5952 6.74142C15.815 7.94422 13.9994 9.78797 12.8283 8.53573L8.71759 4.33801L8.72757 26.7038C8.74005 27.4211 8.1694 28.0071 7.46686 27.9999C6.7748 27.9951 6.22187 27.4104 6.23536 26.7038Z"
+                                  fill="#002776" />
+                              </svg>
+
+                            </button>
+                          </span>
+                        </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-md-12">
+                  <p class="para_cls" style="text-align: center;">Data displays the registered Account Numbers. Please
+                    contact LJM to add account numbers that may be missing,<br> 631-844-9500.</p>
+                </div>
+
+              </div>
+
+
+            </div>
+            <!-- end card body -->
+          </div>
+          <!-- end card -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end col -->
+</div>
+<!-- end row -->

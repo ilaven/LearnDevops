@@ -1,0 +1,61 @@
+/* Wrapper */
+.popup-wrapper {
+  padding: 10px;
+}
+
+/* Card */
+.popup-design {
+  border-radius: 12px;
+  overflow: hidden;
+
+  /* FIX: prevent background breaking UI */
+  background-image: url("/assets/images/popup_design.png");
+    background-repeat: no-repeat;
+       background-size: 100% auto;
+    background-position: top center;
+}
+
+/* Header */
+.card-header {
+  background: transparent;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+/* Form spacing */
+.compact-field {
+  margin-top: 15px;
+}
+
+/* Fix Material outline safely */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* DO NOT override MDC internal classes */
+/* ❌ REMOVED:
+.mdc-notched-outline
+.mat-mdc-notch-piece
+*/
+
+/* Button */
+.submit-btn {
+  padding: 8px 25px;
+  font-weight: 500;
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+  .popup-design {
+    background-size: cover;
+  }
+
+  .mat-mdc-form-field-error {
+    display: block !important;
+  }
+}

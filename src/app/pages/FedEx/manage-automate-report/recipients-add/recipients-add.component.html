@@ -1,0 +1,223 @@
+<div id="main">
+  <div class="row clnt_acc">
+    <a mat-button mat-dialog-close type="button">
+      <i class="material-icons">close</i>
+    </a>
+
+    <div class="container cntr_one">
+      <div class="row">
+        <div class="col s12">
+          <h5>Recipients Details</h5>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <h5>{{ lbl_title }}</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12"></div>
+
+      <div class="col s12">
+        <div class="container">
+          <div id="sales-chart">
+            <div class="col s12 m12 l12">
+              <div id="Form-advance">
+                <form class="col s12" [formGroup]="RecipientDetailsFormGroup">
+                  <div class="row">
+                    <div class="col l3 m3 s3 x3">
+                      <label for="emailName" class="reportFont">Email Name</label>
+                    </div>
+                    <div class="col l9 m9 s9 x9 mb-2 mail-input">
+                      <input
+                        id="emailName"
+                        type="text"
+                        formControlName="emailName"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col l3 m3 s3 x3">
+                      <label for="emailId" class="reportFont">Email Id</label>
+                    </div>
+                    <div class="col l9 m9 s9 x9 mb-2 mail-input">
+                      <input
+                        id="emailId"
+                        type="text"
+                        formControlName="emailId"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col l3 m3 s3 x3">
+                      <label class="reportFont">Code</label>
+                    </div>
+
+                    <div class="col l9 m9 s9 x9">
+                      <p class="no-margin white-text lighten-3 mediam-small">
+                        <label>
+                          <input
+                            class="validate"
+                            formControlName="mailCode"
+                            type="radio"
+                            value="TO"
+                          />
+                          <span>To</span>
+                        </label>
+                      </p>
+
+                      <p class="no-margin white-text lighten-3 mediam-small">
+                        <label>
+                          <input
+                            class="validate"
+                            formControlName="mailCode"
+                            type="radio"
+                            value="CC"
+                          />
+                          <span>CC</span>
+                        </label>
+                      </p>
+
+                      <p class="no-margin white-text lighten-3 mediam-small">
+                        <label>
+                          <input
+                            class="validate"
+                            formControlName="mailCode"
+                            type="radio"
+                            value="BCC"
+                          />
+                          <span>BCC</span>
+                        </label>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col l3 m3 s3 x3">
+                      <label class="reportFont">Status</label>
+                    </div>
+
+                    <div class="col l9 m9 s9 x9">
+                      <p class="no-margin white-text lighten-3 mediam-small">
+                        <label>
+                          <input
+                            class="validate"
+                            formControlName="status"
+                            type="radio"
+                            value="1"
+                          />
+                          <span>Active</span>
+                        </label>
+                      </p>
+
+                      <p class="no-margin white-text lighten-3 mediam-small">
+                        <label>
+                          <input
+                            class="validate"
+                            formControlName="status"
+                            type="radio"
+                            value="0"
+                          />
+                          <span>Inactive</span>
+                        </label>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col m4 s12 setting-space">
+                    <button
+                      class="btn waves-effect waves-light gradient-45deg-light-blue-cyan mr1"
+                      type="button"
+                      (click)="btn_add_clickHandler()"
+                      *ngIf="showAddBtn"
+                    >
+                      Add
+                    </button>
+
+                    <button
+                      class="btn waves-effect waves-light gradient-45deg-light-blue-cyan mr1"
+                      type="button"
+                      (click)="btn_upt_clickHandler()"
+                      *ngIf="showUpdateBtn"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col s12">
+              <div class="container">
+                <div class="section">
+                  <div class="row">
+                    <div class="col s12 m2 l12">
+                      <div class="col s12 no-padding">
+                        <div class="card animate fadeUp">
+                          <div class="card-content">
+                            <div class="row">
+                              <div class="table-responsive tableFixHead">
+                                <table class="table table-bordered table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>Email Name</th>
+                                      <th>Email Id</th>
+                                      <th>Status</th>
+                                      <th>Code</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr
+                                      *ngFor="let gridObj of gridObjList; let i = index"
+                                      (dblclick)="dgrid_doubleClickHandler(gridObj)"
+                                      style="cursor: pointer"
+                                    >
+                                      <td>{{ gridObj.name }}</td>
+                                      <td>{{ gridObj.mailId }}</td>
+                                      <td>{{ gridObj.status === '1' ? 'Active' : 'Inactive' }}</td>
+                                      <td>{{ gridObj.code }}</td>
+                                      <td>
+                                        <button
+                                          class="btn waves-effect waves-light accent-2"
+                                          type="button"
+                                          style="height: 35px"
+                                          (click)="openRecipientsDetailsEdit(gridObj)"
+                                        >
+                                          Edit
+                                        </button>
+                                      </td>
+                                    </tr>
+
+                                    <tr *ngIf="gridObjList.length === 0">
+                                      <td
+                                        colspan="5"
+                                        style="text-align: center !important; font-weight: bold; padding-top: 20px"
+                                      >
+                                        No Record Found
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

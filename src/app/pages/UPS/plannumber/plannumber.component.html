@@ -1,0 +1,107 @@
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-plannumber></app-ups-plannumber>
+    }
+</div> -->
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-active-users-popup></app-ups-active-users-popup>
+    }
+  
+</div> -->
+
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-user-log-popup></app-ups-user-log-popup>
+    }
+</div> -->
+
+<div class="row">
+    <div class="col">
+        <div class="px-0 pt-3">
+            <div class="row header_section pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center  flex-lg-row flex-column">
+                        <div class="col-lg-3 col-md-12 col-12">
+                            <h4 class="fs-16 mb-1 pageTitle">Plan Numbers</h4>
+                        </div>
+                    </div><!-- end card header -->
+                </div>
+                <!--end row-->
+            </div>
+        </div>
+        <div class="px-0 pt-0 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body p-1">
+
+                            <div class="table-wrapper">
+
+                                <!-- TOP SCROLLBAR -->
+                                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                                    <div class="scroll-content"></div>
+                                </div>
+
+                                <!-- MAIN TABLE SCROLL -->
+                                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                                    <table class="metrics-table">
+                                        <thead>
+                                            <tr>
+
+                                                <th class="sticky-header">Plan No</th>
+                                                <th class="sticky-header">Nick Name</th>
+                                                <th class="sticky-header">Start Date</th>
+                                                <th class="sticky-header">End Date</th>
+                                                <th class="sticky-header text-center">Action</th>
+
+
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let plan of planAC; let i = index" [class.odd-row]="i % 2 === 0"
+                                                [class.even-row]="i % 2 !== 0">
+
+                                                <td>{{plan.planNo}}</td>
+                                                <td>
+                                                    <mat-form-field appearance="outline"
+                                                        class="w-100 table-input compact-field input_change">
+                                                        <input matInput placeholder="" [(ngModel)]="plan.nickName"
+                                                            (click)="nickName_Add_PlanNumber(plan)" maxlength="25">
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>{{plan.startDate | date:'MM-dd-yyyy'}}</td>
+                                                <td>{{plan.endDate | date:'MM-dd-yyyy'}}</td>
+
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-info waves-light orange"
+                                                        (click)="planUpdate_ClickHandler(plan,i)">Update</button>
+
+                                                </td>
+
+                                            </tr>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <!-- end card body -->
+                    </div>
+                    <!-- end card -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end col -->
+</div>
+<!-- end row -->

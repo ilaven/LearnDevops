@@ -1,0 +1,137 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row  pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1 pageTitle">Geographical Heat Map - Domestic</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-0 pt-0 py-3">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div>
+   @if(!showTitleData()){
+                            <button class="text-start btn" (click)="onBackButtonClick()"> <span class="d-flex align-items-center"> <i class="mdi mdi-arrow-left search-widget-icon fs-20 pe-2"></i> Back </span> </button>
+                            }
+
+                        </div>
+                      
+                        <div class="card-header border-0 align-items-center text-center">
+                           
+                            @if(showTitleData()){
+                            <h4 class="card-title mb-0 flex-grow-1">Click on any state to
+                                Zoom In
+                            </h4>
+                            }
+                            @else if(!showTitleData()){
+
+                            <h4 class="card-title mb-0 flex-grow-1 text-uppercase"> Displaying state of {{countyNameValue}}</h4>
+                            } <p> for {{yearTitle() ? yearTitle() : ""}} {{filterLabelVal() ? filterLabelVal() :
+                                ""}}
+                                {{servicefilterLabelVal() ? servicefilterLabelVal() : ""}} </p>
+                        </div>
+                        <div class="card-body p-0 pb-2">
+                            <div class="w-100">
+                                <div id="chartdiv" style="width: 100%; height: 620px"></div>
+                            </div>
+                            <div class="w-100  mb-1 pe-3  text-end">
+                                <p class="btm_para">Data displayed for {{yearTitle() ? yearTitle() : ""}}
+                                    {{filterLabelVal() ? filterLabelVal() : ""}} {{servicefilterLabelVal() ?
+                                    servicefilterLabelVal() : ""}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search Popup -->
+<div class="customizer-setting d-none d-md-block" style="top:99px;">
+      <div class="btn-info shadow-lg btn btn-lg p-2 sideBarSearchBtn d-flex" data-bs-toggle="offcanvas"
+        data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas"
+        (click)="openEnd(filtetcontent)">
+       <i class="mdi mdi-filter-outline search-widget-icon fs-20 pe-2"></i> Filter
+    </div>
+</div>
+<ng-template #filtetcontent let-offcanvas>
+    <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+        <h5 class="m-0 me-2 text-white">Filter</h5>
+        <button type="button" class="btn-close btn-close-white ms-auto " data-bs-dismiss="offcanvas" aria-label="Close"
+            (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body p-0 right-sidebar">
+        <ngx-simplebar class="h-100">
+            <form [formGroup]="apiControllerFormGroup" class="domesClstwo">
+                <div class="p-4">
+                    <div class="row">
+                        <div class="col-md-12 col-12">
+                            <label class="mt-3 mb-1">Year</label>
+                            <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                <mat-select formControlName="year" (selectionChange)="cmb_year_changeHandler()"
+                                    required>
+                                    <mat-option *ngFor="let yearItem of selectYear; let i = index" [value]="yearItem">
+                                        {{yearItem}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12 col-12">
+                            <label class="mt-3 mb-1">Filter Used to Populate:</label>
+                            <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                <mat-select formControlName="filter" (selectionChange)="filter_cmb_clickHandler()"
+                                    required>
+                                    <mat-option *ngFor="let filter of filterLabel; let i = index"
+                                        [value]="filter.value">
+                                        {{filter.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12 col-12">
+                            <label class="mt-3 mb-1">Service</label>
+                            <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                <mat-select formControlName="servicefilter"
+                                    (selectionChange)="Service_filter_cmb_clickHandler()" required>
+                                    <mat-option *ngFor="let Service of ServicefilterLabel; let i = index"
+                                        [value]="Service.value">
+                                        {{Service.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12 col-12">
+                            <label class="mt-3 mb-1">Recipient/Shipper</label>
+                            <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                <mat-select formControlName="type" (selectionChange)="Recieved_Shipped_CountHandler()"
+                                    required>
+                                    <mat-option *ngFor="let Service of Shipped_ReceivedLabelArr; let i = index"
+                                        [value]="Service"> {{Service}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12 py-3 bb_1 text-center">
+                            <p style="margin: 0px;"><label> <span>
+                                
+                                   <button type="button" (click)="excelDownload_clickHandler()"
+                class="btn p-0 download_btn material-shadow-none"
+                aria-label="Download Excel file">
+            <img src="assets/images/excel.svg"
+                 alt="Excel icon"
+                >
+            <span> Excel</span>
+        </button>
+                                
+    </span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ngx-simplebar>
+    </div>
+</ng-template>

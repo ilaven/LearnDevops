@@ -1,0 +1,71 @@
+<style>
+  /* .compare-dialog-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+  } */
+
+  .compare-dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 24px 0 24px;
+  }
+</style>
+
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="compare-dialog-wrapper">
+
+  <div id="main">
+    <div class="compare-dialog-header p-0">
+      <a class="close_btn close_btn_pop" (click)="close()">
+        <span>CLICK HERE TO CLOSE SCREEN</span>
+        <img src="assets/images/svg/close_1.svg">
+      </a>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <div class="padding-0 revenubandcls" style="display: flex-inline;">
+          <div class="col s12 m12 center-align pl-0  pr-0">
+            <h2 class="header  mt-1 text-center">Revenue Tier Analysis and Rolling 52 Week Spend - {{clientName}}</h2>
+            <div (click)="savePDF()" class="save-rev pl-12" style="display: flex; float: right;">
+              <span>    <img src="assets/images/svg/pdf_download.svg" /></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12">
+      <div class="container">
+        <div id="sales-chart">
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <div class="card animate fadeUp">
+                <div class="card-content p-4">
+                  <div class="row">
+                    <div class="col s12">
+                      <div id="chartdiv1" style="width: 100%; height: 550px"></div>
+                      <h6><i class="ri-information-2-line info_icon"></i>&nbsp;<span>Bold = Target
+                          Tier</span></h6>
+                      <h6><i class="fa fa-info-circle info_icon" aria-hidden="true"></i>&nbsp;<span>Solid Line = Weekly
+                          Revenue Band</span></h6>
+                      <h6><i class="fa fa-info-circle info_icon" aria-hidden="true"></i>&nbsp;<span>Dotted Line = Total
+                          52 Week Net Spend</span></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

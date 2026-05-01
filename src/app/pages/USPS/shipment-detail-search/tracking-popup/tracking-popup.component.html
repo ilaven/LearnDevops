@@ -1,0 +1,167 @@
+<style>
+   ::ng-deep .cdk-global-scrollblock {
+      overflow-y: hidden !important;
+   }
+
+   ::ng-deep .mat-mdc-dialog-surface {
+      background-color: var(--body-background);
+   }
+
+   .carrier-charges-popup {
+      /* width: 100vw;
+  height: 100vh; */
+      display: flex;
+      flex-direction: column;
+   }
+
+   .carrier-charges-header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px 5px 18px 5px;
+   }
+
+   .card,
+   .card .card-header {
+      background: var(--card-dashboard);
+   }
+
+   .popheader_text {
+      color: var(--popup_title) !important;
+   }
+</style>
+
+<div id="main" class="carrier-charges-popup">
+   <div class="col-md-12 col-12 text-md-end text-end">
+         <a class="close_btn close_btn_pop" (click)="closeDialog()">
+            <span>CLICK HERE TO CLOSE SCREEN</span> <img src="assets/images/svg/close_1.svg" alt="Close"> </a>
+      </div>
+   <div class="carrier-charges-header">
+      <div class="col-md-12 col-12 text-center">
+         <h2 class="header popheader_text mb-0"> Shipment Detail Search </h2>
+      </div>
+      
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-12">
+         <div class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end pe-3">
+         <div class="more_btn_drop">
+            <button type="button" (click)="toggleColumnPicker()"
+               class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 " style="background: #ffffff !important;">
+               <i class="ri-more-line fs-18 align-middle"></i>
+            </button>
+            <div *ngIf="showColumnPicker"  class="view_more showColumnPicker" style="display: grid;">
+               <button type="button" class="btn p-0 mb-2" (click)="generatetrackingexcel()"><img class="showColumnPickerImg"
+                     src="assets/images/svg/excel_download_icon.svg"> <span>Export to PDF</span>
+               </button>
+               <button type="button" class="btn p-0" (click)="generatetrackingpdf()"><img class="showColumnPickerImg"
+                     src="assets/images/svg/pdf_download.svg"> <span>Export to PDF</span>
+               </button>
+                        </div>
+         </div>
+
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-7  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex titleBg">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase ">Package Details </h4>
+            </div>
+            <div class="card-body p-0 ">
+               <div class="w-100">
+                  <table class="table   charge_description charge_thtr  mb-0 minheight">
+                     <tbody>
+                        <tr class="tabletotalRows">
+                           <th>Tracking Number</th>
+                           <td>{{tracking_id}}</td>
+                           <th>Invoice Date</th>
+                           <td>{{printDate}}</td>
+                        </tr>
+                        <tr class="tabletotalRows">
+                           <th>Mail Class</th>
+                           <td>{{classService}}</td>
+                           <th>Rated Weight<</th>
+                           <td>{{ratedWeight}} {{ratedWeightUnit}}</td>
+                        </tr>
+                        <tr class="tabletotalRows">
+                           <th>Reference1</th>
+                           <td>{{reference1}}</td>
+                           <th>Shipment Status</th>
+                           <td>{{shipmentStatus}}</td>
+                        </tr>
+                        <tr class="tabletotalRows">
+                           <th>Length</th>
+                           <td>{{length}}</td>
+                           <th>Width</th>
+                           <td>{{width}}</td>
+                        </tr>
+                        <tr class="tabletotalRows">
+                           <th>Height</th>
+                           <td>{{height}}</td>
+                           <th></th>
+                           <td></td>
+                        </tr>                       
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-5  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex titleBg">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Address Details</h4>
+            </div>
+            <div class="card-body p-0">
+               <div class="w-100">
+                  <table class="table  address charge_description charge_thtr  mb-0 minheight">
+                     <tbody>
+                        <tr class="">
+                           <th class="pt-2 pb-2 titleAddress">Sender :</th>
+                           <td class="pt-2">{{shipperAddressLine1}}</td>
+                           <th class="pt-2 pb-2 titleAddress">Receiver :</th>
+                           <td class="pt-2">{{receiverAddressLine1}}</td>
+                        </tr>
+                        <tr class="">
+                           <th></th>
+                           <td>{{shipperCity}}, {{shipperState}}, {{shipperPostal}}</td>
+                           <th></th>
+                           <td>{{receiverCity}}, {{receiverState}}, {{receiverPostal}}</td>
+                        </tr>
+                        <tr class="">
+                           <th></th>
+                           <td>{{shipperCountry}}</td>
+                           <th></th>
+                           <td>{{receiverCountry}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-12  col-12">
+         <h4 class="card-title mb-0 flex-grow-1 text-uppercase pt-3 pb-2">Total Charge Details</h4>
+         <div class="card cardHide">
+            <div class="card-body p-0 ">
+               <div class="w-100">
+                  <table class="table table-bordered charge_thtr metrics-table charge_description mb-0"
+                     style="text-transform: none !important;">
+                     <thead>
+                        <tr>
+                           <th>Amount Paid</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>{{amountPaid | currency:'USD':true:'1.2-2'}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

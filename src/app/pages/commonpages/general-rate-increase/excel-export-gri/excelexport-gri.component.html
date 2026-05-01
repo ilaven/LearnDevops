@@ -1,0 +1,57 @@
+ 
+
+
+<div class="px-2 py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Export to {{reportType}}</h2>
+                <h6 class="sub-title-txt"></h6>
+            </div>
+            <div class="col-2 p-0">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()"><img class="closeBtn" src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input_sty px-2 py-2">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <label style="margin: 0; display: flex; align-items: center; font-weight: normal;    justify-content: end;">
+                    <input type="checkbox" [(ngModel)]="addExternalReport" style="margin-right: 5px;" />
+                    <span>Additional Reporting</span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ">
+                <mat-label>Choose Agreement</mat-label>
+                <p style="margin-left: 12px; margin-top: 0px;margin-bottom: 0px;">
+                    <small *ngIf="exportClicked && (selected.length == 0)" style="color: red;">Choose atleast one
+                        agreement</small>
+                </p>
+            </div>
+            <div class="col-12">
+                <div style="height: 180px; overflow-y: scroll;border: 1px solid #D5DAE7;border-radius: 4px;">
+                    <div *ngFor="let scenario of totalScenariosSignal();let rowIndex =index"
+                        style="margin-left: 16px;display: flex;">
+                        <div style="width:4%;">
+                            <div matInput style="text-align:left;margin-top:15px">
+                                <input type="checkbox" [checked]="this.selected.includes(scenario.targetId)"
+                                    (click)="onToggle($event,scenario.targetId)">
+                            </div>
+                        </div>
+                        <div
+                            style="text-align: left;font-family: 'Lato', sans-serif !important;margin-left:12px;width: 95%;margin-top: 12px;">
+                            {{scenario.targetName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3 text-center">
+                <button mat-raised-button color="primary" (click)="export()" class="btn_save_apply  ms-0"> Export</button>
+            </div>
+        </div>
+    </div>
+</div>

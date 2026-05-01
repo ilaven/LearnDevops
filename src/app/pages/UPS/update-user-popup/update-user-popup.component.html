@@ -1,0 +1,112 @@
+<style>
+	.custom-dialog-panel-class.cdk-overlay-pane.mat-mdc-dialog-panel{
+		max-width: '60%';
+	}
+</style>
+
+<div class="row m-3">
+	<div class="col-sm-11 s12 text-center ">
+		<h3>Add New User</h3>
+	</div>
+	<div class="col-sm-1 s12 text-end">
+		<a class="close_btn close_btn_pop" (click)="closeDialog()"> 
+        	<img src="assets/images/svg/close_1.svg" alt="Close"> </a> 
+	</div>
+			
+	<div class="col-sm-12 s12">
+		<div class="container">
+			<div id="Form-advance search-container" style="margin-top: 15px;">
+				<form class="col s12" [formGroup]="addNewUserFormGroup">
+					<div class="row">
+						<div class="col-md-4 col-4 m5 s12">
+							<mat-label class="m2">User Name</mat-label>
+							<mat-form-field appearance="outline" class="w-100 compact-field input_change">													
+								<input matInput formControlName="userName" />
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 col-4 m5 s12">
+							<mat-label class="mt-3 mb-1">Password</mat-label>
+							<mat-form-field appearance="outline" class="w-100 compact-field input_change">	
+								<input matInput type="password" formControlName="password" />
+							</mat-form-field>
+						</div>
+
+						<div class="col m2 s6 setting-space d-flex align-items-center gap-2">
+							<button type="button" mat-raised-button class="btn me-3 btn_submit waves-effect waves-light"
+								color="primary"	(click)="addClickHandler()" *ngIf="showAddBtn">
+								ADD
+							</button>
+
+							<button	type="button"mat-raised-button color="primary" class="btn me-3 btn_submit waves-effect waves-light"
+								(click)="updateClickHandler()" *ngIf="showUpdateBtn">
+								UPDATE
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>				
+
+		<div class="col s12 pt-4">
+			<div class="container">
+				<div class="row">
+					<div class="col s12 m12 l12">
+						<div class="col s12 no-padding">
+							<div class="cards">
+								<div class="card-content">
+									<div>
+										<div class="row">
+											<div class="col s12">
+											<h5>User Name and Password List</h5>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="table-responsive">
+												<table class="table table-bordered table-striped">
+													<thead>
+														<tr>
+															<th>User Name</th>
+															<th>Password</th>
+															<th>Edit</th>
+															<th>Delete</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr *ngFor="let gridObj of gridObjList">
+															<td>{{ gridObj.userName }}</td>
+															<td>{{ gridObj.password }}</td>
+															<td>
+																<button type="button"
+																	class="btn btn-primary"
+																	(click)="editClickHandler(gridObj)">
+																	EDIT
+																</button>
+															</td>
+															<td>
+																<button	type="button"
+																	class="btn btn-primary"
+																	(click)="openDeletePopup(gridObj)">
+																	DELETE
+																</button>
+															</td>
+														</tr>
+
+														<tr *ngIf="gridObjList.length === 0">
+															<td colspan="4" class="text-center">No records found</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,142 @@
+<style>
+    .Search_title {
+        font-size: 1.4em;
+        font-weight: 600;
+        text-transform: capitalize !important;
+        font-family: 'Lato', sans-serif !important;
+        padding-left: 15px;
+        color: rgb(74, 89, 100);
+        margin: 0px;
+    }
+
+    .Sub_title {
+        text-transform: capitalize !important;
+        font-family: 'Lato', sans-serif !important;
+        padding-left: 15px;
+        color: rgb(100, 116, 128);
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .image_sty {
+        position: absolute;
+        padding: 20px 0px;
+    }
+
+    .mat-dialog-container {
+        padding: 0px !important;
+        overflow: unset !important;
+    }
+
+    .applybtn {
+        margin-left: 100px;
+    }
+
+    .close_btn {
+        position: absolute;
+    }
+</style>
+
+<!-- 
+<i style="text-align: right;float: right;font-size: 20px" class="fa fa-close" (click)="close()"></i>
+<div class="container">
+
+    <div class="row">
+        <div class="row heading">
+            <div class="col s12 m12 l12 contact_title_discount header_bg p-0"
+                style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0px;">
+                <p class="Search_title" style="margin: 0; margin-right:15px;">Export to Excel</p>
+                <label style="margin: 0; display: flex; align-items: center; font-weight: normal;">
+                    <input type="checkbox" [(ngModel)]="addExternalReport" style="margin-right: 5px;" />
+                    <span>Additional Reporting</span>
+                </label>
+            </div>
+        </div>
+        <p class="Sub_title">Choose agreement</p>
+        <p style="margin-left: 12px; margin-top: 0px;margin-bottom: 0px;">
+            <small *ngIf="exportClicked && (selected.length == 0)" style="color: red;">Choose atleast one
+                agreement</small>
+        </p>
+
+        <div style="height: 180px;
+        overflow-y: scroll;">
+            <div *ngFor="let scenario of totalScenarios;let rowIndex =index" style="margin-left: 16px;display: flex;">
+                <div style="width:4%;">
+                    <div matInput style="text-align:left;margin-top:15px">
+                        <input type="checkbox" [checked]="this.selected.includes(scenario.targetId)"
+                            (click)="onToggle($event,scenario.targetId)">
+                    </div>
+                </div>
+                <div
+                    style="text-align: left;font-family: 'Lato', sans-serif !important;margin-left:12px;width: 95%;margin-top: 12px;">
+                    {{scenario.targetName}}
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center;margin: 10px 0px;">
+            <button _ngcontent-tdj-c142="" mat-flat-button="" class="btn waves-effect waves-light accent-2"
+                style="scale: 0.9;" (click)="export()">Export
+            </button>
+        </div>
+    </div>
+</div> -->
+
+
+
+
+
+<div class="px-2 py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Export to Excel</h2>
+                <h6 class="sub-title-txt"></h6>
+            </div>
+            <div class="col-2 p-0">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()"><img class="closeBtn" src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input_sty px-2 py-2">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <label style="margin: 0; display: flex; align-items: center; font-weight: normal;    justify-content: end;">
+                    <input type="checkbox" [(ngModel)]="addExternalReport" style="margin-right: 5px;" />
+                    <span>Additional Reporting</span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ">
+                <mat-label>Choose Agreement</mat-label>
+                <p style="margin-left: 12px; margin-top: 0px;margin-bottom: 0px;">
+                    <small *ngIf="exportClicked && (selected.length == 0)" style="color: red;">Choose atleast one
+                        agreement</small>
+                </p>
+            </div>
+            <div class="col-12">
+                <div class="dropdown_export mt-2" style="height: 180px; overflow-y: scroll;border: 1px solid #D5DAE7;border-radius: 4px;">
+                    <div *ngFor="let scenario of totalScenariosSignal();let rowIndex =index"
+                        style="margin-left: 16px;display: flex;">
+                        <div style="width:4%;">
+                            <div matInput style="text-align:left;margin-top:15px">
+                                <input type="checkbox" [checked]="this.selected.includes(scenario.targetId)"
+                                    (click)="onToggle($event,scenario.targetId)">
+                            </div>
+                        </div>
+                        <div
+                            style="text-align: left;font-family: 'Lato', sans-serif !important;margin-left:12px;width: 95%;margin-top: 12px;">
+                            {{scenario.targetName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-3 text-center">
+                <button mat-raised-button color="primary" (click)="export()" class="btn_save_apply  ms-0"> Export</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+<div class="px-0 pt-0 py-0">
+
+    <!-- card -->
+    <div class="card m-0 popup-design shadow-none card-height-100">
+        <div class="card-header border-0 align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1 title-sty">Report Scheduler</h4>
+               <button matSuffix type="button"
+                class="bit_eye_icon btn btn-link p-0 text-decoration-none text-muted material-shadow-none"
+                (click)="close()">
+                <!-- <img src="assets/images/close_icon.svg" class="close_icon" alt="close icon" /> -->
+                    <div class="close_icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.301791 1.75541C-0.0997985 1.35375 -0.0997366 0.702715 0.301914 0.301155C0.703565 -0.100404 1.3547 -0.100403 1.75628 0.301259L7.50013 6.04566L13.2444 0.301774C13.646 -0.0997858 14.2972 -0.0997858 14.6988 0.301774C15.1004 0.703333 15.1004 1.35447 14.6988 1.75602L8.95439 7.50002L14.6984 13.2446C15.0999 13.6462 15.0999 14.2973 14.6982 14.6989C14.2966 15.1004 13.6454 15.1004 13.2438 14.6987L7.49992 8.95427L1.75558 14.6983C1.35397 15.0998 0.702825 15.0998 0.301215 14.6983C-0.100405 14.2967 -0.100405 13.6456 0.301215 13.244L6.04577 7.49992L0.301791 1.75541Z" fill="black"/>
+</svg>
+        </div>
+            </button>
+        </div><!-- end card header -->
+
+        <!-- card body -->
+        <div class="card-body pt-2 pb-3">
+
+            <form class="search-container widthCenter_80" [formGroup]="reportSchedulerFedexFormGroup"
+                (ngSubmit)="btn_submit_clickFedex()">
+
+                <div class="row px-5">
+                    <div class="col-md-6 col-12">
+
+                        <label class="mt-3 mb-1">Report Name</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field input_change"
+                            [ngClass]="{ 'is-invalid': submitted && fedexform['reportItem'].errors }">
+                            <mat-select formControlName="reportItem" required>
+                                <mat-option *ngFor="let reportItem of reportItems; let i = index"
+                                    [value]="reportItem.reportName">
+                                    {{ reportItem.reportName }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="submitted && fedexform['reportItem'].errors?.['required']">
+                                * Report Name is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Account Number</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                            <mat-select formControlName="accNo" #accNoSelFedEx required multiple
+                                (valueChange)="toggleAllSelectionFedEx()">
+                                <mat-option #allSelectedValueFedEx [value]="Default">All</mat-option>
+                                <mat-option (onSelectionChange)="toggleSelectionFedEx()"
+                                    *ngFor="let account_detail of accountNumbers"
+                                    [value]="account_detail.primaryAccountNumber">
+                                    <div class="nickName" [innerHTML]="account_detail.nickName"></div>
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="submitted && fedexform['accNo'].errors?.['required']">
+                                * Account Number is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Time Frame</label>
+
+                        <div class="w-100 compact-field input_change mb-3">
+                            <mat-radio-group formControlName="Timebasis" class="w-100"
+                                [ngClass]="{ 'is-invalid': submitted && fedexform['Timebasis'].errors }">
+                                <mat-radio-button value="Weekly">Weekly</mat-radio-button>
+                                <mat-radio-button value="Monthly">Monthly</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <!-- Single error block -->
+                        <div *ngIf="submitted && fedexform['Timebasis'].errors" class="invalid-feedback d-block">
+                            <div *ngIf="fedexform['Timebasis'].errors['required']">
+                                <span style="color:red">* Time Frame is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <label class="mt-3 mb-1">Status</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                            <mat-select formControlName="status">
+                                <mat-option value="Active">Active</mat-option>
+                                <mat-option value="Inactive">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-12 col-12">
+                        <label class="mt-3 mb-1">Email(s)</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <input matInput [ngClass]="{ 'is-invalid': submitted && fedexform['Email'].errors}"
+                                formControlName="Email" type="Email" multiple>
+                            <mat-error *ngIf="submitted && fedexform['Email'].errors?.['required']">
+                                * Email is required
+                            </mat-error>
+                            <mat-error *ngIf="submitted && fedexform['Email'].errors?.['email']">
+                                * Email is invalid
+                            </mat-error>
+                        </mat-form-field>
+                        <p style="margin-top:-10px; font-size:12px;"><b><br />Note: Add multiple emails using a comma
+                                (,) as a
+                                separator</b></p>
+                    </div>
+
+                    <!-- Buttons -->
+
+                    <div class="col-12 mt-3 text-center">
+                        <button mat-raised-button color="primary" class="btn me-3 btn_submit waves-effect waves-light "
+                            type="submit">
+                            {{ btnEdit === 'yes' ? 'Save' : 'Submit' }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,367 @@
+<header id="page-topbar" data-scroll-header (window:scroll)="windowScroll()">
+    <div class="layout-width">
+        <div class="navbar-header">
+            <div class="d-flex align-items-center">
+                <button type="button" matTooltip="Click to collapse" 
+                    class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger material-shadow-none"
+                    id="topnav-hamburger-icon" (click)="toggleMobileMenu($event)">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+
+                <div class="customerLogo" *ngIf="ImageUrlData">
+                    <img [src]="ImageUrlData" class="customerLogo" />
+                </div>
+
+                <div class="invoice-box">
+                    <div class="title">INVOICE PERIOD DATA</div>
+                    <div class="date"> from {{ fileStartDate ? fileStartDate : '\u00A0' }}
+                        to {{ dataasof ? dataasof : '\u00A0' }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div>
+                    <label class="label_customer">Select Customer</label>
+                    <form [formGroup]="adminFormGroup" class="client-form">
+                        <mat-form-field appearance="outline" class="drop_cust Customer-select compact-select">
+                            <mat-select formControlName="selectedClient" #singleSelect [compareWith]="compareClients"
+                                (selectionChange)="cust_cmbid_changeHandler($event)">
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="clientNameFilterCtrl"
+                                        placeholderLabel="Search" noEntriesFoundLabel="No data">
+                                    </ngx-mat-select-search>
+                                </mat-option>
+
+                                <mat-option *ngFor="let option of filteredClients | async" [value]="option">
+                                    {{ option.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+
+                <div>
+                    <label class="label_carrier_data">Select Carrier Data</label>
+                    <div class="serviceTypeGrid">
+                        <button type="button" (click)="chooseCarrier('UPS')"
+                            class="btn btn-primary btn-icon waves-effect waves-light noborder serviceType"
+                            [class.active]="clientType === 'UPS'">
+                            <img src="../../../assets/images/svg/ups.svg" class="serviceLogo1" />
+                        </button>
+
+                        <button type="button" (click)="chooseCarrier('FedEx')"
+                            class="btn btn-danger btn-icon waves-effect waves-light noborder serviceType"
+                            [class.active]="clientType === 'FedEx'">
+                            <img src="../../../assets/images/svg/fedex.svg" class="serviceLogo1" />
+                        </button>
+
+                        <button type="button" (click)="chooseCarrier('OnTrac')"
+                            class="btn btn-info btn-icon waves-effect waves-light noborder serviceType"
+                            [class.active]="clientType === 'OnTrac'">
+                            <img src="../../../assets/images/svg/ontrac.svg" class="serviceLogo1" />
+                        </button>
+
+                        <button type="button" (click)="chooseCarrier('Dhl')"
+                            class="btn btn-dark btn-icon waves-effect waves-light noborder serviceType"
+                            [class.active]="clientType === 'Dhl'">
+                            <img src="../../../assets/images/svg/dhl.svg" class="serviceLogo" />
+                        </button>
+
+                        <button type="button" (click)="chooseCarrier('USPS')"
+                            class="btn btn-info btn-icon waves-effect waves-light noborder serviceType"
+                            [class.active]="clientType === 'USPS'">
+                            <img src="../../../assets/images/svg/usps.svg" class="serviceLogo1" />
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" (click)="openEnd(CompareAnalysis)"
+                    class="btn d-flex align-items-center compare_analysis_btn mar_1" [matTooltip]="tooltipText">
+                    <img src="../../../assets/images/svg/compare_icon.svg" />
+                </button>
+
+                <div class="dropdown ms-sm-1 header-item topbar-user1" ngbDropdown>
+                    <button type="button" class="btn material-shadow-none mar_1" id="page-header-user-dropdown"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ngbDropdownToggle>
+                        <span class="d-flex align-items-center profileIcon">
+                            <img class="rounded-circle header-profile-user" src="assets/images/users/user_bg.png"
+                                alt="Header Avatar" />
+                        </span>
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                        <!-- item-->
+                        <h6 class="dropdown-header">Welcome {{userName}}!</h6>
+                        <a class="dropdown-item" routerLink="/pages/profile">
+                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Profile</span>
+                        </a>
+                        <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas"
+                            aria-controls="theme-settings-offcanvas" (click)="openEnd(filtetcontent)">
+                            <i class="mdi mdi-spin mdi-cog-outline fs-15 me-1"></i>
+                            <span class="align-middle">Setting</span>
+                        </a>
+                        <a class="dropdown-item" (click)="logout()">
+                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle" data-key="t-logout">Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- removeNotificationModal -->
+<ng-template #removenotification let-modal>
+    <!-- <div class="modal-dialog modal-dialog-centered"> -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                id="NotificationModalbtn-close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mt-2 text-center">
+                <!-- <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon> -->
+                <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                    <h4>Are you sure ?</h4>
+                    <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
+                </div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
+                <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal"
+                    (click)="modal.dismiss('Cross click')">Close</button>
+
+            </div>
+        </div>
+
+    </div><!-- /.modal-content -->
+
+</ng-template>
+<!-- Theme Settings -->
+<ng-template #filtetcontent let-offcanvas>
+    <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+        <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
+        <button type="button" class="btn-close btn-close-white ms-auto " data-bs-dismiss="offcanvas" aria-label="Close"
+            (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body p-0 right-sidebar">
+        <ngx-simplebar class="h-100">
+            <div class="p-4">
+                <h6 class="mt-4 mb-0 fw-semibold text-uppercase">Color Scheme</h6>
+                <p class="text-muted">Choose Light or Dark Scheme.</p>
+                <div class="colorscheme-cardradio">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-check card-radio">
+                                <input class="form-check-input" type="radio" name="data-layout-mode"
+                                    id="layout-mode-light" value="light" [checked]="mode === 'light'"
+                                    (change)="changeLayoutMode('light','')">
+                                <label class="form-check-label p-0 avatar-md w-100 material-shadow"
+                                    for="layout-mode-light">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 bg-primary-subtle rounded mb-2"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-primary-subtle"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-primary-subtle"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-primary-subtle"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-light d-block p-1"></span>
+                                                <span class="bg-light d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <h5 class="fs-13 text-center mt-2">Light</h5>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-check card-radio dark">
+                                <input class="form-check-input" type="radio" name="data-layout-mode"
+                                    id="layout-mode-dark" value="dark" [checked]="mode === 'dark'"
+                                    (change)="changeLayoutMode('dark','')">
+                                <label class="form-check-label p-0 avatar-md w-100 bg-dark material-shadow"
+                                    for="layout-mode-dark">
+                                    <span class="d-flex gap-1 h-100">
+                                        <span class="flex-shrink-0">
+                                            <span class="bg-light-subtle d-flex h-100 flex-column gap-1 p-1">
+                                                <span class="d-block p-1 px-2 bg-light-subtle rounded mb-2"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-light-subtle"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-light-subtle"></span>
+                                                <span class="d-block p-1 px-2 pb-0 bg-light-subtle"></span>
+                                            </span>
+                                        </span>
+                                        <span class="flex-grow-1">
+                                            <span class="d-flex h-100 flex-column">
+                                                <span class="bg-light-subtle d-block p-1"></span>
+                                                <span class="bg-light-subtle d-block p-1 mt-auto"></span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                            <h5 class="fs-13 text-center mt-2">Dark</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ngx-simplebar>
+    </div>
+</ng-template>
+
+
+<ng-template #CompareAnalysis let-offcanvas>
+    <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+        <h5 class="m-0 me-2 text-white">Compare Analysis</h5>
+        <button type="button" class="btn-close btn-close-white ms-auto " data-bs-dismiss="offcanvas" aria-label="Close"
+            (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <form [formGroup]="headerControllerFormGroup" class="Compare-Analysis-overflow">
+        <div class="offcanvas-body p-0 right-sidebar">
+            <ngx-simplebar class="h-100">
+                <div class="p-4">
+
+                    <label class="mt-1 choose-carrier fs-18 mb-1">Choose Carrier:</label>
+                    <div class="card upscard p-2">
+                        <div class="d-flex compare_header">
+                            <div>
+                                <div class="image_bg"> <img src="../../../assets/images/svg/UPS-logos.svg"> </div>
+
+                            </div>
+                            <div class="ms-2">
+                                <p class="m-0">UPS Data As Of
+                                    {{ clientType === 'UPS' ? compareDataDateOne : compareDataDateTwo }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-12 col-12">
+                                    <label class="mt-1 mb-1">Account Number</label>
+                                    <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                        <mat-select #accNoSel formControlName="accNo" required multiple
+                                            (valueChange)="toggleAllSelection()" [ngModel]="defaultArr">
+                                            <mat-option #allSelectedValue [value]="Default">All</mat-option>
+                                            <mat-option (onSelectionChange)="toggleSelection()"
+                                                *ngFor="let account_detail of accountAC; let i = index"
+                                                [value]="account_detail.accountNo">
+                                                <div class="nickName" [innerHTML]="account_detail.nickName"></div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                </div>
+                                <label class="mt-3 Choose_invoice mb-1">Choose UPS Invoice Date:</label>
+                                <div class="col-md-6 col-12">
+                                    <label class="mt-3 mb-1">From Invoice Date</label>
+                                    <mat-form-field appearance="outline"
+                                        class="w-100 compact-field Compare-Analysis-date  input_change">
+                                        <input matInput [matDatepicker]="fromPicker" [max]="endDateUps"
+                                            formControlName="fromDate">
+                                        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #fromPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <label class="mt-3 mb-1">To Invoice Date</label>
+                                    <mat-form-field appearance="outline"
+                                        class="w-100 compact-field  Compare-Analysis-date input_change">
+                                        <input matInput [matDatepicker]="endPicker" (dateChange)="compareTwoDates()"
+                                            [min]="headerControllerFormGroup.get('fromDate')?.value" [max]="endDateUps"
+                                            formControlName="toDate">
+                                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #endPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card fedexcard p-2">
+                        <div class="d-flex compare_header">
+                            <div>
+                                <div class="image_bg"> <img src="../../../assets/images/svg/FedEx-logo.svg"> </div>
+
+                            </div>
+                            <div class="ms-2">
+                                <p class="m-0">FedEx Data As Of {{ clientType === 'FedEx' ? compareDataDateOne :
+                                    compareDataDateTwo }}</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <label class="mt-1 mb-1">Account Number</label>
+                                    <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                                        <mat-select #accNoSelFedEx formControlName="accNumber" required multiple
+                                            (valueChange)="toggleAllSelectionFedEx()" [ngModel]="defaultArrFedex">
+                                            <mat-option #allSelectedValueFedEx [value]="DefaultFedex">All</mat-option>
+                                            <mat-option (onSelectionChange)="toggleSelectionFedEx()"
+                                                *ngFor="let account_detail of accountACFedex; let i = index"
+                                                [value]="account_detail.primaryAccountNumber">
+                                                <div class="nickName" [innerHTML]="account_detail.nickName"></div>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <label class="mt-3 Choose_invoice mb-1">Choose FedEx Invoice Date:</label>
+                                <div class="col-md-6 col-12">
+                                    <label class="mt-3 mb-1">From Invoice Date</label>
+                                    <mat-form-field appearance="outline"
+                                        class="w-100 compact-field Compare-Analysis-date input_change">
+                                        <input matInput [matDatepicker]="fedexfromPicker" [max]="endDate"
+                                            formControlName="fedexfromDate">
+                                        <mat-datepicker-toggle matSuffix
+                                            [for]="fedexfromPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #fedexfromPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <label class="mt-3 mb-1">To Invoice Date</label>
+                                    <mat-form-field appearance="outline"
+                                        class="w-100 compact-field  Compare-Analysis-date input_change">
+                                        <input matInput [matDatepicker]="fedexendPicker"
+                                            (dateChange)="compareTwoDates()"
+                                            [min]="headerControllerFormGroup.get('fedexfromDate')?.value"
+                                            [max]="endDate" formControlName="fedextoDate">
+                                        <mat-datepicker-toggle matSuffix [for]="fedexendPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #fedexendPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-12 py-3 bb_1 text-center">
+                        <button mat-raised-button color="primary"
+                            class="btn me-3 btn_submit filter_search_btns fs-16 waves-effect waves-light " type="submit"
+                            (click)="compare()">
+                            Compare
+                        </button>
+
+                    </div>
+
+                </div>
+            </ngx-simplebar>
+        </div>
+    </form>
+</ng-template>

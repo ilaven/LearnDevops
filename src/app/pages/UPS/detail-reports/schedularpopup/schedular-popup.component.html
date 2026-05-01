@@ -1,0 +1,67 @@
+<div class="px-2  py-2"> 
+  <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2"> Report Scheduler</h2> 
+            </div>
+            <div class="col-2">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()" class="p-0"><img class="closeBtn"
+                            src="/assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="tab_sty px-2 py-2">
+    <div class="row">
+      <div class="col-12">
+        <div class="tab-table create-tab tableWrap">
+          <table class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab">
+            <tr>
+              <th  class="heading_main tableTitleDesign"> Report Name </th>
+              <th  class="heading_main tableTitleDesign"> Time Frame </th>
+              <th  class="heading_main tableTitleDesign"> Email </th>
+              <th  class="heading_main tableTitleDesign"> Status </th>
+              <th  class="heading_main tableTitleDesign"> Action </th>
+            </tr>
+            <tbody>
+              <tr *ngFor="let datagrid_iditem of reportSchedulerResultAC; let i = index">
+                <td  class="create-proposal-table">{{datagrid_iditem.reportType}}</td>
+                <td  class="create-proposal-table" *ngIf="datagrid_iditem.monthlyDayTime=='Yes'&& datagrid_iditem.weeklyDayTime!='Yes'">Monthly
+                </td>
+                <td  class="create-proposal-table" *ngIf="datagrid_iditem.weeklyDayTime=='Yes'&&datagrid_iditem.monthlyDayTime!='Yes'">Weekly
+                </td>
+                <td  class="create-proposal-table" *ngIf="datagrid_iditem.weeklyDayTime=='Yes' && datagrid_iditem.monthlyDayTime=='Yes'">Monthly/Weekly
+                </td>
+                <td  class="create-proposal-table" *ngIf="datagrid_iditem.monthlyDayTime!='Yes'&& datagrid_iditem.weeklyDayTime!='Yes'">
+                </td>
+                <td  class="create-proposal-table">{{datagrid_iditem.emailId}} </td>
+                <td  class="create-proposal-table">{{datagrid_iditem.status}}
+                </td>
+                <td  class="create-proposal-table">
+                  <button mat-button color="primary" class="btn-save editSaveBTN" type="submit"
+                    (click)="openReportSchedulerEdit(datagrid_iditem)">Edit</button>
+                </td>
+              </tr>
+              <tr *ngIf="reportSchedulerResultAC.length==0">
+                <td  class="create-proposal-table" colspan="5" style="text-align: center !important;font-weight:bold;padding-top: 20px">No Record Found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-3">
+          <button class="add_btn" (click)="openReportScheduler()">
+            <img src="../../../../assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+            <div class="ms-2 add_text_discount"> Add Report Scheduler</div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+  </div>

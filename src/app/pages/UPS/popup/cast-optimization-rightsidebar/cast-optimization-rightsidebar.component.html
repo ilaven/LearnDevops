@@ -1,0 +1,63 @@
+<div class="customizer-setting d-none d-md-block" style="top: 80px;">
+    <div class="btn-info  shadow-lg btn btn-lg search" data-bs-toggle="offcanvas"
+        data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas"
+        (click)="openEnd(filtetcontent)">
+        <i class='mdi mdi-magnify search-widget-icon fs-22'></i> Search
+    </div>
+</div>
+<ng-template #filtetcontent let-offcanvas>
+    <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+        <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
+        <button type="button" class="btn-close btn-close-white ms-auto " data-bs-dismiss="offcanvas" aria-label="Close"
+            (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body p-0 right-sidebar">
+        <ngx-simplebar class="h-100">
+            <div class="p-4">
+                <h6 class=" mb-0 fw-semibold text-uppercase">adfs Scheme</h6>
+                
+            </div>
+            <div>
+                <mat-card class="report-card">
+
+                    <mat-radio-group [(ngModel)]="selectedReport">
+
+                        <mat-radio-button value="largePackage">
+                            Additional Handling – Large Package – OverMax Report
+                        </mat-radio-button>
+
+                        <mat-radio-button value="min40lb">
+                            Additional Handling 40lb Minimum Billed Weight
+                        </mat-radio-button>
+
+                        <mat-radio-button value="addressCorrection">
+                            Address Corrections
+                        </mat-radio-button>
+
+                        <mat-radio-button value="asdReport">
+                            Air Shipping Documents (ASD) Report
+                        </mat-radio-button>
+
+                        <mat-radio-button value="callTag">
+                            Call Tag Report
+                        </mat-radio-button>
+
+                        <mat-radio-button value="chargeback">
+                            Chargeback Report
+                        </mat-radio-button>
+
+                        <mat-radio-button value="declaredValue">
+                            Declared Value Report
+                        </mat-radio-button>
+
+                        <mat-radio-button value="dtpDfc">
+                            DTP/DFC Added Charges Report
+                        </mat-radio-button>
+
+                    </mat-radio-group>
+
+                </mat-card>
+            </div>
+        </ngx-simplebar>
+    </div>
+</ng-template>

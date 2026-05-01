@@ -1,0 +1,19 @@
+.blue-section {
+    background: linear-gradient(135deg, #2aaae6, #012776);
+    color: #fff;
+    height: 160px;
+    margin-top: -25px;
+    margin-right: -10px;
+    margin-left: -10px;
+    margin-bottom: -160px; 
+
+}
+
+.bgInner-section {
+    background-image: url('./../../../assets/images/bgimages/bluebg_1.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+    height: 160px;
+    opacity: 0.2;
+}

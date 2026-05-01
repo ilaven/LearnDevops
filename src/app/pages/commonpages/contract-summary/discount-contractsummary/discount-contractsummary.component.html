@@ -1,0 +1,158 @@
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2"> {{serviceName}}</h2>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+                <div mat-dialog-actions align="end" class="close-btn p-0 justify-content-end marginRightDelet">
+                    <button mat-button (click)="delete()"><img class="closeBtn" style="height: 24px;"
+                            src="../../../../../assets/images/svg/delete.svg"></button>
+                </div>
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab_sty px-2 py-2 mt-2">
+        <div class="row">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
+                *ngIf="freightTargetSavingsListSignal()?.length > 0" (selectedTabChange)="onTabChanged($event)">
+                <mat-tab label="Current Agreement">
+                    <div #scrollframe class=" ">
+
+
+                        @if(dataSourceSignal().length>0){
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+                            <table mat-table [dataSource]="dataSourceSignal()"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of columns; let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main">{{
+                                        column.field }}</th>
+                                    <td [ngStyle]="{'padding':(column.fieldVal == 'netSpend')?'0':''}" mat-cell
+                                        *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column.field=='Service'?false:true">
+                                        <input class="weightText weightRange"
+                                            [ngClass]="{'netSpend':column.fieldVal == 'netSpend','containerType':column.fieldVal == 'containerType'}"
+                                            matInput type="text"
+                                            value="{{column.fieldVal=='netSpend'?(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2'):(column.fieldVal != 'containerType' && column.fieldVal != 'weightFrom' && column.fieldVal != 'weightTo')?((row[column.fieldVal]==null)?('0.00%'):(row[column.fieldVal] | number:'1.2-2')+'%'):row[column.fieldVal]}}"
+                                            [readonly]="true">
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>}
+                        @if(dataSourceSignal().length == 0){ <p class="not-available">Data Not Available.</p>}
+
+                        <h5 class="mb-1 fs-22 fw-semibold text-titles mt-3 text-center"> Min Reduction :</h5>
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+                            <table mat-table [dataSource]="currentMinSignal()"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of columnsMinSignal(); let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main">{{
+                                        column.field }}</th>
+                                    <td [ngStyle]="{'padding':(column.fieldVal == 'netSpend')?'0':''}" mat-cell
+                                        *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column.field=='Service'?false:true">
+                                        <input
+                                            [ngClass]="{'netSpend':column.fieldVal == 'netSpend','containerType':column.fieldVal == 'containerType'}"
+                                            matInput type="text" class="weightText weightRange"
+                                            value="{{
+                                    column.fieldVal=='netSpend'?((row[column.fieldVal] == null || row[column.fieldVal] == '')?('$0.00'):(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2')):(column.fieldVal != 'containerType' && column.fieldVal != 'weightFrom' && column.fieldVal != 'weightTo' && column.fieldVal !='minType')
+                                     ?((row['minType'] == '$')
+                                ?((row[column.fieldVal]==null || row[column.fieldVal]== '')?('$0.00'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2')
+                                :(row[column.fieldVal]==null || row[column.fieldVal]== '')?('0.00%'):(row[column.fieldVal] | number:'1.2-2')+'%'):row[column.fieldVal]}}"
+                                            [readonly]="true">
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsMin;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsMin;"></tr>
+                            </table>
+                        </div>
+                        <p *ngIf="currentMinSignal().length == 0" class="not-available">Data Not Available.</p>
+                    </div>
+                </mat-tab>
+
+                <mat-tab *ngFor="let data of freightTargetSavingsListSignal()" label="{{data.targetName}}">
+                    <div #scrollframe>
+
+                        @if(data?.targetList?.length > 0) { <div class="tab-table create-tab tableWrap"
+                            style="text-align: center;">
+                            <table mat-table [dataSource]="data.targetList"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of data.columns; let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main"> {{
+                                        column.field
+                                        }} </th>
+                                    <td [ngStyle]="{'padding':(column.fieldVal == 'netSpend')?'0':''}" mat-cell
+                                        *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column.field=='Service'?false:true">
+                                        <input class="weightText weightRange"
+                                            [ngClass]="{'netSpend':column.fieldVal == 'netSpend','containerType':column.fieldVal == 'containerType'}"
+                                            matInput type="text"
+                                            value="{{column.fieldVal=='netSpend'?(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2'):(column.fieldVal != 'containerType' && column.fieldVal != 'weightFrom' && column.fieldVal != 'weightTo')?((row[column.fieldVal]==null)?('0.00%'):(row[column.fieldVal] | number:'1.2-2')+'%'):row[column.fieldVal]}}"
+                                            [readonly]="true">
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="data.displayedColumns;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: data.displayedColumns;"></tr>
+                            </table>
+                        </div>
+                        }
+                        @if((data?.targetList?.length ?? 0) === 0)
+                        { <p class="not-available">Data Not Available.</p>}
+                        <h5 class="mb-1 fs-22 fw-semibold text-titles text-left mt-3"> Min Reduction :</h5>
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+                            <table mat-table [dataSource]="data?.targetMinList"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of data.columnsMin; let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main"> {{
+                                        column.field
+                                        }} </th>
+                                    <td [ngStyle]="{'padding':(column.fieldVal == 'netSpend')?'0':''}" mat-cell
+                                        *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column.field=='Service'?false:true">
+                                        <input class="weightText weightRange"
+                                            [ngClass]="{'netSpend':column.fieldVal == 'netSpend','containerType':column.fieldVal == 'containerType'}"
+                                            matInput type="text"
+                                            value="{{column.fieldVal=='netSpend'?((row[column.fieldVal] == null || row[column.fieldVal] == '')?('$0.00'):(row[column.fieldVal] | currency:'USD' :'symbol' :'1.2-2')):(column.fieldVal != 'containerType' && column.fieldVal != 'weightFrom' && column.fieldVal != 'weightTo' && column.fieldVal != 'minType')?((row['minType'] == '$')?((row[column.fieldVal]==null || row[column.fieldVal]=='')?('$0.00'):row[column.fieldVal] | currency:'USD':'symbol':'1.2-2'):(row[column.fieldVal]==null || row[column.fieldVal]== '')?('0.00%'):(row[column.fieldVal] | number:'1.2-2')+'%'):row[column.fieldVal]}}"
+                                            [readonly]="true">
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="data.displayedColumnsMin;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: data.displayedColumnsMin;"></tr>
+                            </table>
+                        </div>
+                        @if((data?.targetMinList?.data?.length ?? 0) === 0){
+                        <p class="not-available">Data Not Available.</p>
+                        }
+
+                    </div>
+         
+        </mat-tab>
+        </mat-tab-group>
+        @if(tabIndex != 0){
+        <div class="col-12  mt-3">
+            <div class="d-flex justify-content-end">
+                <button mat-button class="btn-cancel" (click)="Edit('Edit')">Edit</button>
+                <button mat-raised-button color="primary" class="btn-save" (click)="close()">Close </button>
+            </div>
+        </div>
+        }
+
+    </div>
+</div>
+</div>

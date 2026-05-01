@@ -1,0 +1,31 @@
+::ng-deep .mat-mdc-radio-button.mat-accent {
+    --mdc-radio-selected-icon-color: #2AAAE6 !important;
+    --mdc-radio-selected-focus-icon-color: #2AAAE6 !important;
+    --mdc-radio-selected-hover-icon-color: #2AAAE6 !important;
+    --mdc-radio-selected-pressed-icon-color: #2AAAE6 !important;
+}
+
+::ng-deep .mat-mdc-radio-button {
+    --mdc-radio-selected-focus-state-layer-color: #2AAAE6 !important;
+    --mdc-radio-selected-hover-state-layer-color: #2AAAE6 !important;
+}
+ .bg-gradient{
+        background: #2AAAE6 !important;
+    background: linear-gradient(90deg, rgba(42, 170, 230, 1) 0%, rgba(0, 39, 118, 1) 100%) !important;
+ }
+ .date-text-popup label{
+    color: #2AAAE6 ;
+ }
+ .date-text-popup label strong{
+    color: var(--search-date);
+ }
+ .download_btn span{
+    color: #23A566 ;
+ }
+ .odd-row th  .odd-row td{
+  background-color: #F4F4F4 !important;
+}
+
+.even-row th  .odd-row td{
+  background-color: #ffffff !important;
+}

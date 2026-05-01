@@ -1,0 +1,32 @@
+.sidebar-innerBg {
+    background-image: url('/assets/images/bgimages/menubg.png');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+    height: 160px;
+    opacity: 0.09;
+}
+
+// #navbar-nav {
+//     background-image: url("/assets/images/bgimages/menubg.png") !important;
+//     background-repeat: no-repeat !important;
+//     background-position: bottom right !important;
+// }
+
+ .navbar-menu {
+    background-image: url("/assets/images/bgimages/menubg.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: bottom center !important;
+        background-color: var(--bgColorMenu) !important;
+}
+
+
+[data-bs-theme="darl"] #navbar-nav {
+    background-image: none !important;
+    background-repeat: no-repeat !important;
+    background-position: bottom right !important;
+}
+
+.navGrid {
+    background: #ffffff00 !important;
+}

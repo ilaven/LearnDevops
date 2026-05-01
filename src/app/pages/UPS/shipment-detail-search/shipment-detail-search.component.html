@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row  pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1 pageTitle">Shipment Detail Search</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-0 pt-0 py-3">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body p-1">
+                            <div class="col-sm-12 " style="margin-top: 0px;">
+                                <form [formGroup]="searchForm" class="row">
+                                    <div class="row m-0 mt-2 mb-4">
+                                        <div class="col-md-10 col-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-6 ">
+                                                    <mat-label>Criteria:</mat-label>
+                                                    <mat-form-field appearance="outline"
+                                                        class="w-100 compact-field input_change">
+                                                        <mat-select class="label-trackin" formControlName="chargeSource"
+                                                            style="margin-top: 0px" required>
+                                                            <mat-option value="Tracking Number">Tracking
+                                                                Number</mat-option>
+                                                            <mat-option value="Lead Shipment Number">Lead Shipment
+                                                                Number</mat-option>
+                                                            <mat-option value="Zip Code">Receiver Zip Code</mat-option>
+                                                            <mat-option value="Shipment Reference">Shipment
+                                                                Reference</mat-option>
+                                                            <mat-option value="Package Reference">Package
+                                                                Reference</mat-option>
+                                                            <mat-option value="Sender Name">Sender Name</mat-option>
+                                                            <mat-option value="Sender Company Name">Sender Company
+                                                                Name</mat-option>
+                                                            <mat-option value="Receiver Name">Receiver Name</mat-option>
+                                                            <mat-option value="Receiver Company Name">Receiver Company
+                                                                Name</mat-option>
+                                                            <mat-option value="Receiver Address">Receiver
+                                                                Address</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-lg-3 col-6">
+                                                    <mat-label class="mt-3 mb-1">Search Criteria</mat-label>
+                                                    <mat-form-field appearance="outline"
+                                                        class="w-100 compact-field input_change">
+                                                        <input matInput type="text" id="value" name="value"
+                                                            formControlName="trackingNumber" />
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-lg-3 col-6">
+                                                    <!-- <div class="row"> -->
+                                                    <div class="input-field col m6 s6 plr-8">
+                                                        <mat-label for="dob">From Invoice Date</mat-label>
+                                                        <mat-form-field appearance="outline"
+                                                            class="w-100 compact-field input_change">
+                                                            <input matInput [matDatepicker]="picker" [max]="currentDate"
+                                                                formControlName="fromdate">
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="picker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-6">
+                                                    <div class="input-field col m6 s6 plr-8">
+                                                        <mat-label for="dob">To Invoice Date</mat-label>
+                                                        <mat-form-field appearance="outline"
+                                                            class="w-100 compact-field input_change">
+                                                            <input matInput [matDatepicker]="picker1"
+                                                                [min]="searchForm.get('fromdate')?.value"
+                                                                [max]="currentDate" formControlName="todate">
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="picker1"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker1></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <!-- </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-12">
+                                            <div class="col-sm-12 mt-3  align-items-center text-center  ">
+                                                <button type="button" mat-raised-button
+                                                    class="btn me-3 btn_submit waves-effect waves-light" color="primary"
+                                                    (click)="searchUser()">
+                                                    Search
+                                                </button>
+                                                <div *ngIf="!dataNoneTxt"
+                                                    class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end pe-1 pb-1">
+                                                    <div class="more_btn_drop">
+                                                        <button type="button" (click)="toggleColumnPicker()"
+                                                            class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                            <i class="ri-more-line fs-18 align-middle"></i>
+                                                        </button>
+                                                        <div *ngIf="showColumnPicker" class="view_more showColumnPicker"
+                                                            style="display: grid;">
+                                                            <button type="button" class="btn p-0 mb-2"
+                                                                (click)="image_clickHandler()"><img
+                                                                    class="showColumnPickerImg"
+                                                                    src="assets/images/svg/excel_download_icon.svg">
+                                                                <span>Download all Records</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-12">
+                                <div
+                                    style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                    <div class="ml-2">
+                                        <h6 *ngIf="showCount && tableCount > 1" class="breadcrumbs-title mt-0 mb-0"
+                                            style="width: 100%;">
+                                            Total Records: <span>{{tableCount}}</span>
+                                        </h6>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="table-wrapper">
+                                <div class="table-scroll">
+                                    <table class="metrics-table">
+                                        <thead>
+                                            <tr>
+                                                <th class=" sticky-col sticky-header">Tracking Number</th>
+                                                <th class=" sticky-col sticky-header">Account Number</th>
+                                                <th class=" sticky-col sticky-header">Invoice Date</th>
+                                                <th class=" sticky-col sticky-header">Transaction Date</th>
+                                                <th class=" sticky-col sticky-header">Invoice Number</th>
+                                                <th class=" sticky-col sticky-header">Net Charge</th>
+                                                <th class=" sticky-col sticky-header">More Detail</th>
+                                                <th class=" sticky-col sticky-header">PDF</th>
+                                                <th class=" sticky-col sticky-header">EXCEL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let fetchTrackNo of commoncollAC; let i = index"
+                                                [class.odd-row]="i % 2 === 0" [class.even-row]="i % 2 !== 0">
+
+                                                <td>{{fetchTrackNo.trackingNumber}}</td>
+                                                <td>{{fetchTrackNo.accountNumber}}</td>
+                                                <td>{{fetchTrackNo.invoiceDate | date:'MM/dd/yyyy'}}</td>
+                                                <td>{{fetchTrackNo.transactionDate}}</td>
+                                                <td>{{fetchTrackNo.invoiceNumber}}</td>
+                                                <td>{{fetchTrackNo.total}}</td>
+
+                                                <td><button class="btn btn-primary"
+                                                        (click)="getTrackingDetail(fetchTrackNo)">More Detail</button>
+                                                </td>
+                                                <td>
+                                                    <span><a (click)="generatetrackingpdf(fetchTrackNo.trackingNumber)"><img
+                                                                src="app-assets\images\icon\pdf.png"
+                                                                style="height:26px"></a></span>
+                                                </td>
+                                                <td><span><a
+                                                            (click)="generatetrackingexcel(fetchTrackNo.trackingNumber)"><img
+                                                                src="app-assets\images\icon\excel.png"
+                                                                style="height:26px"></a></span></td>
+                                            </tr>
+                                            <tr *ngIf="dataNoneTxt">
+                                                <td colspan="9" style="text-align: center !important;">No Data</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end col -->
+</div>
+<!-- end row -->

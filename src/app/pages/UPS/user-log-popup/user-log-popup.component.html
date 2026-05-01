@@ -1,0 +1,155 @@
+<!-- <div>
+    @if(clientType()=='UPS'){
+    <app-ups-user-log-popup></app-ups-user-log-popup>
+    }
+</div> -->
+<div class="row">
+  <div class="col">
+    <div class="px-0 py-3">
+      <div class="row header_section pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+            <div class="col-xxl-3 col-lg-2 col-md-12 col-12">
+              <h4 class="fs-16 mb-1 pageTitle">User Login Duration</h4>
+            </div>
+
+            <div class="col-xxl-6 col-lg-8 col-md-12 col-12 mt-2 mt-md-0 mt-lg-0">
+              <div class="row g-3 mb-0 align-items-center">
+                <div class="row align-items-end">
+                  <div class="col-4">
+                    <label class="mt-3 mb-1">From Date</label>
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-100 compact-field custom_datepicker"
+                    >
+                      <input
+                        matInput
+                        [matDatepicker]="fromPicker"
+                        [(ngModel)]="from_date"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="fromPicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #fromPicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-4">
+                    <label class="mt-3 mb-1">To Date</label>
+                    <mat-form-field
+                      appearance="outline"
+                      class="w-100 compact-field custom_datepicker"
+                    >
+                      <input
+                        matInput
+                        [matDatepicker]="toPicker"
+                        [(ngModel)]="to_date"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="toPicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #toPicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-4">
+                    <div class="row g-3 mb-0 align-items-center">
+                      <div class="col-auto">
+                        <button
+                          type="button"
+                          class="btn search_btn material-shadow-none"
+                          (click)="btn_download_clickHandler()"
+                        >
+                          Search
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-3 col-lg-2 col-md-12 col-12 mt-0 mt-lg-0">
+              <div
+                class="row g-3 mb-0 justify-content-lg-end justify-content-center align-items-center"
+              >
+                <div class="col-auto">
+                  <button
+                    type="button"
+                    class="btn excel_btn material-shadow-none"
+                    (click)="ExportTOExcel()"
+                  >
+                    <img src="assets/images/excel.svg" />
+                    Excel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-0 pt-0 py-3">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body p-1">
+              <div class="table-wrapper">
+                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                  <div class="scroll-content"></div>
+                </div>
+
+                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                  <table class="metrics-table" #exportDataString>
+                    <thead>
+                      <tr>
+                        <th class="sticky-header">Client Name</th>
+                        <th class="sticky-header">CRM Account Number</th>
+                        <th class="sticky-header">Account Owner Name</th>
+                        <th class="sticky-header">User Name</th>
+                        <th class="sticky-header">LogIn Time</th>
+                        <th class="sticky-header">Logout Time</th>
+                        <th class="sticky-header">Duration (HH:MM:SS)</th>
+                        <th class="sticky-header">IP Address</th>
+                        <th class="sticky-header">Region</th>
+                        <th class="sticky-header">Country</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        *ngFor="let datagrid_iditem of datagrid_id; let i = index"
+                        [class.odd-row]="i % 2 === 0"
+                        [class.even-row]="i % 2 !== 0"
+                        style="color: #000;"
+                      >
+                        <td>{{ datagrid_iditem.loginclientName }}</td>
+                        <td>{{ datagrid_iditem.crmAccountNumber }}</td>
+                        <td>{{ datagrid_iditem.accountOwnerName }}</td>
+                        <td>{{ datagrid_iditem.username }}</td>
+                        <td>{{ datagrid_iditem.loginDateTimeinFormat }}</td>
+                        <td>{{ datagrid_iditem.logoutDateTimeinFormat }}</td>
+                        <td>{{ datagrid_iditem.duration }}</td>
+                        <td>{{ datagrid_iditem.ipaddress }}</td>
+                        <td>{{ datagrid_iditem.region }}</td>
+                        <td>{{ datagrid_iditem.country }}</td>
+                      </tr>
+                      <tr *ngIf="datagrid_id.length === 0">
+                          <td colspan="10" class="text-center py-3">No clients found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

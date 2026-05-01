@@ -1,0 +1,59 @@
+<div id="main">
+   <div class="row">
+         <div class="col-12 mt-2 mb-2 text-end "><a class="close_btn close_btn_pop " (click)="closeDialog()"><span>CLICK HERE TO
+               CLOSE SCREEN </span> <img src="assets/images/svg/close_1.svg">
+            </a>
+      </div>
+      <div class="col-12 mt-2 mb-2 text-center">
+         <h2 class="header mt-1" style="font-size:25px;">{{categoryName}} Zone For {{yearBindingTitle ? yearBindingTitle
+            : ""}} {{monthBindingTitle ? monthBindingTitle : ""}}</h2>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="toggle-bar mb-2 mt-2">
+            <span class="datadisplayedCls">DATA DISPLAYED FOR :</span>
+            <div class="toggle-pill">
+               <span [ngClass]="{'active': chargetypevalue()=='SHP_FRT+ACC'}" (click)="linkshpChange('SHP_FRT+ACC')">FRT
+                  + ACC</span>
+               <span [ngClass]="{'active': chargetypevalue()=='SHP_FRT'}" (click)="linkshpChange('SHP_FRT')">FRT</span>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6 col-12">
+         <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end">
+                          <a class="excelIcon excel_text" (click)="radiobutton_clickHandler()">  <img src="assets/images/svg/excel_download_icon.svg"> Excel</a>
+         </p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-center"> {{titleChart1()}}</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="zone_popup" style="width: 100%; height: 400px"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-12  col-12 mt-3">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1  text-center"> {{titleChart2()}}</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="zonechart_popup" style="width: 100%; height: 400px">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+
+   </div>
+   
+
+ 

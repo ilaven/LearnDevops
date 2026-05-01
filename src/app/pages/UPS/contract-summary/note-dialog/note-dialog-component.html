@@ -1,0 +1,133 @@
+<!-- <style>
+  :host ::ng-deep .mat-dialog-container {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .toolbar {
+  background: #f3f5f7;
+  border: 1px solid #d6d6d6;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.tool-btn {
+  background: #ffffff;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.tool-btn:hover {
+  background: #e3e7ea;
+  border-color: #a5a5a5;
+}
+
+.editor-box {
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+  /* min-height: 80px;       */
+  /* max-height: 120px;        */
+  width: 100%;              
+  /* max-width: 400px;          */
+  padding: 8px;
+  font-size: 14px;
+  resize: vertical;         
+  overflow-y: auto;        
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  height: 55vh;
+}
+
+.mat-dialog-content{
+  height : 71vh ;
+  width : 85vh;
+}
+
+</style>
+
+<h2 mat-dialog-title>{{ data?.noteTitle }}</h2>
+
+<mat-dialog-content>
+ 
+  <div class="toolbar">
+  <button class="tool-btn" (click)="format('bold')"><b>B</b></button>
+  <button class="tool-btn" (click)="format('italic')"><i>I</i></button>
+  <button class="tool-btn" (click)="format('underline')"><u>U</u></button>
+  <button class="tool-btn" (click)="format('insertUnorderedList')">&#8226;</button>
+  <button class="tool-btn" (click)="format('insertOrderedList')">1.</button>
+</div>
+ 
+ <div
+  class="editor-box"
+  #editorBox
+  [attr.contenteditable]="!isLoading"
+  [attr.dir]="'ltr'"
+  [attr.unicode-bidi]="'plaintext'"
+  (input)="onTextChange($event)">
+</div>
+
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="saveNote()">Save</button>
+</mat-dialog-actions> -->
+@if(isLoading()){
+<div class="loader-overlay">
+  <div class="loader-content">
+    <img src="../../../../../assets/images/loader.gif" alt="Loading">
+  </div>
+</div>}
+<div class="px-2 py-4 pt-2 ">
+  <div class="bg-pop-title">
+    <div class="row">
+      <div class="col-10">
+        <h2 class="mat-dialog-title mt-2">{{ data?.noteTitle }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0 mt-2">
+    <div class="col-12 p-0">
+      <p class="mat-textarea mb-0">
+        <mat-dialog-content class="notesTextbox">
+
+          <!-- Toolbar -->
+          <div class="toolbar">
+            <button class="tool-btn" (click)="format('bold')"><b>B</b></button>
+            <button class="tool-btn" (click)="format('italic')"><i>I</i></button>
+            <button class="tool-btn" (click)="format('underline')"><u>U</u></button>
+            <button class="tool-btn" (click)="format('insertUnorderedList')">&#8226;</button>
+            <button class="tool-btn" (click)="format('insertOrderedList')">1.</button>
+          </div>
+
+          <!-- Editor -->
+          <div class="editor-box" #editorBox [contentEditable]="!isLoading" dir="ltr" style="unicode-bidi: plaintext"
+            (input)="onTextChange($event)">
+          </div>
+
+        </mat-dialog-content>
+      </p>
+    </div>
+
+    <div class="col-12 mt-4">
+      <div class="d-flex justify-content-end">
+        <button mat-button (click)="closeDialog()" class="btn-cancel">Cancel</button>
+        <button mat-raised-button color="primary" class="btn-save" (click)="saveNote()">Save</button>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</div>

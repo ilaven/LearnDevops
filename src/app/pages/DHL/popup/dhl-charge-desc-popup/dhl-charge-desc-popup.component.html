@@ -1,0 +1,279 @@
+<div id="main">
+   <div class="row">
+      <div class="col-12 mt-2 mb-2 text-end ">
+         <a class="close_btn close_btn_pop" (click)="closeDialog()"> 
+            <span>CLICK HERE TO CLOSE SCREEN</span> <img src="assets/images/svg/close_1.svg" alt="Close"> </a> 
+      </div>
+      <div class="col-12 mt-2 mb-2 text-center">
+         <h2 class="header mt-1" style="font-size:25px;">Charge Distribution and Services For {{services_title ?
+            services_title : ''}} {{yearData_title ? yearData_title : ''}} {{monthData_title ? monthData_title : ''}}
+         </h2>
+      </div>
+
+      <div class="col-sm-6  col-12">
+         <div class="toggle-bar mb-2 mt-2">
+            <span class="datadisplayedCls">DATA DISPLAYED FOR :</span>
+            <div class="toggle-pill">
+               <span [ngClass]="{'active': chargetypevalue()=='FRT+ACC'}"
+                  (click)="linkshpChange('FRT+ACC')">Weight+Extra Charges</span>
+               <span [ngClass]="{'active': chargetypevalue()=='FRT'}" (click)="linkshpChange('FRT')">Weight
+                  Charge</span>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6 col-12">
+         <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end">
+            <a class="excelIcon" (click)="reportExcelDownload('ChargeDistributionExcel')"> <img src="assets/images/svg/excel_download_icon.svg"> Excel</a>
+         </p>
+      </div>
+   </div>
+   <div class="row g-4 mt-1 mb-4">
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('NetAmountReportService')">
+            <div class="label">Net Charge</div>
+            <div class="value">
+               {{ resultData()?.netCharge != null
+               ? (resultData().netCharge | currency:'USD':true:'1.2-2')
+               : '-' }}
+            </div>
+            <hr>
+            <div class="label">Net Charge FRT Only</div>
+            <div class="value">
+               {{ resultData()?.netChargeFRT != null
+               ? (resultData().netChargeFRT | currency:'USD':true:'1.2-2')
+               : '-' }}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('CostperpackageReportService')">
+            <div class="label">Cost Per Shipment</div>
+            <div class="value">
+               {{ resultData()?.costPerPackage != null
+               ? (resultData().costPerPackage | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label">Cost Per Shipment FRT Only</div>
+            <div class="value">
+               {{ resultData()?.costPerPackageFRT != null
+               ? (resultData().costPerPackageFRT | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('ShipmentCountReportService')">
+            <div class="label">Shipment Count</div>
+            <div class="value">
+               {{ resultData()?.packageCount != null
+               ? (resultData().packageCount | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label">Total Pieces</div>
+            <div class="value">
+               {{ resultData()?.totalPieces != null
+               ? (resultData().totalPieces | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('AverageWeightReportService')">
+            <div class="label">Average Weight Per Shipment Lbs</div>
+            <div class="value">
+               {{ resultData()?.averageWeightPerPackageLbs != null
+               ? (resultData().averageWeightPerPackageLbs | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label">Average Weight Per Shipment Kgs</div>
+            <div class="value">
+               {{ resultData()?.averageWeightPerPackageKgs != null
+               ? (resultData().averageWeightPerPackageKgs | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card">
+            <div class="label" (click)="clickTopChart('WeightReportService')">Total Billed Weight Lbs</div>
+            <div class="value" (click)="clickTopChart('WeightReportService')">
+               {{ resultData()?.billedWeightLbs != null
+               ? (resultData().billedWeightLbs | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label" (click)="clickTopChart('WeightReportService')">Total Billed Weight Kgs</div>
+            <div class="value" (click)="clickTopChart('WeightReportService')">
+               {{ resultData()?.billedWeightKgs != null
+               ? (resultData().billedWeightKgs | currency:'USD':true:'1.2-2')
+               : '-' }}
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend by Weight Lbs </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="weight_disPopup" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para"> Data displays Dollar value spend by Weight Lbs for {{services_title ?
+                     services_title : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Average Cost By Lbs Per Shipment</h4>
+               <div class="flex-shrink-0 d-flex">
+                  <div>
+                     <button class="btn btn-soft-info btn-sm material-shadow-none blueBackground bdrBtnMTB" (click)="resetBars()">
+                        Reset</button>
+
+                  </div>
+               </div>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="average_cost" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Average cost by lbs per shipment for {{services_title ?
+                     services_title : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card" style="height: 412px;">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend by Weight Kgs </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="weight_disPopupKgs" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Dollar value spend by Weight Kgs for {{services_title ?
+                     services_title : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Average Cost By Kgs Per Shipment</h4>
+               <div class="flex-shrink-0 d-flex">
+                  <div>
+                     <button class="btn btn-soft-info btn-sm material-shadow-none blueBackground" (click)="resetBarsKgs()">
+                        Reset</button>
+
+                  </div>
+               </div>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="average_costKgs" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para"> Data displays Average cost by kgs per shipment for {{services_title ?
+                     services_title : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend By Month </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="spendByMonth" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays spend value for each month for {{services_title ? services_title :
+                     ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Volume By Weight Lbs</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="volume_weight" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Count of each weight lbs specified for {{services_title ?
+                     services_title : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card" style="height: 420px;">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Spend By Account Number </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="acc_no" style="width: 100%; height: 320px;">
+                  </div>
+                  <div class="w-100  mb-1 pe-3 text-end">
+                     <div class="col-12" style="text-align: right;">
+                        @if (first_id_visible === true) {
+                        <button id="first_id" class="btn btn-soft-info btn-sm material-shadow-none blueBackground bdrBtnMTB"
+                           (click)="first_id_clickHandler('event')">First</button>
+                        }
+                        @if (previous_id_visible === true) {
+                        <button id="previous_id" class="btn btn-soft-info btn-sm material-shadow-none blueBackground bdrBtnMTB"
+                           (click)="previous_id_clickHandler('event')">Previous</button>
+                        } @if (next_id_visible === true) {
+                        <button id="next_id" buttonMode="true" class="btn btn-soft-info btn-sm material-shadow-none blueBackground bdrBtnMTB"
+                           (click)="btnBackacc_clickHandler('event')">Next</button>
+                        }
+                     </div>
+                     <p class="btm_para"> Data displays Net spend for each Account Number for {{services_title ?
+                        services_title : ''}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+
+      </div>
+
+
+      <div class="col-sm-6  col-12">
+         <div class="card" style="height: 420px;">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1">Volume By Weight Kgs</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="volume_weightKgs" style="width: 100%; height: 320px"></div>
+                  <div class="w-100  mb-1 pe-3 text-end">
+
+                     <p class="btm_para"> Data displays Count of each weight kgs specified for {{services_title ?
+                        services_title : ''}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

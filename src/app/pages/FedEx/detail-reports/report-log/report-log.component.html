@@ -1,0 +1,116 @@
+<div class="px-0 pt-0 py-0">
+
+    <!-- card -->
+    <div class="card m-0 popup-design1 shadow-none card-height-100">
+        <div class="card-header border-0 align-items-center d-flex">
+            <h4 class="card-title mb-0 flex-grow-1 title-sty"></h4>
+            <button matSuffix type="button" (click)="close()"
+                class="bit_eye_icon btn btn-link p-0 text-decoration-none text-muted material-shadow-none">
+                <!-- <img src="assets/images/close_icon.svg" class="close_icon" alt="close icon" /> -->
+                  <div class="close_icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.301791 1.75541C-0.0997985 1.35375 -0.0997366 0.702715 0.301914 0.301155C0.703565 -0.100404 1.3547 -0.100403 1.75628 0.301259L7.50013 6.04566L13.2444 0.301774C13.646 -0.0997858 14.2972 -0.0997858 14.6988 0.301774C15.1004 0.703333 15.1004 1.35447 14.6988 1.75602L8.95439 7.50002L14.6984 13.2446C15.0999 13.6462 15.0999 14.2973 14.6982 14.6989C14.2966 15.1004 13.6454 15.1004 13.2438 14.6987L7.49992 8.95427L1.75558 14.6983C1.35397 15.0998 0.702825 15.0998 0.301215 14.6983C-0.100405 14.2967 -0.100405 13.6456 0.301215 13.244L6.04577 7.49992L0.301791 1.75541Z" fill="black"/>
+</svg>
+        </div>
+            </button>
+        </div><!-- end card header -->
+
+        <!-- card body -->
+        <div class="card-body mx-4 py-3  pt-2 pb-3">
+            <div class="row g-3 mb-0 align-items-center justify-content-end">
+                <!--end col-->
+                <div class="text-end">
+                    
+                        
+                            <h4 class="fs-16 mb">Report log for {{clientName}} </h4>
+                        
+                    
+                </div>
+            </div>
+
+            <div class="">
+                <!-- TOP SCROLLBAR -->
+                <div class="top-scroll" #topScroll (scroll)="syncScroll($event, 'top')">
+                    <div class="scroll-content"></div>
+                </div>
+                <!-- MAIN TABLE SCROLL -->
+                <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+                    <table class="metrics-table">
+                        <thead>
+                            <tr>
+                                <th class="sticky-header">Report Type</th>
+                                <th class="sticky-header">From Date</th>
+                                <th class="sticky-header">To Date</th>
+                                <th class="sticky-header">Requested Date</th>
+                                <th class="sticky-header">Start Time</th>
+                                <th class="sticky-header">End Time</th>
+                                <th class="sticky-header">Report Generation Duration</th>
+                                <th class="sticky-header">Download</th>
+                                <th class="reportLogStatus sticky-header">
+                                    Status
+                                    <img src="../../../../assets/images/svg/reload_icon.svg" width="14" height="14"
+                                        style="margin-left:6px; vertical-align:middle;" (click)="loadUser()"
+                                        class="reportLogRefresh cursor">
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let reportDetailsitem of reportDetails; let i = index"
+                                [class.odd-row]="i % 2 === 0" [class.even-row]="i % 2 !== 0">
+                                <td>{{ reportDetailsitem.reportName }}</td>
+                                <td>{{ reportDetailsitem.fromDate | date:'MM/dd/yyyy' }}</td>
+                                <td>{{ reportDetailsitem.toDate | date:'MM/dd/yyyy' }}</td>
+                                <td>{{ reportDetailsitem.requesteddttm | date:'MM/dd/yyyy' }}</td>
+                                <td>{{ reportDetailsitem.starttime | date:'MM/dd/yyyy HH:mm:ss' }}</td>
+                                <td>{{ reportDetailsitem.endtime | date:'MM/dd/yyyy HH:mm:ss' }}</td>
+                                <td>{{ reportDetailsitem.totaltime }}</td>
+
+                                <td>
+                                    <a [href]="url_path + 'DownloadServlet?reportlogid=' + reportDetailsitem.reportLogId"
+                                        target="_blank" *ngIf="reportDetailsitem.path != null">
+                                        <img src="../../../../assets/images/svg/excel_download_icon.svg"
+                                            *ngIf="reportDetailsitem.path.indexOf('xls') > -1" style="height:26px" />
+
+                                        <img src="../../../../assets/images/svg/pdf_download.svg"
+                                            *ngIf="reportDetailsitem.path.indexOf('pdf') > -1" style="height:26px" />
+
+                                        <img src="../../../../assets/images/svg/zip_download_icon.svg"
+                                            *ngIf="reportDetailsitem.path.indexOf('zip') > -1" style="height:26px" />
+                                    </a>
+
+                                    {{ reportDetailsitem.size }}
+                                </td>
+
+                                <td [ngClass]="{
+                                            'status': reportDetailsitem.status == 'COMPLETED',
+                                            'statusQueue': reportDetailsitem.status == 'IN QUEUE',
+                                            'statusProcessing': reportDetailsitem.status == 'PROCESSING',
+                                            'statusError': reportDetailsitem.status != 'PROCESSING'
+                                                           && reportDetailsitem.status != 'COMPLETED'
+                                                           && reportDetailsitem.status != 'IN QUEUE'
+                                          }">
+                                    {{ reportDetailsitem.status }}
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="reportDetails.length == 0">
+                                <td colspan="9" style="text-align:center;font-weight:bold;padding-top:20px">
+                                    No Record Found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+                <div class="row mt-2">
+                <div class="col-12">
+          <p class="reportlog_pone">The Grid can be sorted by clicking on the column headers. Hit Escape key to close this window</p>
+            <p class="reportlog_ptwo">This page displays data for previous 30 days. Reports Older than 30 days will be Archived and cannot be retrieved</p>
+                </div>
+  
+        </div>
+        </div>
+    </div>
+</div>

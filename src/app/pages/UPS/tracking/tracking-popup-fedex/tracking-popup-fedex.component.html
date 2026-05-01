@@ -1,0 +1,192 @@
+<div id="main" class="main-full Tdflix" style="color:#000 !important;">
+  <div class="row">
+      <div class="col-sm-12  s12 m12 l12 xl12 plr-8 trackin-clss">
+        <div class="row header_section pb-1">
+          <div class="col-12 text-end "><a class="close_btn" (click)="closeDialog()">
+            <i class=" ri-close-line align-middle"></i></a>
+          </div>
+          <div class="col-12 m12 text-center">
+            <h2 class="header mt-1" style="font-size:30px;">
+              <i class="ri-time-line align-middle pr-2"></i>Shipment Detail Search</h2>
+          </div>
+          <div class="col-sm-11 s12 text-end" style="gap: 10px;">
+            <a class="trackin-sxcl" (click)="generatetrackingexcel()">
+              <img src="assets/images/excel.svg" alt="Excel">
+            </a>
+
+            <a class="trackin-sxcl" (click)="generatetrackingpdfFedex()">
+              <img src="assets/images/icons/pdf.png" alt="PDF">
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    <div class="container pt-2">
+      <div class="col s12 m12 l12">
+        <div class="boxsh">
+          <div class="card animate fadeUp">
+            <div class="card-content p-4">
+              <h6 style="color:#30959c; text-transform:none !important;"><b>Package Details</b></h6>
+              <hr class="shipmenthr">
+
+              <table class="shipmenttable">
+                <tbody>
+                  <tr>
+                    <th>Tracking Number</th>
+                    <td>{{ tracking_id }}</td>
+                    <th>Container</th>
+                    <td>{{ container_type }}</td>
+                  </tr>
+                  <tr>
+                    <th>Transaction Date</th>
+                    <td>{{ ad_tran_id | date:'MM/dd/yyyy' }}</td>
+                    <th>Invoice Date</th>
+                    <td>{{ bi_invoidat_id | date:'MM/dd/yyyy' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Account Number</th>
+                    <td>{{ account_id }}</td>
+                    <th>Invoice Number</th>
+                    <td>{{ invoice_id }}</td>
+                  </tr>
+                  <tr>
+                    <th>Service</th>
+                    <td>{{ service_id }}</td>
+                    <th>Zone</th>
+                    <td>{{ pa_zone_id }}</td>
+                  </tr>
+                  <tr>
+                    <th>Entered Weight</th>
+                    <td>{{ pa_acutal_id }}</td>
+                    <th>Billed Weight</th>
+                    <td>{{ pa_billedweight_id }}</td>
+                  </tr>
+                  <tr>
+                    <th>Carrier Dimensions</th>
+                    <td>{{ pa_dim_id }}</td>
+                    <th>DIM Divisor</th>
+                    <td>{{ dimDivisor }}</td>
+                  </tr>
+                  <tr>
+                    <th>Original Customer Reference</th>
+                    <td>{{ ref1 }}</td>
+                    <th>Original Ref#3 / PO Number</th>
+                    <td>{{ ref3 }}</td>
+                  </tr>
+                  <tr>
+                    <th>Original Ref#2</th>
+                    <td>{{ ref2 }}</td>
+                    <th>Payor</th>
+                    <td>{{ payor }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col s12">
+            <div class="card animate fadeUp">
+              <div class="card-content p-4">
+                <h6 style="color:#30959c; text-transform:none !important;"><b>Address Details</b></h6>
+                <hr class="shipmenthr">
+
+                <table class="shipmenttable" style="height:15em">
+                  <tbody>
+                    <tr>
+                      <th>Sender :</th>
+                      <td>{{ addressline_1 }}</td>
+                      <th>Receiver :</th>
+                      <td>{{ receiveraddressline_1 }}</td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td>{{ addressline_2 }}</td>
+                      <th></th>
+                      <td>{{ receiveraddressline_2 }}</td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td>{{ addressline_3 }}</td>
+                      <th></th>
+                      <td>{{ receiveraddressline_3 }}</td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td>{{ addressline_4 }}</td>
+                      <th></th>
+                      <td>{{ receiveraddressline_4 }}</td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td>{{ addressline_5 }}</td>
+                      <th></th>
+                      <td>{{ receiveraddressline_5 }}</td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td>{{ addressline_6 }}</td>
+                      <th></th>
+                      <td>{{ receiveraddressline_6 }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col s12">
+            <div class="row">
+              <div class="card user-card-negative-margin z-depth-0" id="feed">
+                <div class="card-content card-border-gray card-box-shadow p-4">
+                  <div class="col s12">
+                    <h6 style="color:#30959c; text-transform:none !important;"><b>Total Charge Details</b></h6>
+                    <hr class="shipmenthr">
+
+                    <table class="shipmenttable1" style="text-transform:none !important;">
+                      <thead>
+                        <tr>
+                          <th>Charge Description</th>
+                          <th>Published Rate</th>
+                          <th>Incentives</th>
+                          <th>Billed Charge</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                         @for (freightChargeDescItem of freightChargeAC; track $index) {
+                          <tr>
+                            <td>{{ freightChargeDescItem.chargeDescription }}</td>
+                            <td>{{ freightChargeDescItem.netAmount | currency:'USD':true:'1.2-2' }}</td>
+                            <td></td>
+                            <td>{{ freightChargeDescItem.netAmount | currency:'USD':true:'1.2-2' }}</td>
+                          </tr>
+                        }
+
+                        @for (accessorialsChargeDescItem of accessorialsChargeAC; track $index) {
+                          <tr>
+                            <td>{{ accessorialsChargeDescItem.chargeDescription }}</td>
+                            <td></td>
+                            <td>{{ accessorialsChargeDescItem.incentiveAmount | currency:'USD':true:'1.2-2' }}</td>
+                            <td>{{ accessorialsChargeDescItem.netAmount | currency:'USD':true:'1.2-2' }}</td>
+                          </tr>
+                        }
+
+                        <tr style="font-weight:bold;">
+                          <td>Grand Total</td>
+                          <td>{{ grossamountgrandtotal_id | currency:'USD':true:'1.2-2' }}</td>
+                          <td>{{ incentiveamountgrandtotal_id | currency:'USD':true:'1.2-2' }}</td>
+                          <td>{{ netamountgrandtotal_id | currency:'USD':true:'1.2-2' }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

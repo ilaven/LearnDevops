@@ -1,0 +1,109 @@
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="../../../../../assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2"> DIM Factor</h2>
+            </div>
+            <div class="col-2 ">
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab_sty px-2 py-2 mt-2">
+        <div class="row">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="tabIndex"
+                (selectedTabChange)="onTabChanged($event)">
+                <mat-tab label="Current Agreement">
+                    <div #scrollframe>
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+
+                            <table mat-table [dataSource]="dataSource"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+
+                                <ng-container *ngFor="let column of columnsDimFactor(); let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef
+                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub  '}}">
+                                        <span class="heading">{{column.field }} </span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"
+                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub create-proposal-table'}}">
+                                        <span>
+                                            {{(row[column.fieldVal] != null)?row[column.fieldVal]:'0'}}
+                                        </span>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsDIM()"></tr>
+                                <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumnsDIM();">
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab *ngFor="let data of targetDimFactorListSignal();let columnNumber = index"
+                    label="{{data.targetName}}">
+                    <div #scrollframe>
+                        <div class="tab-table create-tab tableWrap" style="text-align: center;">
+
+                            <table mat-table [dataSource]="dataSource"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+
+                                <ng-container *ngFor="let column of data.columns; let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef
+                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub  '}}">
+                                        <span class="heading">{{column.field }} </span>
+                                    </th>
+                                    <td mat-cell *matCellDef="let row"
+                                        class="{{i==0?'text-start':' text-center'}} {{i<=1?'heading_main':'heading_sub create-proposal-table'}}">
+                                        <span
+                                            *ngIf="column.fieldVal != 'targetDimDivisor' && column.fieldVal != 'proposalDimDivisor';else targetDim">
+                                            {{row[column.fieldVal]}}
+                                        </span>
+                                        <ng-template #targetDim>
+                                            <input *ngIf="editable==true" matInput [(ngModel)]="row[column.fieldVal]"
+                                                style="width:50%">
+                                            <span *ngIf="editable==false">
+                                                {{row[column.fieldVal]}}
+                                            </span>
+                                        </ng-template>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="data.displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; let even = even; columns: data.displayedColumns;">
+                                </tr>
+
+                            </table>
+
+
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+            @if(tabIndex != 0){
+            <div class="col-12  mt-3">
+                <div class="d-flex justify-content-end">
+                    <button mat-button class="btn-cancel" (click)="save()" *ngIf="editable==true">Save</button>
+                    <button mat-button class="btn-cancel" (click)="Edit('Edit')">Edit</button>
+                    <button mat-raised-button color="primary" class="btn-save" (click)="close()">Close </button>
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>
+</div>

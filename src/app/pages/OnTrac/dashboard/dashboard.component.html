@@ -1,0 +1,460 @@
+<div class="row ">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row">
+                <div class="col-12 col-lg-2 col-xxl-2 col-xl-2 col-sm-12">
+                    <form [formGroup]="clientProfileFormGroup" class="client-form m-0">
+                        <div class="section-title mt-0">Account Number</div>
+                        <mat-form-field appearance="outline" class="drop_cust Customer-select compact-select  mt-0 Customer-select_bg">
+                            <mat-select formControlName="accNo" #singleSelect disableOptionCentering
+                                (selectionChange)="acc_clientid_changeHandler($event.value)">
+                                <!-- Search box -->
+                                <mat-option>
+                                    <ngx-mat-select-search [formControl]="accNoOntracFilterCtrl"
+                                        placeholderLabel="Search" noEntriesFoundLabel="No data">
+                                    </ngx-mat-select-search>
+                                </mat-option>
+                                <!-- Options -->
+                                <mat-option *ngFor="let option of filteredAccNoOntrac | async"
+                                    [value]="option.accountNo">
+                                    <div class="nickName" [innerHTML]="option.nickName"></div>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+                <div class="col-12 col-xxl-5 col-xl-3 col-lg-4 col-sm-12">
+                    <div class="mb-3">
+                        <div class="section-title">Select Year</div>
+                        <div class="pill-group">
+                            <button class="pill" *ngFor="let year of selectYear" (click)="yearSelect(year)"
+                                [ngClass]="{'active': year_Select==year}">{{year}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5 col-xxl-5 col-xl-7 col-sm-12 p-0">
+                    <div class="mb-4">
+                        <div class="section-title ">Select Month</div>
+                        <div class="pill-group flex-wrap">
+                            <button class="pill" [ngClass]="{'active': month_Select==null}"
+                                (click)="yearSelect(currentyear)">All</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='1'}"
+                                (click)="monthSelect('1')">Jan</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='2'}"
+                                (click)="monthSelect('2')">Feb</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='3'}"
+                                (click)="monthSelect('3')">Mar</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='4'}"
+                                (click)="monthSelect('4')">Apr</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='5'}"
+                                (click)="monthSelect('5')">May</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='6'}"
+                                (click)="monthSelect('6')">Jun</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='7'}"
+                                (click)="monthSelect('7')">July</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='8'}"
+                                (click)="monthSelect('8')">Aug</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='9'}"
+                                (click)="monthSelect('9')">Sep</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='10'}"
+                                (click)="monthSelect('10')">Oct</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='11'}"
+                                (click)="monthSelect('11')">Nov</button>
+                            <button class="pill" [ngClass]="{'active': month_Select=='12'}"
+                                (click)="monthSelect('12')">Dec</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- YEAR -->
+
+
+            <!-- MONTH -->
+
+
+            <!-- METRICS -->
+            <div class="row g-4">
+                <div class="col-xl col-md-6">
+                    <div class="stat-card"  matTooltip="CLICK HERE TO VIEW MORE" matTooltipPosition="below" (click)="report_clickHandler('NetAmountReportDash')">
+                        <div class="label">Total Net Charge</div>
+                        <div class="value">
+                            {{ resultData()?.netCharge != null
+                            ? (resultData()?.netCharge | currency:'USD':true:'1.2-2')
+                            : '-' }}
+                        </div>
+                        <hr>
+                        <div class="label">Net Charge FRT Only</div>
+                        <div class="value">
+                            {{ resultData()?.netChargeFRT != null
+                            ? (resultData()?.netChargeFRT | currency:'USD':true:'1.2-2')
+                            : '-' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl col-md-6">
+                    <div class="stat-card"  matTooltip="CLICK HERE TO VIEW MORE" matTooltipPosition="below" (click)="report_clickHandler('CostperpackageReportDash')">
+                        <div class="label">Cost Per Shipment</div>
+                        <div class="value">
+                            {{ resultData()?.costPerPackage != null
+                            ? (resultData()?.costPerPackage | currency:'USD':true:'1.2-2')
+                            : '-' }} </div>
+                        <hr>
+                        <div class="label">Cost Per Package FRT Only</div>
+                        <div class="value">
+                            {{ resultData()?.costPerPackageFRT != null
+                            ? (resultData()?.costPerPackageFRT | currency:'USD':true:'1.2-2')
+                            : '-' }} </div>
+                    </div>
+                </div>
+
+                <div class="col-xl col-md-6">
+                    <div class="stat-card"  matTooltip="CLICK HERE TO VIEW MORE" matTooltipPosition="below" (click)="report_clickHandler('AverageWeightReportDash')">
+                        <div class="label">Package Count</div>
+                        <div class="value">
+                            {{ resultData()?.packageCount != null
+                            ? (resultData()?.packageCount | number:'1.0-2')
+                            : '-' }} </div>
+                        <hr>
+                        <div class="label">Total Pieces</div>
+                        <div class="value">
+                            {{ resultData()?.averageWeight != null
+                            ? (resultData()?.averageWeight | number:'1.2-2')
+                            : '-' }} </div>
+                    </div>
+                </div>
+
+                <div class="col-xl col-md-6">
+                    <div class="stat-card"  matTooltip="CLICK HERE TO VIEW MORE" matTooltipPosition="below" (click)="report_clickHandler('WeightReportDash')">
+                        <div class="label">Entered Weight</div>
+                        <div class="value">
+                            {{ resultData()?.enteredWeight != null
+                            ? (resultData()?.enteredWeight | number:'1.0-0')
+                            : '-' }} </div>
+                        <hr>
+                        <div class="label">Billed Weight</div>
+                        <div class="value">
+                            {{ resultData()?.billedWeight != null
+                            ? (resultData()?.billedWeight | number:'1.0-0')
+                            : '-' }} </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TOGGLE -->
+            <div class="toggle-bar mt-4">
+                <span class="datadisplayedCls">DATA DISPLAYED FOR : </span>
+                <div class="toggle-pill">
+                    <span [ngClass]="{'active': chargetypevalue()=='FRT+ACC'}" (click)="linkshpChange('FRT+ACC')">FRT +
+                        ACC</span>
+                    <span [ngClass]="{'active': chargetypevalue()=='FRT'}" (click)="linkshpChange('FRT')">FRT</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="h-100">
+            <div class="row">
+                <div class="col-xl-7 col-xxl-8">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">MONTHLY SHIPPING PERFORMANCE FOR
+                                        {{yearBindingTitle() ? yearBindingTitle() : ''}} </h4>
+                                    <div class="flex-shrink-0 d-flex">
+                                        <div class="dropdown card-header-dropdown ">
+                                            <p class="text-reset dropdown-btn arrow-none mb-0 p-1 text-end">
+                                                <span class="fw-semibold text-uppercase fs-12">Total Package Count
+                                                    :</span><span class="textColor_Price fs-14"> {{totalPackageCount() |
+                                                    number}}</span>
+                                            </p>
+                                            <p class="text-reset dropdown-btn arrow-none mb-0 p-1 text-end">
+                                                <span class="fw-semibold text-capitalize fs-12">Total Package Cost
+                                                    :</span><span class="textColor_Price fs-14"> ${{totalPackageCost() |
+                                                    number :
+                                                    '1.2-2'}}</span>
+                                            </p>
+
+                                        </div>
+                                        <div>
+
+                                                <div class="more_btn_drop" >
+                                            <button type="button"  (click)="toggleColumnPicker()"
+                                                class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                <!-- <i class=" ri-arrow-right-up-line  align-middle"></i> -->
+                                                 <!-- <img  src="assets/images/excel.svg"> -->
+                                             <i class="ri-more-line fs-18 align-middle"></i>
+                                             
+                                            </button>
+                                              <div *ngIf="showColumnPicker"  class="view_more showColumnPicker"
+            >
+  
+           
+  
+      <button type="button" class="btn p-0" (click)="clickTotalspend('Totalspend')" ><img  src="assets/images/excel.svg"> <span>Export to Excel</span> </button>
+  
+             
+            </div>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div><!-- end card header -->
+
+
+
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="chartdiv" style="width: 100%; height: 350px"></div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Weight Distribution For
+                                        {{yearBindingTitle()
+                                        ? yearBindingTitle() : ''}} {{monthBindingTitle() ? monthBindingTitle() :
+                                        ''}} </h4>
+                                    <div class="flex-shrink-0 d-flex">
+                                        <div class="dropdown card-header-dropdown ">
+                                            <p class="text-reset dropdown-btn arrow-none mb-0 p-1 text-end">
+                                                <span class="fw-semibold text-capitalize fs-12">Total Weight Distribution
+                                                    : </span>
+                                                <span class="textColor_Price fs-14">${{weight_disTotalvalue() | number :
+                                                    '1.2-2'}}</span>
+                                            </p>
+                                            <p class="text-reset dropdown-btn arrow-none mb-0 p-1 text-end">
+                                                <span class="fw-semibold text-uppercase fs-12 total-spend-excluder">* Total Spend excludes
+                                                    0lb records</span>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <button type="button" (click)="moreviewWeightDist()"
+                                                class="btn btn-soft-info btn-sm material-shadow-none blueBackground ms-3 mt-2 blueBackground p-2">
+                                                <svg class="me-1" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M0.221649 13.5771C-0.0738831 13.2769 -0.0738831 12.7952 0.221649 12.4951L11.1856 1.53003L4.27866 1.539C4.00571 1.539 3.75351 1.39337 3.61704 1.15698C3.48056 0.920593 3.48056 0.629333 3.61704 0.392944C3.75351 0.156555 4.00571 0.0109253 4.27866 0.0109253L13.0317 0C13.4524 0.00170898 13.7931 0.342346 13.7946 0.763062L13.7846 9.51605C13.7701 9.92792 13.4321 10.2542 13.0201 10.2542C12.6081 10.2542 12.2701 9.92792 12.2556 9.51605L12.2646 2.60907L1.29965 13.574C0.999481 13.8696 0.517792 13.8696 0.217621 13.574L0.221649 13.5771Z"
+                                                        fill="white" />
+                                                </svg> View More
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- end card header -->
+
+
+
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="weight_dis" style="width: 100%; height: 350px"></div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-xxl-4">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <!-- card -->
+                            <div class="card card-height-100">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Shipment Detail Search</h4>
+
+                                </div><!-- end card header -->
+
+                                <!-- card body -->
+                                <div class="card-body pt-2 pb-4">
+
+                                    <form [formGroup]="searchForm" class="search-container">
+
+                                        <!-- Tracking Number -->
+                                        <label class="mb-1 dashboard-label">Tracking Number</label>
+                                        <mat-form-field appearance="outline" class="w-100 dashboard-form-field compact-field">
+                                            <mat-select formControlName="chargeSource" [(ngModel)]="SearchType">
+                                                <mat-option value="TrackingNumber">Tracking Number</mat-option>
+                                                <mat-option value="DestinationPostalCode">Destination Postal
+                                                    Code</mat-option>
+                                                <mat-option value="Reference1_Reference2">Reference1 & Reference2
+                                                </mat-option>
+                                                <mat-option value="CustomerOrderNumber">Customer Order
+                                                    Number</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <!-- Search Criteria -->
+                                        <label class="mt-3 mb-1 dashboard-label">Search Criteria</label>
+                                        <mat-form-field appearance="outline" class="w-100 dashboard-form-field compact-field">
+                                            <input matInput formControlName="searchDetail">
+                                        </mat-form-field>
+
+                                        <!-- Dates + Button -->
+                                        <div class="row align-items-end">
+                                            <div class="col-9  ">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="mt-3 mb-1 dashboard-label ">From Invoice Date</label>
+                                                        <mat-form-field appearance="outline"
+                                                            class="w-100 compact-field dashboard-form-field dashboard-data">
+                                                            <input matInput [matDatepicker]="fromPicker"
+                                                                [max]="dataasoffFormat" formControlName="fromdate">
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="fromPicker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #fromPicker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-6"> <label class="mt-3 mb-1 dashboard-label">To Invoice Date</label>
+                                                        <mat-form-field appearance="outline"
+                                                            class="w-100 compact-field dashboard-form-field dashboard-data">
+
+                                                            <input matInput [matDatepicker]="toPicker"
+                                                                [max]="dataasoffFormat" formControlName="todate">
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="toPicker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #toPicker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!-- Search Button -->
+                                            <div class="col-3 text-end p-2">
+                                                <button mat-raised-button color="primary"
+                                                    class="btn btn_submit  btn-info waves-effect waves-light w-100"
+                                                    (click)="searchUser()">
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <!-- card -->
+                            <div class="card card-height-100 min_height_ontrac">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Top 10 Surcharges For
+                                        {{yearBindingTitle() ? yearBindingTitle() : ''}} {{monthBindingTitle() ?
+                                        monthBindingTitle() : ''}}</h4>
+
+                                </div><!-- end card header -->
+
+                                <!-- card body -->
+                                <div class="card-body min_height pt-0">
+
+
+                                    <div class="py-2 mt-1">
+                                        <div *ngFor="let ontrac of domesticGroundService(); let columnIndex =  index"  matTooltip="CLICK HERE TO VIEW MORE" matTooltipPosition="below" class="custom-tooltip">
+                                            <p class="mb-1 serviceDataClass">{{ontrac.serviceType}} <span
+                                                    class="float-end amt_color">
+                                                    {{ontrac.netCharge | currency:'USD':true:'1.2-2'}}</span></p>
+                                            <div class="progress mt-1 mb-2" style="height: 8px;">
+                                                <div *ngIf="ontrac.progressBar !== null && ontrac.progressBar !== undefined"
+                                                    (click)="progressBar_clickHandler(ontrac.serviceName,ontrac)"
+                                                    class="progress-bar progress-bar-striped" role="progressbar"
+                                                    [ngStyle]="{ width: ontrac.progressBar + '%' }"
+                                                    [attr.aria-valuenow]="ontrac.progressBar" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <div *ngIf="columnIndex!=domesticGroundService().length" class="lineHeight"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-7 col-xxl-8">
+                    <div class="card">
+                        <div class="card-header border-0 align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Zones For {{yearBindingTitle() ?
+                                yearBindingTitle() : ''}} {{monthBindingTitle() ? monthBindingTitle() : ''}}
+                            </h4>
+                            <div class="flex-shrink-0 d-flex">
+                                <div class="dropdown card-header-dropdown ">
+                                    <p class="text-reset dropdown-btn arrow-none mb-0 p-1 text-end">
+                                        <span class="fw-semibold text-capitalize fs-12">Total Zones Value
+                                            : </span>
+                                        <span class="textColor_Price fs-14">${{totalvaluezone() | number :
+                                            '1.2-2'}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div><!-- end card header -->
+
+
+
+                        <div class="card-body p-0 pb-2">
+                            <div class="w-100">
+                                <div id="container_zone" style=" height: 375px;"></div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div>
+                </div>
+                <div class="col-xl-5 col-xxl-4">
+                    <div class="card card-height-100">
+                        <div class="card-header align-items-center d-flex py-2">
+                            <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Top 10 Carrier Charges {{yearBindingTitle()
+                                ?
+                                yearBindingTitle() : ''}} {{monthBindingTitle() ? monthBindingTitle() : ''}}
+                            </h4>
+                            <div class="flex-shrink-0">
+                                <button type="button" class="btn btn-soft-info btn-sm material-shadow-none blueBackground"
+                                    (click)="moreService_clickHandler()"> 
+                                                <svg class="me-1" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M0.221649 13.5771C-0.0738831 13.2769 -0.0738831 12.7952 0.221649 12.4951L11.1856 1.53003L4.27866 1.539C4.00571 1.539 3.75351 1.39337 3.61704 1.15698C3.48056 0.920593 3.48056 0.629333 3.61704 0.392944C3.75351 0.156555 4.00571 0.0109253 4.27866 0.0109253L13.0317 0C13.4524 0.00170898 13.7931 0.342346 13.7946 0.763062L13.7846 9.51605C13.7701 9.92792 13.4321 10.2542 13.0201 10.2542C12.6081 10.2542 12.2701 9.92792 12.2556 9.51605L12.2646 2.60907L1.29965 13.574C0.999481 13.8696 0.517792 13.8696 0.217621 13.574L0.221649 13.5771Z"
+                                                        fill="white" />
+                                                </svg> View More
+                                </button>
+                            </div>
+                        </div><!-- end card header -->
+
+                        <div class="card-body">
+                            <p class="text-reset ground_commercial dropdown-btn arrow-none mb-0 px-2 pb-0 text-end" *ngIf="highestItem">
+                                <span class="fw-semibold fs-12"> {{highestItem.serviceName}} : ${{highestItem.rateVal}}</span>
+                            </p>
+                            <div id="container_individual" class="pt-0" style="width: 100%; height:350px;"></div>
+                        </div>
+                    </div> <!-- .card-->
+                </div>
+            </div>
+
+
+
+        </div> <!-- end .h-100-->
+
+    </div> <!-- end col -->
+
+    <!-- end col -->
+</div>
+
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>

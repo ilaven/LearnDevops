@@ -1,0 +1,30 @@
+.popup-design {
+    background-image: url("/assets/images/popup_design.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: top center;
+    background-color: var(--card-dashboard);
+}
+
+.btn {
+    border-radius: 5px !important;
+    min-width: 60px !important;
+}
+
+.btn-light {
+    border: 1px solid #2AAAE6;
+    background: #fff;
+}
+
+.messageStyle {
+    font-weight: 600;
+    color: var(--chart-text) !important;
+}
+
+.logo {
+    line-height: 50px !important;
+}
+
+.custom-dialog-panel-class.cdk-overlay-pane.mat-mdc-dialog-panel {
+    max-height: 100% !important;
+}

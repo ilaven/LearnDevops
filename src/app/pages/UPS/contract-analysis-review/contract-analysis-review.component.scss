@@ -1,0 +1,21 @@
+::ng-deep .cdk-global-scrollblock{
+  overflow-y: auto;
+}
+::ng-deep .compact-field .mat-mdc-text-field-wrapper {
+  width: 250px;
+}
+
+.compare-dialog-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px 0 24px;
+}
+::ng-deep .mdc-dialog--open .mat-mdc-dialog-surface{
+  background-color: #edfbff !important;
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}
+::ng-deep .mat-mdc-dialog-surface{
+   background-color: var( --body-background);
+}

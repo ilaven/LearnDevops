@@ -1,0 +1,153 @@
+:root {
+    --metrics-color: #002776;
+}
+
+[data-bs-theme="dark"] {
+    --metrics-color: white;
+}
+
+.invoice-box {
+    background: var(--topbar-invoice-box);
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 6px;
+    line-height: 20px;
+    text-align: center;
+    height: 55px;
+    margin-top: 7px;
+    margin-left: 12px;
+    border: 1px dashed #b7d9fe87;
+}
+
+.invoice-box .title {
+    font-size: 14px;
+    border-bottom: 1px solid #ffffff6e;
+    font-weight: 600;
+}
+
+.invoice-box .date {
+    font-size: 13px;
+}
+
+.customerLogo {
+    margin: 3px;
+    // height: 50px;
+    height: 40px;
+}
+
+.serviceType {
+    margin: 5px;
+    box-shadow: 0px 2px 0px 1px #d7d7d7cf;
+    border-radius: 50%;
+    background: #fff !important;
+    box-shadow: 0px 3px 2px 0px #99999940;
+    cursor: pointer;
+}
+
+.serviceType.active {
+    border: 3px solid #239EF5;
+    box-shadow: none !important;
+    pointer-events: none;
+    box-shadow: 0px 3px 2px 0px #009DFF40 !important;
+}
+
+.serviceLogo {
+    height: 42px;
+    width: 42px;
+}
+.serviceLogo1{
+        height: 25px;
+    width: 25px;
+    margin-top: 3px;
+}
+.profileIcon {
+    border: 3px solid #ccc;
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.customer-select {
+    width: 180px;
+}
+
+.serviceTypeGrid {
+    width: 240px;
+}
+
+.client-form {
+    margin-top: -15px;
+}
+
+.upscard {
+    background: linear-gradient(90deg, rgba(231, 136, 11, 1) 0%, rgba(246, 186, 100, 1) 100%);
+}
+
+.fedexcard {
+    background: linear-gradient(90deg, rgba(77, 20, 140, 1) 0%, rgba(166, 100, 239, 1) 100%);
+}
+
+.fedexcard .card-body,
+.upscard .card-body {
+    background: var(--table-bg-odd) !important;
+    border-radius: 6px;
+}
+
+.image_bg {
+    background: white;
+    padding: 0.25rem 0.4rem;
+    border-radius: 5px;
+}
+
+.compare_header {
+    align-items: center;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+
+.Choose_invoice {
+    color: var(--inner-title);
+    border-bottom: 1px solid var(--choose-invoice);
+
+}
+
+.bg-gradient {
+    background: linear-gradient(90deg, rgb(42, 170, 230) 0%, rgb(0, 39, 118) 100%) !important;
+}
+
+.choose-carrier {
+    color: var(--compare-choose-carrier) !important;
+    font-weight: 400 !important;
+}
+
+.text_compare {
+    line-height: 1.2;
+}
+
+.compare_analysis_btn {
+    padding: 0px 0px 0px 14px !important;
+}
+
+.label_customer {
+    color: var(--metrics-color);
+    margin-bottom: 8px;
+}
+
+.label_carrier_data {
+    color: var(--metrics-color);
+    ;
+    margin-top: 1px;
+    margin-bottom: 0;
+}
+
+.Compare-Analysis-overflow {
+    overflow: auto;
+}
+
+.mar_1 {
+    margin-top: 1rem;
+}
+
+.Customer-select{
+    background: var(--customer-select-bg);
+}

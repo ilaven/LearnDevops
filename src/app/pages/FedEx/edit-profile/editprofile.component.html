@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col">
+        <h4 class="fs-16 mb-1 pageTitle">Edit Profile</h4>
+        <div class="px-0 pt-0 py-3">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-5 col-xl-5 col-xxl-4 col-md-5 p-1">
+                    <div class="row">
+                        <div class="col-xl-12">
+
+                            <!-- card -->
+                            <div class="card card-height-100 edit_bg">
+
+
+                                <!-- card body -->
+                                <div class="card-body pb-4 p-5">
+
+                                    <form class="search-container" [formGroup]="editProfileFormGroup"
+                                        (ngSubmit)="btn_submit_click()">
+
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <div class="file_upload" [formGroup]="imageProfileFormGroup">
+                                                    <label class="file_upload_label d-blovl">
+                                                        <div class="profile_images_div">
+                                                            <img [src]="imageUrl ? imageUrl : 'assets/images/profile_img.svg'"
+                                                                class="profile_images" alt="profile img" />
+                                                        </div>
+                                                        <!-- UPLOAD BUTTON -->
+                                                        <button type="button" class="uplode_btn"
+                                                            (click)="fileInput.click()">
+                                                            <img src="assets/images/camara_uplode.svg" />
+                                                        </button>
+
+                                                        <input #fileInput type="file" hidden accept="image/*"
+                                                            (change)="fileProgress($event.target.files)" />
+                                                    </label>
+                                                </div>
+
+
+                                                <div class="upload_profile_div">
+                                                    <h3 class="upload_profile_text">Upload Your Profile</h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+
+                                                <label class="mt-3 mb-1">Client Name</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field  input_change">
+                                                    <input matInput formControlName="clientName" required
+                                                        readonly="readonly">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-12 col-12">
+
+                                                <label class="mt-3 mb-1">User Name <span class="text-danger">*
+                                                    </span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field  input_change">
+                                                    <input matInput>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-12 col-12">
+
+                                                <!-- Password -->
+                                                <label class="mt-3 mb-1">Password <span class="text-danger">*
+                                                    </span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field  input_change">
+                                                    <input matInput [type]="passwordFieldType" required
+                                                        formControlName="password">
+                                                    <button matSuffix type="button"
+                                                        class="bit_eye_icon btn btn-link text-decoration-none text-muted material-shadow-none"
+                                                        (click)="togglePasswordVisibility()">
+
+                                                        <i class="mdi align-middle" [ngClass]="{
+       'mdi-eye-outline': passwordFieldType === 'password',
+       'mdi-eye-off-outline': passwordFieldType === 'text'
+     }">
+                                                        </i>
+
+                                                    </button>
+                                                </mat-form-field>
+                                            </div>
+
+
+                                            <!-- Buttons -->
+
+                                            <div class="col-12 mt-4 text-center">
+                                                <button mat-raised-button color="primary"
+                                                    class="btn me-3 btn_submit waves-effect waves-light " type="submit">
+                                                    Update
+                                                </button>
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+
+
+                                    </form>
+
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                    </div>
+
+                    <!-- end card -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- end col -->
+</div>
+<!-- end row -->

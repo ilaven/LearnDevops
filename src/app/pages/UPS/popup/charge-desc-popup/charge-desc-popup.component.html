@@ -1,0 +1,242 @@
+<div id="main">
+   <div class="row">
+      <div class="col-sm-9 mt-2 mb-2 text-end">
+         <h2 class="header mt-1" style="font-size:25px;">Charge Distribution and Services For {{services_title ?
+            services_title : ''}} {{yearData_title ? yearData_title : ''}} {{monthData_title ? monthData_title : ''}}
+         </h2>
+      </div>
+      <div class="col-sm-3 mt-2 mb-2 text-end">
+         <a class="close_btn close_btn_pop" (click)="closeDialog()">
+            <span>CLICK HERE TO CLOSE SCREEN</span> <img src="assets/images/svg/close_1.svg" alt="Close"> </a>
+      </div>
+
+
+      <div class="col-sm-6  col-12">
+         <div class="toggle-bar mb-2 mt-2">
+            <span class="datadisplayedCls">DATA DISPLAYED FOR :</span>
+            <div class="toggle-pill">
+               <span [ngClass]="{'active': chargetypevalue()=='SHP_FRT+ACC'}" (click)="linkshpChange('SHP_FRT+ACC')">FRT
+                  + ACC</span>
+               <span [ngClass]="{'active': chargetypevalue()=='SHP_FRT'}" (click)="linkshpChange('SHP_FRT')">FRT</span>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6 col-12">
+         <p class="right no-margin grey-text lighten-3 mediam-small  pr-1 text-end">
+            <a class="excelIcon" (click)="repostExcelDownload('ChargeDistributionExcel')"> <img src="assets/images/svg/excel_download_icon.svg"> Excel</a>
+         </p>
+      </div>
+   </div>
+   <div class="row g-4 mt-1 mb-4">
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('NetAmountReportService')">
+            <div class="label">Net Charge</div>
+            <div class="value">
+               {{ resultData()?.netCharge != null
+               ? (resultData().netCharge | currency:'USD':true:'1.2-2')
+               : '-' }}
+            </div>
+            <hr>
+            <div class="label">Net Charge FRT Only</div>
+            <div class="value">
+               {{ resultData()?.netchargeFRT != null
+               ? (resultData().netchargeFRT | currency:'USD':true:'1.2-2')
+               : '-' }}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('CostperpackageReportService')">
+            <div class="label">Cost Per Package</div>
+            <div class="value">
+               {{ resultData()?.costperPackage != null
+               ? (resultData().costperPackage | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label">Cost Per Package FRT Only</div>
+            <div class="value">
+               {{ resultData()?.costperpackageFRT != null
+               ? (resultData().costperpackageFRT | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('AverageWeightReportService')">
+            <div class="label">Package Count</div>
+            <div class="value">
+               {{ resultData()?.packageCount != null
+               ? (resultData().packageCount | number:'1.0-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label">Average Weight</div>
+            <div class="value">
+               {{ resultData()?.averageWeight != null
+               ? (resultData().averageWeight | number:'1.0-2')
+               : '-' }} </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card" (click)="clickTopChart('WeightReportService')">
+            <div class="label">Manifested Entered Weight</div>
+            <div class="value">
+               {{ resultData()?.enteredWeight != null
+               ? (resultData().enteredWeight | number:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label">Manifested Billed Weight</div>
+            <div class="value">
+               {{ resultData()?.billedWeight != null
+               ? (resultData().billedWeight | number:'1.2-2')
+               : '-' }} </div>
+         </div>
+      </div>
+
+      <div class="col-xl col-md-6">
+         <div class="stat-card">
+            <div class="label" (click)="clickTopChart('SCCReportService')">Shipping Charge Corrections
+               (SCC)</div>
+            <div class="value" (click)="clickTopChart('SCCReportService')">
+               {{ resultData()?.scc != null
+               ? (resultData().scc | currency:'USD':true:'1.2-2')
+               : '-' }} </div>
+            <hr>
+            <div class="label" (click)="clickTopChart('WeightReportService')">SCC Weight Difference</div>
+            <div class="value" (click)="clickTopChart('WeightReportService')">
+               {{ resultData()?.weightdifference != null
+               ? (resultData().weightdifference | currency:'USD':true:'1.2-2')
+               : '-' }}
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Spend by Weight </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="weight_disPopup" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para"> Data displays Dollar value spent by Weight for {{services_title ? services_title
+                     : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Average Cost By Pound Per Package</h4>
+               <div class="flex-shrink-0 d-flex">
+                  <div>
+                     <button class="btn btn-soft-info btn-sm material-shadow-none blueBackground  bdrBtnMTB"
+                        (click)="resetBars()">
+                        Reset</button>
+
+                  </div>
+               </div>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="average_cost" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Average cost by pound per package for {{services_title ?
+                     services_title : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Spend By Month </h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="spendByMonth" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100 mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays spent value for each month for {{services_title ? services_title :
+                     ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Volume By Weight</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="volume_weight" style="width: 100%; height: 320px"></div>
+               </div>
+               <div class="w-100  mb-1 pe-3  text-end">
+                  <p class="btm_para">Data displays Count of each weight specified for {{services_title ? services_title
+                     : ''}}</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card" style="  height: 402px;">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">Spend By Account Number</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="acc_no" style="width: 100%; height: 320px;" [style.margin-top]="
+    first_id_visible === true ||
+    previous_id_visible === true ||
+    next_id_visible === true
+      ? '-30px'
+      : '0px'
+  "> </div>
+                  <div class="w-100  mb-1 pe-3 text-end">
+                     <div class="col-12 d-flex justify-content-end gap-2" style="text-align: right;">
+                        @if (first_id_visible === true) {
+                        <button id="first_id" class="btn btn-soft-info btn-sm material-shadow-none blueBackground "
+                           (click)="first_id_clickHandler('event')">First</button>
+                        }
+                        @if (previous_id_visible === true) {
+                        <button id="previous_id" class="btn btn-soft-info btn-sm material-shadow-none blueBackground "
+                           (click)="previous_id_clickHandler('event')">Previous</button>
+                        } @if (next_id_visible === true) {
+                        <button id="next_id" buttonMode="true"
+                           class="btn btn-soft-info btn-sm material-shadow-none blueBackground "
+                           (click)="btnBackacc_clickHandler('event')">Next</button>
+                        }
+                     </div>
+                     <p class="btm_para"> Data displays Net spend for each Account Number for {{services_title ?
+                        services_title : ''}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-6  col-12">
+         <div class="card">
+            <div class="card-header border-0 align-items-center d-flex">
+               <h4 class="card-title mb-0 flex-grow-1 text-uppercase">SCC Count By Weight</h4>
+            </div>
+            <div class="card-body p-0 pb-2">
+               <div class="w-100">
+                  <div id="Sccvolume_weight" style="width: 100%; height: 320px"></div>
+                  <div class="w-100  mb-1 pe-3 text-end">
+
+                     <p class="btm_para"> Data displays SCC Count of each weight specified for {{services_title ?
+                        services_title : ''}}</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

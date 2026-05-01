@@ -1,0 +1,193 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row  pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1 pageTitle" style="text-transform: none;">Geographical Heat Map -
+                                International</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-100">
+            <div class="row">
+                <div class="col-xl-8 col-md-12">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">International Total Spend For
+                                        {{clickedYear}} </h4>
+                                    <div class="flex-shrink-0 d-flex">
+                                        <p class="no-margin white-text lighten-3 medium-small right themeColor"
+                                            style="display: flex"> <label style=" color: #ccc !important">
+                                                <input class="validate me-2" required="" aria-required="true"
+                                                    name="typecode" type="radio" value="Exp"
+                                                    (change)="Exp_clickHandlerFedEx($event)" [(ngModel)]="typecode">
+                                                <span style="  font-weight: 400;" class=" me-2">Export</span>
+                                            </label>
+                                            <br><label style=" color: #ccc !important">
+                                                <input class="validate me-2" required="" aria-required="true"
+                                                    name="typecode" type="radio" value="Imp"
+                                                    (change)="Imp_clickHandlerFedEx($event)" [(ngModel)]="typecode">
+                                                <span style="  font-weight: 400;" class=" me-2">Import</span>
+                                            </label>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="chartdivFedEx" style=" height: 620px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-12">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-6">
+                            <!-- card -->
+                            <div class="card card-height-100">
+                                <div class="card-header align-items-center d-flex">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <svg width="53" height="53" viewBox="0 0 53 53" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_64_733)">
+                                                    <path
+                                                        d="M33.125 9.5516V9.53835L43.0426 13.9804L53 10.2472L26.5 0.309723L0 10.2472L26.5 20.1847L36.4176 16.4648L26.5 12.3772V12.3672L33.125 9.5516Z"
+                                                        fill="#002776" />
+                                                    <path
+                                                        d="M0 13.5597V43.3722L24.8438 52.6903V22.8778L0 13.5597ZM13.25 43.4815L6.625 40.9972V37.4627L13.25 39.9471V43.4815Z"
+                                                        fill="#2AAAE6" />
+                                                    <path
+                                                        d="M43.0625 17.2863V25.5841L36.4375 28.0685V19.7707L28.1562 22.8778V52.6903L53 43.3722V13.5597L43.0625 17.2863Z"
+                                                        fill="#2AAAE6" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_64_733">
+                                                        <rect width="53" height="53" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="fs-14 fw-semibold mb-0 flex-grow-1 text-dark international_text">
+                                                Total Package Count
+                                            </h4>
+                                            <h2 class="priceColor fw-semibold">{{totalquantitytemp | number}}</h2>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="row">
+                                                <div class="col-md-12 col-12">
+                                                    <label class="mt-0 mb-1">Year</label>
+                                                    <mat-form-field appearance="outline"
+                                                        class="w-100 compact-field  input_change">
+                                                        <mat-select [(ngModel)]="displayYear"
+                                                            (selectionChange)="cmb_year_changeHandler($event.value)"
+                                                            required>
+                                                            <mat-option
+                                                                *ngFor="let yearItem of selectYear; let i = index"
+                                                                [value]="yearItem">
+                                                                {{yearItem}}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div><!-- end card header -->
+
+                                <!-- card body -->
+                                <div class="card-body pt-2 pb-4">
+                                    <div class="row">
+                                        <div class="">
+                                            <h4 class="fs-14 fw-semibold text-dark mb-0 flex-grow-1 international_text">
+                                                Total Package
+                                                {{changeTitle}}
+                                                Cost
+                                                &nbsp;
+                                                <b class="redcolor text-danger">{{totalpackagetemp |
+                                                    currency:'USD':true:'1.2-2'}}</b>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="toggle-bar mt-2">
+                                                <div class="toggle-pill">
+                                                    <span [ngClass]="{'active': frtAndFrt_AccBtnValFedEx()=='FRT+ACC'}"
+                                                        (click)="linkfrtacc_clickHandlerFedEx('FRT+ACC')">FRT +
+                                                        ACC</span>
+                                                    <span [ngClass]="{'active': frtAndFrt_AccBtnValFedEx()=='FRT'}"
+                                                        (click)="linkfrt_clickHandlerFedEx('FRT')">FRT</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-4 text-end">
+                                            <div class="more_btn_drop">
+                                            <button type="button" (click)="toggleColumnPicker()"
+                                                class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 "> 
+                                                <i class="ri-more-line fs-18 align-middle"></i>
+                                            </button>
+                                            <div *ngIf="showColumnPicker" class="view_more showColumnPicker">
+                                                <button type="button" class="btn p-0" (click)="excelDownload_clickHandlerFedex()"><img
+                                                        src="assets/images/excel.svg"> <span>Export to Excel</span>
+                                                </button>
+                                            </div>
+                                        </div> 
+                                        </div> 
+                                    </div>
+                                    <!-- end card body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                        </div>
+                        <div class="col-xl-12  col-md-6">
+                            <!-- card -->
+                            <div class="card card-height-100">
+                                <div class="card-header align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1 text-uppercase">International Grouped
+                                        Services for
+                                        {{clickedYear}}</h4>
+                                </div>
+                                <div class="card-body min_height1 pt-0 pb-0">
+                                    <div class="py-2 mt-1">
+                                        <div *ngFor="let upsprogressbar of internationalGroundService();let columnIndex =  index"
+                                            matTooltip="CLICK HERE TO VIEW MORE" matTooltipPosition="below"
+                                            class="custom-tooltip">
+                                            <p class="mb-1 serviceDataClass">{{upsprogressbar.serviceType}} <span
+                                                    class="float-end amt_color">
+                                                    {{upsprogressbar.netCharge | currency:'USD':true:'1.2-2'}}</span>
+                                            </p>
+                                            <div class="progress mt-1 mb-2" style="height: 8px;"
+                                                (click)="internationalGroupFedExClick(upsprogressbar.serviceName,upsprogressbar)">
+                                                <div *ngIf="upsprogressbar.progressBar !== null && upsprogressbar.progressBar !== undefined"
+                                                    class="progress-bar progress-bar-striped" role="progressbar"
+                                                    [ngStyle]="{ width: upsprogressbar.progressBar + '%' }"
+                                                    [attr.aria-valuenow]="upsprogressbar.progressBar" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <div *ngIf="columnIndex!=internationalGroundService().length" class="lineHeight"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

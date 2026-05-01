@@ -1,0 +1,189 @@
+<div class="row">
+  <div class="col">
+    <div class="px-0 py-3">
+      <div class="row header_section pb-1">
+        <div class="col-12">
+          <div class="d-flex align-items-lg-center text-md-start text-center flex-lg-row flex-column">
+            <div class="col-lg-3 col-md-12 col-12">
+              <h4 class="fs-16 mb-1 pageTitle">Detail Reports</h4>
+            </div>
+            <div class=" col-12 col-md-5 mt-3 mt-lg-0">
+
+
+              <!--end row-->
+            </div>
+            <div class="col-12 col-lg-4 ms-auto col-md-4 mt-3 mt-lg-0">
+              <div class="row g-3 mb-0 align-items-center justify-content-md-end justify-content-center">
+
+                <!--end col-->
+                <div class="col-8">
+
+                  <mat-form-field appearance="outline" class="w-100 compact-field search_input">
+                    <span matPrefix class="search_icon">
+                      <i class="ri-search-line align-middle me-1"></i>
+                    </span>
+                    <input matInput placeholder="Filter Reports" [(ngModel)]="FilterReports"
+                      (keyup)="FilterReports_changeHandler($event)">
+                  </mat-form-field>
+
+
+
+                </div>
+
+              </div>
+
+              <!--end row-->
+            </div>
+          </div><!-- end card header -->
+        </div>
+        <!--end row-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<form class="row detail-reports" [formGroup]="detailReportsFormGroup">
+  <div class="col-xl-4 col-lg-5 col-md-12">
+    <div class="positionSticky">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card px-2 py-3 card-height-100">
+
+            <div class="card-body pt-2 pb-4">
+              <div class="search-container">
+
+                <label class="mb-1">Account Number</label>
+                <mat-form-field appearance="outline" class="w-100 compact-field dashboard-form-field">
+                  <mat-select #accNoSel formControlName="accNo" required multiple (valueChange)="toggleAllSelection()"
+                    [ngModel]="defaultArr">
+                    <mat-option #allSelectedValue [value]="Default">All</mat-option>
+                    <mat-option (onSelectionChange)="toggleSelection()"
+                      *ngFor="let account_detail of accountAC; let i = index" [value]="account_detail.accountNo">
+                      <div class="nickName" [innerHTML]="account_detail.nickName"></div>
+                    </mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+                <div class="row align-items-end">
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-6">
+
+                        <label class="mt-3 mb-1">From Invoice Date</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field dashboard-form-field">
+                          <input matInput [matDatepicker]="fromPicker" [max]="dataasoffFormat"
+                            formControlName="fromDate">
+                          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                          <mat-datepicker #fromPicker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-6">
+                        <label class="mt-3 mb-1">To Invoice Date</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field dashboard-form-field">
+                          <input matInput [matDatepicker]="toPicker"
+                            [min]="detailReportsFormGroup.get('fromDate')?.value" [max]="dataasoffFormat"
+                            formControlName="toDate">
+                          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                          <mat-datepicker #toPicker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-12">
+                        <label class="mb-1">File Type</label>
+                        <mat-form-field appearance="outline" class="w-100 compact-field dashboard-form-field">
+                          <mat-select formControlName="reportFormat">
+                            <mat-option value="Excel" *ngIf="isExcelVisible==true">Excel</mat-option>
+                            <mat-option value="PDF" *ngIf="PdfVisible">PDF</mat-option>
+                            <mat-option value="Stripped Data" *ngIf="isExcelVisible==false">Stripped Invoice
+                              Data</mat-option>
+                            <mat-option value="Excel" *ngIf="strippedDataVisible">Full Invoice Data</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row mt-2 g-2">
+
+                      <div class="col-md-6">
+                        <button mat-raised-button color="primary"
+                          class="btn btn-info waves-effect waves-light w-100 btn-Search" type="button"
+                          (click)="runreport_clickHandler()">
+                          Run Report
+                        </button>
+                      </div>
+
+                      <div class="col-md-6">
+                        <button mat-stroked-button color="primary" class="w-100 Reset-btn" type="button"
+                          (click)="openReportSchedulerScreen()">
+                          Schedule Report
+                        </button>
+                      </div>
+
+                      <div class="col-md-6">
+                        <button mat-raised-button color="accent" class="w-100 Export-btn" type="button"
+                          (click)="reportLog_clickHandler()">
+                          Reports Log
+                        </button>
+                      </div>
+
+                      <div class="col-md-6">
+                        <button mat-stroked-button color="accent" class="w-100 Download-btn" type="button"
+                          (click)="clearall_clickHandler()">
+                          Clear
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-8 col-lg-7 col-md-12">
+
+    <div class="row">
+      <ng-container *ngFor="let chunkGroup of chunks">
+        <div class="col-xl-12" *ngIf="chunkGroup[0] && chunkGroup[0].length > 0">
+          <div class="card px-2 py-3 card-height-100">
+            <h5 class="card-title ">{{ chunkGroup[0][0]?.reportType }}</h5>
+
+            <mat-radio-group class="row" formControlName="reportType">
+              <ng-container *ngFor="let chunk of chunkGroup">
+
+                <!-- Column wrapper restored -->
+                <div class="col-xl-4 col-lg-4 col-md-6 col-12">
+
+                  <ng-container *ngFor="let report of chunk">
+                    <div class="row">
+                      <mat-radio-button *ngIf="report" [value]="report.reportValue"
+                        [matTooltip]="report.reportDescription"
+                        (click)="radiobtn_clickHandler(report.reportValue, report.reportName, $event)"
+                        class="d-block mb-2">
+
+                        {{ report.reportName }}
+                      </mat-radio-button>
+                    </div>
+                  </ng-container>
+
+                </div>
+
+              </ng-container>
+            </mat-radio-group>
+
+
+
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+  </div>
+</form>

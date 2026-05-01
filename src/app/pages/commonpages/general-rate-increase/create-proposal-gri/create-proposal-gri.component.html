@@ -1,0 +1,1155 @@
+@if(isLoading()){
+<div class="loader-overlay">
+    <div class="loader-content">
+        <img src="/assets/images/loader.gif" alt="Loading">
+    </div>
+</div>}
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2"> {{(currentAgreement)?'Current Agreement':pageValue}}</h2>
+                <h6 class="sub-title-txt">Projected Saving Review</h6>
+            </div>
+            <div class="col-2">
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="/assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input_sty px-2 py-2  mt-2">
+        <div class="row">
+            <div class="col-md-2" *ngIf="pageValue == 'Create Agreement' && !currentAgreement">
+                <mat-label>Agreement Name </mat-label>
+                <mat-form-field class="w-100">
+                    <input matInput [(ngModel)]="proposalName" (input)="onProposalNameChange()" maxlength="35"
+                        class="proposalInputBox1">
+                </mat-form-field>
+                <p style="margin:0px;padding: 0px;color: red;text-align:left;font-size:12px;
+                    font-family: 'Lato', sans-serif;text-transform: none;"
+                    *ngIf="submitClicked() &&  !proposalName.trim()">Enter a value
+                </p>
+            </div>
+            <div class="col-md-2" *ngIf="currentAgreement">
+                <mat-label>Agreement Name</mat-label>
+                <mat-form-field class="w-100">
+                    <input matInput value="Baseline Spend" maxlength="35" class="proposalInputBox1" readonly="true">
+                </mat-form-field>
+            </div>
+            <div class="col-md-2" *ngIf="pageValue == 'Edit Agreement' && !currentAgreement">
+                <mat-label>Agreement Name</mat-label>
+                <mat-form-field class="w-100">
+                    <mat-select [(value)]="proposalName" class="mat_select_sty"
+                        (selectionChange)="changeProposalName($event)">
+                        <mat-option *ngFor="let target of targetList" [value]="target.targetId">
+                            {{target.targetName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2" *ngIf="!currentAgreement">
+                <mat-label>Agreement Nick Name</mat-label>
+                <mat-form-field class="w-100">
+                    <input matInput [(ngModel)]="proposalNickName" class="proposalInputBox2" maxlength="8">
+                </mat-form-field>
+                <p style="margin:0px;padding: 0px;color: red;text-align:left;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                    *ngIf="(submitClicked() || saveClicked) && !proposalNickName.trim()">Enter a value
+                </p>
+            </div>
+            <!-- <div class="col-md-2">
+                <mat-label>Carrier</mat-label>
+                <mat-form-field class="w-100" *ngIf="type == 'create'">
+                    <mat-select [(ngModel)]="carrierName" (ngModelChange)="onCarrierChange($event)"
+                        class="mat_select_sty" [disabled]="currentAgreement">
+                        <mat-option *ngFor="let carrier of carrierValues" [value]="carrier.value">
+                            {{carrier.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="type == 'Edit'" style="margin-top: 5px;">
+                    <span>{{carrierName}}</span>
+                </div>
+            </div> -->
+            <div class="col-md-2" *ngIf="type == 'create'"><mat-label>Choose Agreement</mat-label>
+                <mat-form-field class="w-100">
+                    <mat-select class="mat_select_sty" (selectionChange)="selectTarget($event)" [(ngModel)]="selectedId"
+                        [disabled]="currentAgreement">
+                        <mat-option *ngFor="let target of filteredScenario" [value]="target.targetId">
+                            {{target.targetName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-label>Agreement Number</mat-label>
+                <mat-form-field class="w-100">
+                    <input matInput [(ngModel)]="agreementNo" maxlength="50" class="proposalInputBox1">
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-label>Carrier Published Rates</mat-label>
+                <mat-form-field class="w-100">
+                    <mat-select [(ngModel)]="agreementYear" (ngModelChange)="changeAgreementYear($event)"
+                        class="mat_select_sty" [disabled]="currentAgreement">
+                        <mat-option *ngFor="let agreementYear of agreementYearList" [value]="agreementYear.year">
+                            {{agreementYear.year}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1" *ngIf="pageValue != 'Create Agreement' || currentAgreement">
+                <button mat-raised-button color="primary" class="btn-save-pop ms-0"
+                    (click)="saveTargetDetails()">Save</button>
+            </div>
+            <div class="col-md-1" *ngIf="pageValue == 'Edit Agreement' && isDelete && !currentAgreement">
+                <button mat-raised-button color="primary" class="btn-save-pop ms-0" style="background:red;"
+                    (click)="deleteTarget()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="tab_sty px-2 py-2">
+        <div class="row">
+
+            <!-- ✅ Only ONE mat-tab-group -->
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="nextBtnShow"
+                (selectedTabChange)="onTabChange($event)">
+
+                <!-- Domestic Air -->
+                <mat-tab label="Domestic Air Service">
+                    <div #scrollframe class="tab-table create-tab tableWrap">
+                        <div #item style="display:none;" *ngFor="let item of distinctAirList">
+                            item
+                        </div>
+                        <table mat-table [dataSource]="dataSourceAir"
+                            class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab" cdkDropListGroup
+                            matSort cdkDropList cdkDropListLockAxis="x" cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="drop($event)">
+
+                            <ng-container matColumnDef="subGroup">
+                                <th mat-header-cell *matHeaderCellDef class="heading_main">Domestic Air Service
+                                    Level</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                    class="create-proposal-tablehead service-td edit_table_cell"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="row m-0 cardTitleTd">
+                                        <div class="col-10 contact_title select_opt p-0 mt-1" style="margin:0px">
+                                            <input *ngIf="row.isNewRow == undefined" matInput type="text"
+                                                class="weightTextDis" [readonly]="true" value="{{row.subGroup}}">
+                                            <mat-form-field appearance="fill" *ngIf="row.isNewRow != undefined">
+                                                <mat-select panelClass="my-select-panel-class"
+                                                    style="text-transform: capitalize !important;"
+                                                    [(ngModel)]="row['subGroup']"
+                                                    (selectionChange)="onFreightChange($event.value,'subGroup',rowIndex,'air')">
+                                                    <span *ngFor="let service of distinctAirList">
+                                                        <mat-option *ngIf="service.isNewRow == undefined"
+                                                            [value]="service.subGroup">
+                                                            {{service.subGroup}}
+                                                        </mat-option>
+                                                    </span>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-2   contact_title select_opt p-0 mt-1"
+                                            [style.display]="row.isNewRow == undefined ? '' : 'none'">
+                                            <a class="align-middle ms-2" href="javascript:void(0);"
+                                                (click)="popdiscount(row.service,row.subGroup,'airDiscountsList','air')">
+                                                <img src="/assets/images/svg/edit_2.svg" class="gridIcon" alt="Edit">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['subGroup'] == '' && row['SubGroup'] != '0'">
+                                        Enter a value
+                                    </p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="delete">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Action</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="row">
+                                        <div class="col s12 m2 l2 contact_title select_opt p-0 mt-1">
+                                            <a class="align-middle delete-link" href="javascript:void(0);"
+                                                (click)="removeNewService(rowIndex,'air')" matTooltip="Delete"
+                                                [ngStyle]="{'-webkit-text-stroke':(rowIndex%2 == 0)?'1.5px #EAEFF3':'1.5px #F4F8FB'}">
+                                                <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="weightRange">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Weight Range</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="weight-range" style="display: flex;">
+                                        <div class="tooltipCls">
+                                            <input matInput type="text" class="weightText weightRange"
+                                                value="{{airMinMaxList[rowIndex].minWeight}}"
+                                                (focusout)="fromWeightFocusout($event.target.value,'weightFrom',rowIndex,'air')"
+                                                (keydown)="preventText($event,'','','')"
+                                                (keyup)="onFreightChange($event.target.value,'weightFrom',rowIndex,'air')">
+
+
+                                        </div>
+                                        <input matInput type="text" class="weightLabel weightLabelText" readonly="true"
+                                            value="to">
+                                        <div class="tooltipCls">
+                                            <!-- [readonly]="currentAgreement" -->
+                                            <input matInput type="text" class="weightText weightRange"
+                                                value="{{airMinMaxList[rowIndex].maxWeight}}"
+                                                (focusout)="toWeightFocusout($event.target.value,'weightTo',rowIndex,'air')"
+                                                (keydown)="preventText($event,'','','')"
+                                                (keyup)="onFreightChange($event.target.value,'weightTo',rowIndex,'air')">
+
+                                        </div>
+                                        <input matInput type="text" class="weightLabel weightRangeLable" readonly="true"
+                                            value="Lbs">
+                                    </div>
+                                    <p class="validationText" [hidden]="!(rowIndex == toWeightToolTipId)">Enter a
+                                        Valid Weight Range</p>
+                                    <p class="validationText" [hidden]="!(rowIndex == fromWeightToolTipId)">Enter a
+                                        Valid Weight Range</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightFrom'] == '' && row['weightFrom'] != '0'">
+                                        Enter a value</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightTo'] == '' && row['weightTo'] != '0'">
+                                        Enter a value</p>
+
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetDis">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Discount %</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        [ngClass]="getPercentageClass(airMinMaxList[rowIndex].disMax)"
+                                        value="{{(airMinMaxList[rowIndex].disMin != '' || airMinMaxList[rowIndex].disMax != '')
+                                        ?(airMinMaxList[rowIndex].disMin == airMinMaxList[rowIndex].disMax ?((airMinMaxList[rowIndex].disMin || 0) | number:'1.2-2') + '%' : 
+                                        ((airMinMaxList[rowIndex].disMin ||0) | number:'1.2-2') + '%' + ' - '+ ((airMinMaxList[rowIndex].disMax ||0) | number:'1.2-2') + '%'):''}}"
+                                        (focusout)="percentageFocusout($event,'targetDis',rowIndex,'air')"
+                                        (keypress)="storePreviousPercentage($event)"
+                                        (input)="validatePercentage($event)"
+                                        (keyup)="onFreightChange($event.target.value,'targetDis',rowIndex,'air')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetDis'] == '' && row['targetDis'] != '0'">
+                                        Enter a value
+                                    </p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="minType">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">
+                                    {{(currentAgreement)?'Baseline':'Target'}} Min Type</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [disabled]="currentAgreement" -->
+                                    <mat-select [(ngModel)]="row.minType" class="weightTextSelect"
+                                        (ngModelChange)="onFreightChange($event,'minType',rowIndex,'air')">
+                                        <mat-option *ngFor="let minValue of minTypeValues" [value]="minValue">
+                                            {{minValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['minType'] == '' && row['minType'] != '0'">
+                                        Enter a value
+                                    </p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetMin">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Reduction Amount</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- readonly="{{(airMinMaxList[rowIndex].amountMin == airMinMaxList[rowIndex].amountMax)?false:true}}" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        (keydown)="preventText($event,rowIndex,'distinctAirList','targetMin')"
+                                        [ngClass]="getPercentageClass(airMinMaxList[rowIndex].disMax)"
+                                        (focusout)="(row.minType == '%')?percentageFocusout($event,'targetMin',rowIndex,'air'):onSpendFocusOut($event,'targetMin',row['subGroup'],rowIndex,'airDiscountsList','distinctAirList')"
+                                        value="{{(airMinMaxList[rowIndex].amountMin.toString().length > 0 || airMinMaxList[rowIndex].amountMax.toString().length > 0)?(airMinMaxList[rowIndex].amountMin == airMinMaxList[rowIndex].amountMax ?((row.minType == '%')? ((airMinMaxList[rowIndex].amountMin ||0) | number:'1.2-2') + row.minType:airMinMaxList[rowIndex].amountMin | currency:'USD':'symbol':'1.2-2') : ((row.minType == '%') ? (airMinMaxList[rowIndex].amountMin | number:'1.2-2') + row.minType + ' - '+ ((airMinMaxList[rowIndex].amountMax || 0) | number:'1.2-2') + row.minType :  (airMinMaxList[rowIndex].amountMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (airMinMaxList[rowIndex].amountMax | currency:'USD':'symbol':'1.2-2'))):''}}"
+                                        (keyup)="onFreightChange($event.target.value,'targetMin',rowIndex,'air')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetMin'] == '' && row['targetMin'] != '0'">
+                                        Enter a value
+                                    </p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netMinimum">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Minimum</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        (keyup)="onFreightChange($event.target.value,'netMinimum',rowIndex,'air')"
+                                        (keydown)="preventText($event,rowIndex,'distinctAirList','targetMin')"
+                                        (focusout)="onSpendFocusOut($event,'netMinimum',row['subGroup'],rowIndex,'airDiscountsList','distinctAirList')"
+                                        value="{{(airMinMaxList[rowIndex].netMinimumMin.toString().length > 0 || airMinMaxList[rowIndex].netMinimumMax.toString().length > 0)?(airMinMaxList[rowIndex].netMinimumMin == airMinMaxList[rowIndex].netMinimumMax ?(airMinMaxList[rowIndex].netMinimumMin | currency:'USD':'symbol':'1.2-2') : 
+                                                ((airMinMaxList[rowIndex].netMinimumMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (airMinMaxList[rowIndex].netMinimumMax | currency:'USD':'symbol':'1.2-2') )):''}}">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['netMinimum'] == '' && row['netMinimum'] != '0'">
+                                        Enter a value
+                                    </p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netSpend">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Spend</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <input matInput type="text" class="weightText"
+                                        readonly="(row.subGroup == '')?false:true"
+                                        (keyup)="onFreightChange($event.target.value,'netSpend',rowIndex,'air')"
+                                        value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' :'1.2-2'):'0' | currency:'USD' : 'symbol' :'1.2-2'}}">
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDelete;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsDelete;"></tr>
+                        </table>
+
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-12 my-3 p-0 mb-0">
+                            <button class="add_btn addbtnNewChange " (click)="AddNewRowAir()">
+                                <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Service Level</div>
+                            </button>
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- Domestic Ground -->
+                <mat-tab label="Domestic Ground Service">
+                    <div #scrollframeGround class="tab-table create-tab tableWrap">
+                        <div #itemGround style="display:none;" *ngFor="let itemGround of distinctGroundList">
+                            itemGround
+                        </div>
+                        <table mat-table [dataSource]="dataSourceGround"
+                            class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab" cdkDropListGroup
+                            matSort cdkDropList cdkDropListLockAxis="x" cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="drop($event)">
+                            <ng-container matColumnDef="subGroup">
+                                <th mat-header-cell *matHeaderCellDef class="heading_main">Domestic Ground
+                                    Service Level
+                                </th>
+
+                                <td mat-cell *matCellDef="let row;let rowIndex = index;"
+                                    [attr.rowspan]="groundRowSpanList[rowIndex]"
+                                    [style.display]="groundVisibleList[rowIndex] ? '' : 'none'"
+                                    class="create-proposal-tablehead edit_table_cell">
+
+                                    <div class="row m-0 cardTitleTd">
+                                        <div class="col-10 contact_title select_opt p-0 mt-1">
+                                            <input *ngIf="row.isNewRow == undefined" matInput type="text"
+                                                class="weightTextDis" [readonly]="true" value="{{row.subGroup}}">
+                                            <mat-form-field appearance="fill" *ngIf="row.isNewRow != undefined">
+                                                <mat-select panelClass="my-select-panel-class"
+                                                    style="text-transform: capitalize !important;"
+                                                    [(ngModel)]="row['subGroup']"
+                                                    (selectionChange)="onFreightChange($event.value,'subGroup',rowIndex,'ground')">
+                                                    <span *ngFor="let service of groundServices">
+                                                        <mat-option *ngIf="service.isNewRow == undefined"
+                                                            [value]="service.subGroup">
+                                                            {{service.subGroup}}
+                                                        </mat-option>
+                                                    </span>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-2   contact_title select_opt p-0 mt-1"
+                                            [style.display]="row.isNewRow == undefined ? '' : 'none'">
+                                            <a class="align-middle ms-2" href="javascript:void(0);"
+                                                (click)="popdiscount(row.service,row.subGroup,'groundDiscountsList','ground')">
+                                                <img src="/assets/images/svg/edit_2.svg" class="gridIcon" alt="Edit">
+                                            </a>
+
+                                        </div>
+                                        <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                            *ngIf="submitClicked() && row['subGroup'] == '' && row['subGroup'] != '0'">
+                                            Enter a Value</p>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="delete">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Action</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <div class="row">
+                                        <div class="col s12 m2 l2 contact_title select_opt p-0 mt-1">
+                                            <a class="align-middle delete-link" href="javascript:void(0);"
+                                                [ngStyle]="{'-webkit-text-stroke':'1.5px'+ row.color}"
+                                                (click)="removeNewService(rowIndex,'DomesticGround')">
+                                                <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="weightRange">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Weight Range</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <div class="weight-range" style="display: flex;">
+                                        <div class="tooltipCls">
+                                            <input matInput type="text" class="weightText weightRange"
+                                                [readonly]="(row.isNewRow != undefined) ? false:true"
+                                                value="{{row.weightFrom}}"
+                                                (focusout)="fromWeightFocusout($event.target.value,'weightFrom',rowIndex,'ground')"
+                                                (keydown)="preventText($event,'','','')"
+                                                (keyup)="onFreightChange($event.target.value,'weightFrom',rowIndex,'ground')">
+
+                                        </div>
+                                        <input matInput type="text" class="weightLabel weightLabelText" readonly="true"
+                                            value="to">
+                                        <div class="tooltipCls">
+                                            <!-- [readonly]="currentAgreement" -->
+                                            <input matInput type="text" class="weightText weightRange"
+                                                value="{{row.weightTo}}" (keydown)="preventText($event,'','','')"
+                                                (focusout)="toWeightFocusout($event.target.value,'weightTo',rowIndex,'ground')"
+                                                (keyup)="onFreightChange($event.target.value,'weightTo',rowIndex,'ground')">
+
+                                        </div>
+                                        <input matInput type="text" class="weightLabel weightRangeLable" readonly="true"
+                                            value="Lbs">
+                                    </div>
+                                    <p class="validationText" [hidden]="!(rowIndex == fromWeightToolTipId)">Enter
+                                        a valid Weight Range</p>
+                                    <p class="validationText" [hidden]="!(rowIndex == toWeightToolTipId)">Enter
+                                        a valid Weight Range</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightFrom'] == '' && row['weightFrom'] != '0'">
+                                        Enter a Value</p>
+
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetDis">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Discount %</th>
+                                <!-- [readonly]="currentAgreement" -->
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <input matInput type="text"
+                                        [ngClass]="getPercentageClass(groundMinMaxList[rowIndex].disMax)"
+                                        class="weightText" [value]="
+    (groundMinMaxList[rowIndex].disMin != '' || groundMinMaxList[rowIndex].disMax != '')
+      ? (
+          groundMinMaxList[rowIndex].disMin == groundMinMaxList[rowIndex].disMax
+            ? ((+groundMinMaxList[rowIndex].disMin || 0) | number:'1.2-2') + '%'
+            : ((+groundMinMaxList[rowIndex].disMin || 0) | number:'1.2-2') + '%' + ' - ' +
+              ((+groundMinMaxList[rowIndex].disMax || 0) | number:'1.2-2') + '%'
+        )
+      : ''
+  " (focusout)="percentageFocusout($event,'targetDis',rowIndex,'ground')" (keypress)="storePreviousPercentage($event)"
+                                        (input)="validatePercentage($event)"
+                                        (keyup)="onFreightChange($event.target.value,'targetDis',rowIndex,'ground')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetDis'] == '' && row['targetDis'] != '0'">
+                                        Enter a Value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="minType">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">
+                                    {{(currentAgreement)?'Baseline':'Target'}} Min Type</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <!-- [disabled]="currentAgreement" -->
+                                    <mat-select [(ngModel)]="row.minType" class="weightTextSelect"
+                                        (ngModelChange)="onFreightChange($event,'minType',rowIndex,'ground')">
+                                        <mat-option *ngFor="let minValue of minTypeValues" [value]="minValue">
+                                            {{minValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['minType'] == '' && row['minType'] != '0'">
+                                        Enter a Value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="targetMin">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Reduction Amount</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <!-- [readonly]="((groundMinMaxList[rowIndex].amountMin == groundMinMaxList[rowIndex].amountMax)?false:true)" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        [ngClass]="getPercentageClass(groundMinMaxList[rowIndex].amountMax)"
+                                        (keydown)="preventText($event,rowIndex,'distinctGroundList','targetMin')"
+                                        (focusout)="(row.minType == '%')?percentageFocusout($event,'targetMin',rowIndex,'ground'):onSpendFocusOut($event,'targetMin',row['subGroup'],rowIndex,'groundDiscountsList','distinctGroundList')"
+                                        value="{{(groundMinMaxList[rowIndex].amountMin.toString().length > 0 || groundMinMaxList[rowIndex].amountMax.toString().length > 0)?(groundMinMaxList[rowIndex].amountMin == groundMinMaxList[rowIndex].amountMax ?((row.minType == '%')? (groundMinMaxList[rowIndex].amountMin | number:'1.2-2') + row.minType:groundMinMaxList[rowIndex].amountMin | currency:'USD':'symbol':'1.2-2') : ((row.minType == '%') ? ((groundMinMaxList[rowIndex].amountMin || 0 ) | number:'1.2-2') + row.minType + ' - '+ ((groundMinMaxList[rowIndex].amountMax || 0 ) | number:'1.2-2') + row.minType :  (groundMinMaxList[rowIndex].amountMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (groundMinMaxList[rowIndex].amountMax | currency:'USD':'symbol':'1.2-2'))):''}}"
+                                        (keyup)="onFreightChange($event.target.value,'targetMin',rowIndex,'ground')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetMin'] == '' && row['targetMin'] != '0'">
+                                        Enter a Value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netMinimum">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Minimum</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <!-- [readonly]="((groundMinMaxList[rowIndex].amountMin == groundMinMaxList[rowIndex].amountMax)?false:true)" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        (keydown)="preventText($event,rowIndex,'distinctGroundList','targetMin')"
+                                        (focusout)="onSpendFocusOut($event,'netMinimum',row['subGroup'],rowIndex,'groundDiscountsList','distinctGroundList')"
+                                        value="{{(groundMinMaxList[rowIndex].netMinimumMin.toString().length > 0 || groundMinMaxList[rowIndex].netMinimumMax.toString().length > 0)?(groundMinMaxList[rowIndex].netMinimumMin == groundMinMaxList[rowIndex].netMinimumMax ?(groundMinMaxList[rowIndex].netMinimumMin | currency:'USD':'symbol':'1.2-2') : ((groundMinMaxList[rowIndex].netMinimumMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (groundMinMaxList[rowIndex].netMinimumMax | currency:'USD':'symbol':'1.2-2'))):''}}"
+                                        (keyup)="onFreightChange($event.target.value,'netMinimum',rowIndex,'ground')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetMin'] == '' && row['targetMin'] != '0'">
+                                        Enter a Value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netSpend">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Spend</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <input matInput type="text" class="weightText" readonly="true"
+                                        value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' :'1.2-2'):'0' | currency:'USD' : 'symbol' :'1.2-2'}}">
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDelete;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsDelete;"></tr>
+                        </table>
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-12 my-3   mb-0 p-0">
+                            <button class="add_btn  addbtnNewChange" (click)="AddNewRowGround()">
+                                <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Service Level</div>
+                            </button>
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- International -->
+                <mat-tab label="International Service">
+                    <div #scrollFrameIntl class="tab-table create-tab tableWrap">
+                        <div #itemIntl style="display:none;" *ngFor="let itemIntl of distinctIntlList">
+                            itemIntl
+                        </div>
+                        <table mat-table [dataSource]="dataSourceIntl"
+                            class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab" cdkDropListGroup
+                            matSort cdkDropList cdkDropListLockAxis="x" cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="drop($event)">
+                            <ng-container matColumnDef="subGroup">
+                                <th mat-header-cell *matHeaderCellDef class="heading_main">International
+                                    Service Level
+                                </th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                    class="create-proposal-tablehead edit_table_cell"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+
+                                    <div class="row m-0 cardTitleTd">
+                                        <div class="col-10 contact_title select_opt p-0 mt-1" style="margin:0px">
+                                            <input *ngIf="row.isNewRow == undefined" matInput type="text"
+                                                class="weightTextDis" [readonly]="true" value="{{row.subGroup}}">
+                                            <mat-form-field *ngIf="row.isNewRow != undefined">
+                                                <mat-select #singleSelect style="text-transform: capitalize !important;"
+                                                    [(ngModel)]="row['subGroup']"
+                                                    (selectionChange)="onFreightChange($event.value,'subGroup',rowIndex,'intl')">
+                                                    <mat-option>
+                                                        <ngx-mat-select-search placeholderLabel=""
+                                                            noEntriesFoundLabel="" (keyup)="filterIntlServices($event)">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let service of filteredService | async"
+                                                        [value]="service.subGroup">{{service.subGroup}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-2   contact_title select_opt p-0 mt-1"
+                                            [style.display]="row.isNewRow == undefined ? '' : 'none'">
+                                            <a class="align-middle ms-2" href="javascript:void(0);"
+                                                (click)="popdiscount(row.service,row.subGroup,'intlDiscountsList','intl')">
+                                                <img src="/assets/images/svg/edit_2.svg" class="gridIcon" alt="Edit">
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['subGroup'] == '' && row['subGroup'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="delete">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Action</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- <input matInput type="text" class="weightText" readonly="true"
+                                                value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' : '1.2-2'):'0' | currency:'USD' : 'symbol' : '1.2-2'}}"> -->
+                                    <!-- *ngIf="!currentAgreement" -->
+                                    <div class="row">
+                                        <div class="col s12 m2 l3 contact_title select_opt p-0 mt-1">
+                                            <a class="align-middle delete-link" href="javascript:void(0);"
+                                                [ngStyle]="{'-webkit-text-stroke':(rowIndex%2 == 0)?'1.5px #EAEFF3':'1.5px #F4F8FB'}"
+                                                (click)="removeNewService(rowIndex,'DomesticIntl')">
+                                                <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="weightRange">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Weight Range</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="weight-range" style="display: flex;">
+                                        <div class="tooltipCls">
+                                            <!-- [readonly]="currentAgreement" -->
+                                            <input matInput type="text" class="weightTextRange weightRange"
+                                                value="{{intlMinMaxList[rowIndex].minWeight}}"
+                                                (keydown)="preventText($event,'','','')"
+                                                (focusout)="fromWeightFocusout($event.target.value,'weightFrom',rowIndex,'intl')"
+                                                (keyup)="onFreightChange($event.target.value,'weightFrom',rowIndex,'intl')">
+
+                                        </div>
+                                        <input matInput type="text" class="weightLabel weightLabelText" readonly="true"
+                                            value="to">
+                                        <!-- [readonly]="currentAgreement" -->
+                                        <input matInput type="text" class="weightTextRange weightRange"
+                                            value="{{intlMinMaxList[rowIndex].maxWeight}}"
+                                            (keydown)="preventText($event,'','','')"
+                                            (keyup)="onFreightChange($event.target.value,'weightTo',rowIndex,'intl')"
+                                            (focusout)="toWeightFocusout($event.target.value,'weightTo',rowIndex,'intl')">
+                                        <input matInput type="text" class="weightLabel weightRangeLable" readonly="true"
+                                            value="Lbs">
+                                    </div>
+                                    <p class="validationText" [hidden]="!(rowIndex == fromWeightToolTipId)">Enter a
+                                        Valid Weight Range</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightFrom'] == '' && row['weightFrom'] != '0'">
+                                        Enter a value</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightTo'] == '' && row['weightTo'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="targetDis">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Discount %</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [readonly]="((intlMinMaxList[rowIndex].disMin == intlMinMaxList[rowIndex].disMax)?false:true)" -->
+                                    <!-- (input)="(intlMinMaxList[rowIndex].disMin == intlMinMaxList[rowIndex].disMax)?validatePercentage($event):''" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        [ngClass]="getPercentageClass(intlMinMaxList[rowIndex].disMax)"
+                                        value="{{(intlMinMaxList[rowIndex].disMin != '' || intlMinMaxList[rowIndex].disMax != '')?(intlMinMaxList[rowIndex].disMin == intlMinMaxList[rowIndex].disMax ?((intlMinMaxList[rowIndex].disMin || 0 ) | number:'1.2-2') + '%' : ((intlMinMaxList[rowIndex].disMin || 0 ) | number:'1.2-2') + '%' + ' - '+ ((intlMinMaxList[rowIndex].disMax || 0 ) | number:'1.2-2') + '%'):''}}"
+                                        (focusout)="percentageFocusout($event,'targetDis',rowIndex,'intl')"
+                                        (keypress)="storePreviousPercentage($event);"
+                                        (input)="validatePercentage($event);"
+                                        (keyup)="onFreightChange($event.target.value,'targetDis',rowIndex,'intl')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetDis'] == '' && row['targetDis'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="minType">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">
+                                    {{(currentAgreement)?'Baseline':'Target'}} Min Type</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [disabled]="currentAgreement" -->
+                                    <mat-select [(ngModel)]="row.minType" class="weightTextSelect"
+                                        (ngModelChange)="onFreightChange($event,'minType',rowIndex,'intl')">
+                                        <mat-option *ngFor="let minValue of minTypeValues" [value]="minValue">
+                                            {{minValue}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['minType'] == '' && row['minType'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="targetMin">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Reduction Amount</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [readonly]="((intlMinMaxList[rowIndex].amountMin == intlMinMaxList[rowIndex].amountMax)?false:true)" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        [ngClass]="getPercentageClass(intlMinMaxList[rowIndex].amountMax)"
+                                        (keydown)="preventText($event,rowIndex,'distinctIntlList','targetMin')"
+                                        (focusout)="(row.minType == '%')?percentageFocusout($event,'targetMin',rowIndex,'intl'):onSpendFocusOut($event,'targetMin',row['subGroup'],rowIndex,'intlDiscountsList','distinctIntlList')"
+                                        value="{{(intlMinMaxList[rowIndex].amountMin.toString().length > 0 || intlMinMaxList[rowIndex].amountMax.toString().length > 0)?(intlMinMaxList[rowIndex].amountMin == intlMinMaxList[rowIndex].amountMax ?((row.minType == '%')? ((intlMinMaxList[rowIndex].amountMin || 0 ) | number:'1.2-2') + row.minType:intlMinMaxList[rowIndex].amountMin | currency:'USD':'symbol':'1.2-2') : ((row.minType == '%') ? ((intlMinMaxList[rowIndex].amountMin || 0 ) | number:'1.2-2') + row.minType + ' - '+ ((intlMinMaxList[rowIndex].amountMax || 0 ) | number:'1.2-2') + row.minType :  (intlMinMaxList[rowIndex].amountMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (intlMinMaxList[rowIndex].amountMax | currency:'USD':'symbol':'1.2-2'))):''}}"
+                                        (keyup)="onFreightChange($event.target.value,'targetMin',rowIndex,'intl')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetMin'] == '' && row['targetMin'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netMinimum">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Minimum</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [readonly]="((intlMinMaxList[rowIndex].amountMin == intlMinMaxList[rowIndex].amountMax)?false:true)" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        (keydown)="preventText($event,rowIndex,'distinctIntlList','targetMin')"
+                                        (focusout)="onSpendFocusOut($event,'netMinimum',row['subGroup'],rowIndex,'intlDiscountsList','distinctIntlList')"
+                                        value="{{(intlMinMaxList[rowIndex].netMinimumMin.toString().length > 0 || intlMinMaxList[rowIndex].netMinimumMax.toString().length > 0)?(intlMinMaxList[rowIndex].netMinimumMin == intlMinMaxList[rowIndex].netMinimumMax ?(intlMinMaxList[rowIndex].netMinimumMin | currency:'USD':'symbol':'1.2-2') : ((intlMinMaxList[rowIndex].netMinimumMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (intlMinMaxList[rowIndex].netMinimumMax | currency:'USD':'symbol':'1.2-2'))):''}}"
+                                        (keyup)="onFreightChange($event.target.value,'netMinimum',rowIndex,'intl')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetMin'] == '' && row['targetMin'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netSpend">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Spend</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <input matInput type="text" class="weightText" readonly="true"
+                                        value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' :'1.2-2'):'0' | currency:'USD' : 'symbol' :'1.2-2'}}">
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDelete;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsDelete;"></tr>
+                        </table>
+
+                    </div>
+                    <div class="row  m-0">
+                        <div class="col-12 my-3   mb-0 p-0">
+                            <button class="add_btn  addbtnNewChange" (click)="AddNewRowIntl()">
+                                <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Service Level</div>
+                            </button>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="HWT Service">
+                    <div #scrollFrameHWT class="tab-table create-tab tableWrap">
+                        <div #itemHWT style="display:none;" *ngFor="let itemHWT of distinctHWTList">
+                            itemHWT
+                        </div>
+                        <table mat-table [dataSource]="dataSourceHWT"
+                            class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab" cdkDropListGroup
+                            matSort cdkDropList cdkDropListLockAxis="x" cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="drop($event)">
+                            <ng-container matColumnDef="subGroup">
+                                <th mat-header-cell *matHeaderCellDef class="heading_main">HWT Service Level
+                                </th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                    class="create-proposal-tablehead edit_table_cell"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="row m-0 cardTitleTd">
+                                        <div class="col-10 contact_title select_opt p-0 mt-1" style="margin:0px">
+                                            <input matInput type="text" class="weightTextDis" [readonly]="true"
+                                                value="{{row.subGroup}}" *ngIf="row.isNewRow == undefined"
+                                                (keyup)="onFreightChange($event.target.value,'subGroup',rowIndex,'hwt')">
+                                            <mat-form-field appearance="fill" *ngIf="row.isNewRow != undefined">
+                                                <mat-select panelClass="my-select-panel-class"
+                                                    style="text-transform: capitalize !important;"
+                                                    [(ngModel)]="row['subGroup']"
+                                                    (selectionChange)="onFreightChange($event.value,'subGroup',rowIndex,'hwt')">
+                                                    <span *ngFor="let service of distinctHWTList">
+                                                        <mat-option *ngIf="service.isNewRow == undefined"
+                                                            [value]="service.subGroup">
+                                                            {{service.subGroup}}
+                                                        </mat-option>
+                                                    </span>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-2   contact_title select_opt p-0 mt-1"
+                                            [style.display]="row.isNewRow == undefined ? '' : 'none'">
+                                            <a class="align-middle ms-2" href="javascript:void(0);"
+                                                (click)="(carrier == 'UPS')?accountNumberUpdate(row.ratesheetName,row.subGroup):accountNumberUpdate(row.service,row.subGroup)">
+                                                <img src="/assets/images/svg/edit_2.svg" class="gridIcon" alt="Edit">
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['subGroup'] == '' && row['subGroup'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="delete">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Action</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- <input matInput type="text" class="weightText" readonly="true"
+                                                value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' : '1.2-2'):'0' | currency:'USD' : 'symbol' : '1.2-2'}}"> -->
+                                    <!-- *ngIf="!currentAgreement" -->
+                                    <div class="row">
+                                        <div class="col s12 m2 l3 contact_title select_opt p-0 mt-1">
+                                            <a class="align-middle delete-link" href="javascript:void(0);"
+                                                [ngStyle]="{'-webkit-text-stroke':(rowIndex%2 == 0)?'1.5px #EAEFF3':'1.5px #F4F8FB'}"
+                                                (click)="removeNewService(rowIndex,'HundredWeight')">
+                                                <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="weightRange">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Weight Range</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="weight-range" style="display: flex;">
+                                        <!-- [readonly]="currentAgreement" -->
+                                        <input matInput type="text" class="weightText weightRange"
+                                            value="{{hwtMinMaxList[rowIndex].minWeight}}"
+                                            (keydown)="preventText($event,'','','')"
+                                            (keyup)="onFreightChange($event.target.value,'weightFrom',rowIndex,'hwt')"
+                                            (focusout)="fromWeightFocusout($event.target.value,'weightFrom',rowIndex,'hwt')">
+                                        <input matInput type="text" class="weightLabel weightLabelText" readonly="true"
+                                            value="to">
+                                        <!-- [readonly]="currentAgreement" -->
+                                        <input matInput type="text" class="weightText weightRange"
+                                            value="{{hwtMinMaxList[rowIndex].maxWeight}}"
+                                            (keydown)="preventText($event,'','','')"
+                                            (focusout)="toWeightFocusout($event.target.value,'weightTo',rowIndex,'hwt')"
+                                            (keyup)="onFreightChange($event.target.value,'weightTo',rowIndex,'hwt')">
+                                        <input matInput type="text" class="weightLabel weightRangeLable" readonly="true"
+                                            value="Lbs">
+                                    </div>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightFrom'] == '' && row['weightFrom'] != '0'">
+                                        Enter a value</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['weightTo'] == '' && row['weightTo'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetTier">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">
+                                    {{(currentAgreement)?'Baseline':'Target'}} Tier</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- value="{{row.hwtTier}}" -->
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        value="{{(hwtMinMaxList[rowIndex].amountMin != '' || hwtMinMaxList[rowIndex].amountMax != '')?(hwtMinMaxList[rowIndex].amountMin == hwtMinMaxList[rowIndex].amountMax ?(hwtMinMaxList[rowIndex].amountMin): (hwtMinMaxList[rowIndex].amountMin) + ' - '+ (hwtMinMaxList[rowIndex].amountMax)):''}}"
+                                        (keydown)="preventText($event,'','','hwtTier')"
+                                        (keyup)="onFreightChange($event.target.value,'hwtTier',rowIndex,'hwt')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['hwtTier'] == '' && row['hwtTier'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetDis">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Discount %</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        [ngClass]="getPercentageClass(hwtMinMaxList[rowIndex].disMax)"
+                                        value="{{(hwtMinMaxList[rowIndex].disMin != '' || hwtMinMaxList[rowIndex].disMax != '')?(hwtMinMaxList[rowIndex].disMin == hwtMinMaxList[rowIndex].disMax ?((hwtMinMaxList[rowIndex].disMin || 0 ) | number:'1.2-2') + '%' : ((hwtMinMaxList[rowIndex].disMin || 0 ) | number:'1.2-2') + '%' + ' - '+ ((hwtMinMaxList[rowIndex].disMax || 0 ) | number:'1.2-2') + '%'):''}}"
+                                        (focusout)="percentageFocusout($event,'targetDis',rowIndex,'hwt')"
+                                        (keypress)="storePreviousPercentage($event)"
+                                        (input)="validatePercentage($event)"
+                                        (keyup)="onFreightChange($event.target.value,'targetDis',rowIndex,'hwt')">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetDis'] == '' && row['targetDis'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="netSpend">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Spend</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <input matInput type="text" class="weightText" readonly="true"
+                                        value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' :'1.2-2'):'0' | currency:'USD' : 'symbol' :'1.2-2'}}">
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsHWTDelete;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsHWTDelete;"></tr>
+                        </table>
+                    </div>
+                    <div class="row  m-0">
+                        <div class="col-12 my-3  mb-0  p-0">
+                            <button class="add_btn  addbtnNewChange" (click)="AddNewRowHWT()">
+                                <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Service Level</div>
+                            </button>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- ✅ DIM (FIXED: removed nested mat-tab) -->
+                <mat-tab label="DIM Factor">
+                    <div #scrollFrameDIM class="tab-table create-tab tableWrap">
+
+                        <table mat-table [dataSource]="dataSourceDIM"
+                            class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab" cdkDropListGroup
+                            matSort cdkDropList cdkDropListLockAxis="x" cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="drop($event)">
+                            <ng-container matColumnDef="service">
+                                <th mat-header-cell *matHeaderCellDef class="heading_main">Service</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                    class="create-proposal-tablehead edit_table_cell">
+                                    <div class="row m-0 cardTitleTd DIMFactor">
+                                        <div class="col-12 contact_title select_opt p-0 mt-1" style="margin:0px">
+                                            <input *ngIf="row.serviceGrouping!= '' && row.isNewRow == undefined"
+                                                matInput type="text" class="weightTextDis" [readonly]="true"
+                                                value="{{row.serviceGrouping}}">
+
+                                            <mat-form-field *ngIf="row.isNewRow != undefined">
+                                                <mat-select [(ngModel)]="row.serviceGrouping" #singleDIMSelect
+                                                    style="text-transform: capitalize !important;" [attr.id]="rowIndex"
+                                                    (selectionChange)="onChange($event.value,'serviceGrouping','dimFactorList',rowIndex)">
+                                                    <mat-option>
+                                                        <ngx-mat-select-search placeholderLabel="" [attr.id]="rowIndex"
+                                                            noEntriesFoundLabel=""
+                                                            [formControl]="DimserviceNameFilterCtrl">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let service of filteredDIMService | async"
+                                                        [value]="service.name">{{service.name}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['serviceGrouping'] == '' && row['serviceGrouping'] != '0'">
+                                        Enter a value</p>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="delete">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Action</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <!-- <input matInput type="text" class="weightText" readonly="true"
+                                                value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' : '1.2-2'):'0' | currency:'USD' : 'symbol' : '1.2-2'}}"> -->
+                                    <!-- *ngIf="!currentAgreement" -->
+                                    <div class="col s12 m2 l3 contact_title select_opt p-0 mt-1">
+                                        <a class="align-middle delete-link" href="javascript:void(0);"
+                                            (click)="removeNewService(rowIndex,'DIMservice')"
+                                            [ngStyle]="{'-webkit-text-stroke':'1.5px'+ row.color}">
+                                            <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                        </a>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="criteria">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Criteria</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <!-- <input matInput type="text" class="weightTextDis" value="{{row.criteria}}" > -->
+                                    <span *ngIf="(row.cubicInchFrom | number :'1.2-2') == '0.00'">
+                                        {{'DIM Divisor'+row.serviceGrouping+' (
+                                        < '+((row.cubicInchTo == '')?'':((row.cubicInchTo ||0) | number:'1.2-2'))+' )'
+                                            }} </span>
+                                            <span *ngIf="(row.cubicInchFrom | number :'1.2-2') != '0.00'">
+                                                {{'DIM Divisor'+row.serviceGrouping+' ( > '+((row.cubicInchFrom
+                                                == '')?'':((row.cubicInchFrom || 0 ) | number:'1.2-2'))+' )'}}
+                                            </span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="cubicInFrom">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Cubic In From</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex=index;" class="create-proposal-table">
+                                    <div class="tooltipCls">
+                                        <!-- [readonly]="currentAgreement" -->
+                                        <input matInput type="text" class="weightText"
+                                            value="{{(row.cubicInchFrom || 0 ) | number:'1.2-2'}}"
+                                            (focusout)="onChange($event.target.value,'cubicInchFrom','dimFactorList',rowIndex)">
+
+                                    </div>
+                                    <p class="validationText" [hidden]="!(rowIndex == dimId)">Enter the
+                                        correct Cubic Inch</p>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['cubicInchFrom'] == '' && row['cubicInchFrom'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="cubicInTo">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Cubic In To</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex=index;" class="create-proposal-table">
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText"
+                                        value="{{(row.cubicInchTo.toString().toLowerCase() == 'up')?(row.cubicInchTo):((row.cubicInchTo || 0 ) | number:'1.2-2')}}"
+                                        (focusout)="onChange($event.target.value,'cubicInchTo','dimFactorList',rowIndex)">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['cubicInchTo'] == '' && row['cubicInchTo'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="targetDimFactor">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">
+                                    {{(currentAgreement)?'Baseline':'Target'}} DIM Factor</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table">
+                                    <!-- [readonly]="currentAgreement" -->
+                                    <input matInput type="text" class="weightText" value="{{row.targetDimDivisor}}"
+                                        (keydown)="preventText($event,'','','')"
+                                        (keyup)="onChange($event.target.value,'targetDimDivisor','dimFactorList',rowIndex)">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetDimDivisor'] == '' && row['targetDimDivisor'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsDIM;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumnsDIM;">
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-12 my-3 mb-0 p-0">
+                            <button class="add_btn  addbtnNewChange" (click)="AddNewRowDIM()">
+                                <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Service Level</div>
+                            </button>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- ✅ Accessorial (INSERTED TABLE) -->
+                <mat-tab label="Accessorial">
+                    <div #scrollFrameAcc class="tab-table create-tab tableWrap">
+                        <div #itemAcc style="display:none;" *ngFor="let itemAcc of accessorialDiscountList">
+                            itemAcc
+                        </div>
+                        <table mat-table [dataSource]="dataSourceAcc"
+                            class="mat-elevation-z8 sub-table-header_EditDiscount w-full cont-sum-tab" cdkDropListGroup
+                            matSort cdkDropList cdkDropListLockAxis="x" cdkDropListOrientation="horizontal"
+                            (cdkDropListDropped)="drop($event)">
+                            <ng-container matColumnDef="service">
+                                <th mat-header-cell *matHeaderCellDef class="heading_main">Domestic Service
+                                    Level</th>
+                                <td mat-cell *matCellDef="let row; let rowIndex = index"
+                                    class="create-proposal-tablehead edit_table_cell"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <div class="row m-0 cardTitleTd">
+                                        <div class="col-10 contact_title select_opt p-0 mt-1" style="margin:0px">
+                                            <input matInput type="text" class="weightTextDis" list="accServices"
+                                                style="margin:0px !important;"
+                                                [readonly]="row.isNewRow == true  ? false : true"
+                                                value="{{row.service}}"
+                                                (focusout)="validateAccService($event.target.value,rowIndex)"
+                                                (keyup)="onAccChange($event.target.value,'service',rowIndex,row['service'])">
+
+
+                                            <datalist id="accServices">
+                                                <option *ngFor="let service of allAccServices" [value]="service">
+                                            </datalist>
+                                        </div>
+                                        <div class="col-2   contact_title select_opt p-0 mt-1"
+                                            [style.display]="row.isNewRow == undefined ? '' : 'none'">
+                                            <a class="align-middle ms-2" href="javascript:void(0);"
+                                                (click)="popdiscountAcc(row.service)">
+                                                <img src="/assets/images/svg/edit_2.svg" class="gridIcon" alt="Edit">
+                                            </a>
+
+                                        </div>
+                                        <div class="col-12 s12 m12 l12 contact_title select_opt p-0">
+                                            <p *ngIf="isAccServiceAvailable && row.rowNumber != undefined"
+                                                style="margin:0px;padding: 0px;color: red;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;">
+                                                Service already exists</p>
+                                        </div>
+                                    </div>
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['service'] == '' && row['service'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="delete">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Action</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <!-- <input matInput type="text" class="weightText" readonly="true"
+                                                value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' : '1.2-2'):'0' | currency:'USD' : 'symbol' : '1.2-2'}}"> -->
+                                    <!-- *ngIf="!currentAgreement" -->
+                                    <div class="col s12 m2 l3 contact_title select_opt p-0 mt-1"
+                                        [style.display]="row.isNewRow != undefined ? '' : 'none'">
+                                        <a *ngIf="row.service != undefined" class="align-middle delete-link"
+                                            (click)="removeNewService(rowIndex,'Accessorial')"
+                                            [ngStyle]="{'-webkit-text-stroke':(rowIndex%2 == 0)?'1.5px #EAEFF3':'1.5px #F4F8FB'}"
+                                            style="font-size: 1.35em !important;line-height: 40px;cursor: pointer;color: red;">
+                                            <img src="/assets/images/svg/delete.svg" class="gridIcon" alt="Delete">
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetDis">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Discount %</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+
+                                    <input matInput type="text" class="weightText"
+                                        [ngClass]="getPercentageClass(accMinMaxList[rowIndex].disMax)"
+                                        on-focusout="accPercentageFocusout($event,'targetDis',rowIndex,row['service'])"
+                                        (keyup)="onAccChange($event.target.value,'targetDis',rowIndex,row['service'])"
+                                        value="{{(accMinMaxList[rowIndex].disMin != '' || accMinMaxList[rowIndex].disMax != '')?(accMinMaxList[rowIndex].disMin == accMinMaxList[rowIndex].disMax ?((row.targetDisType != '$')? ((accMinMaxList[rowIndex].disMin || 0 ) | number:'1.2-2') + '%':(accMinMaxList[rowIndex].disMin | currency:'USD':'symbol':'1.2-2')) : ((row.targetDisType != '$') ? ((accMinMaxList[rowIndex].disMin || 0 ) | number:'1.2-2') + row.targetDisType + ' - '+ ((accMinMaxList[rowIndex].disMax || 0 ) | number:'1.2-2') + row.targetDisType :  (accMinMaxList[rowIndex].disMin | currency:'USD':'symbol':'1.2-2')+ ' - '+ (accMinMaxList[rowIndex].disMax | currency:'USD':'symbol':'1.2-2'))):''}}"
+                                        (keypress)="storePreviousPercentage($event)"
+                                        (keyup)="validatePercentage($event)">
+                                    <p style="margin:0px;padding: 0px;color: red;text-align:center;font-size:12px;font-family: 'Lato', sans-serif;text-transform: none;"
+                                        *ngIf="submitClicked() && row['targetDis'] == '' && row['targetDis'] != '0'">
+                                        Enter a value</p>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="netSpend">
+                                <th mat-header-cell *matHeaderCellDef class="heading_sub">Net Spend</th>
+                                <td mat-cell *matCellDef="let row;let rowIndex = index" class="create-proposal-table"
+                                    [ngClass]="{'dark_dark':(themeOption == 'dark' && (rowIndex%2 == 0)),'dark_light':(themeOption == 'dark' && (rowIndex%2 != 0)),'light_dark':(themeOption != 'dark' && (rowIndex%2 == 0)),'light_light':(themeOption != 'dark' && (rowIndex%2 != 0))}">
+                                    <input matInput type="text" class="weightText"
+                                        value="{{(row.netSpend != null)?(row.netSpend | currency:'USD' : 'symbol' :'1.2-2'):'0' | currency:'USD' : 'symbol' :'1.2-2'}}"
+                                        readonly="true">
+
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsAcc;sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsAcc;"></tr>
+                        </table>
+
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-12 my-3 mb-0 p-0">
+                            <button class="add_btn  addbtnNewChange " (click)="AddNewRowAcc()">
+                                <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                                <div class="add_text ms-2"> Add Service Level</div>
+                            </button>
+                        </div>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+
+
+            <!-- <div class="col-3  mt-3">
+                <button class="add_btn">
+                    <img src="/assets/images/svg/add_btn.svg" class="add_btn_icon" alt="add">
+                    <div class="add_text ms-2"> Add Service Level</div>
+                </button>
+            </div> -->
+
+
+            <div class="col-12  mt-3">
+                <div class="d-flex justify-content-end">
+                    <button mat-button class="btn-cancel" (click)="reset()">Reset</button>
+                    <button mat-raised-button color="primary" class="btn-save"
+                        (click)="nextbtn_clickHandler($event)">{{buttonName}} </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>

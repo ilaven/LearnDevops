@@ -1,0 +1,76 @@
+<div class="customizer-setting d-none d-md-block" style="top: 99px;">
+  <div class="btn-info shadow-lg btn btn-lg p-2 sideBarSearchBtn d-flex"
+    data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas"
+    aria-controls="theme-settings-offcanvas" (click)="openEnd(filtetcontent)" >
+    <i class="mdi mdi-filter-outline search-widget-icon fs-20 pe-2"></i>
+    Filter
+  </div>
+</div>
+
+<ng-template #filtetcontent let-offcanvas>
+  <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+    <h5 class="m-0 me-2 text-white">Filter</h5>
+    <button type="button" class="btn-close btn-close-white ms-auto"
+      data-bs-dismiss="offcanvas" aria-label="Close"
+      (click)="offcanvas.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="offcanvas-body p-0 right-sidebar">
+    <form [formGroup]="totalSpendbyCustomerformGroup">
+      <ngx-simplebar class="h-100">
+        <div class="p-4">
+          <div class="row">
+            <div class="col-md-12 col-12">
+              <label class="mt-3 mb-1">Year:</label>
+
+              <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                <mat-select formControlName="year" (selectionChange)="cmb_year_changeHandler()" >
+                  <mat-option  *ngFor="let yearItem of selectYear; let i = index"
+                    [value]="yearItem">
+                    {{ yearItem }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-12 mt-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="date-text-popup">
+                  <label class="mb-0">
+                    Data as of: <strong>{{ lastUpdatedDate }}</strong>
+                  </label>
+                </div>
+
+                <!-- <button type="button" class="btn p-0 download_btn material-shadow-none"
+                  aria-label="Download Excel file" (click)="ExportTOExcel()" >
+                  <img src="assets/images/excel.svg" alt="Excel icon" />
+                  <span>Excel</span>
+                </button> -->
+                 <div class="more_btn_drop">
+                                                <button type="button" (click)="toggleColumnPicker()"
+                                                    class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                    <!-- <i class=" ri-arrow-right-up-line  align-middle"></i> -->
+                                                    <!-- <img  src="assets/images/excel.svg"> -->
+                                                    <i class="ri-more-line fs-18 align-middle"></i>
+
+                                                </button>
+                                                <div *ngIf="showColumnPicker"  class="view_more showColumnPicker">
+
+
+
+                                                    <button type="button" class="btn p-0"
+                                                       (click)="toggleColumnPicker()"><img
+                                                            src="assets/images/excel.svg"> <span>Export to Excel</span>
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ngx-simplebar>
+    </form>
+  </div>
+</ng-template>

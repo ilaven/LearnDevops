@@ -1,0 +1,42 @@
+ 
+
+
+
+
+
+
+
+<div class="p-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2">Download</h2>
+            </div>
+            <div class="col-2 p-0">
+                <div mat-dialog-actions align="end" class="close-btn p-0">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="input_sty px-2 py-2">
+        <div class="row">
+            <div class="col-10 s12 m-2">
+                <button mat-button aria-label="Example icon button with a menu icon" matTooltip="Export to Excel"
+                    (click)="downloadclickHandler($event,'Excel')">
+                    <img src="../../../../../assets/images/svg/excel_download_icon.svg" alt="Excel icons" 
+                        style="width:45px; height:60px;"> <span>Export to Excel</span>
+                </button>
+            </div>
+            <div class="col-10 s12 m-2">
+                <button mat-button aria-label="Example icon button with a menu icon" matTooltip="Export to PDF"
+                    (click)="downloadclickHandler($event,'PDF')">
+                    <img src="../../../../../assets/images/svg/pdf_download.svg" alt="PDF icons" 
+                        style="width:45px;height:60px;"> <span>Export to PDF</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

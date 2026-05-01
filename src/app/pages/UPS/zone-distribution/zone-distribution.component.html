@@ -1,0 +1,1918 @@
+<div class="px-0 py-3">
+  <div class="row  pb-1">
+    <div class="col-12">
+      <div class="">
+        <div class="row">
+          <div class="col-md-4">
+            <h4 class="fs-16 mb-0 mt-2 pageTitle">Zone Distribution</h4>
+          </div>
+          <div class="col-md-4">
+            <h4 class="fs-16 mb-0 mt-2 pageTitle text-center">{{serviceName=='RD'?'Ground':serviceName}}</h4>
+          </div>
+          <div class="col-md-4">
+
+            <div class="customizer-setting d-none d-md-block" style="top: 99px;">
+              <div class="btn-info shadow-lg btn btn-lg p-2 sideBarSearchBtn d-flex" data-bs-toggle="offcanvas"
+                data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas"
+                (click)="openEnd(filtetcontent)">
+                <i class="mdi mdi-filter-outline search-widget-icon fs-20 pe-2"></i> Filter
+              </div>
+            </div>
+
+            <ng-template #filtetcontent let-offcanvas>
+              <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
+                <h5 class="m-0 me-2 text-white">Filter</h5>
+                <button type="button" class="btn-close btn-close-white ms-auto " data-bs-dismiss="offcanvas"
+                  aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+              </div>
+              <div class="offcanvas-body p-0 right-sidebar">
+                <ngx-simplebar class="h-100">
+                  <form class="p-4" [formGroup]="apiControllerFormGroup" (ngSubmit)="onSubmit()">
+                    <div class="">
+                      <div class="row">
+                        <div class="col-md-12 col-12">
+                          <label class="mt-3 mb-1">Service</label>
+                          <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <mat-select formControlName="chargeDescription" required>
+                              <mat-option value="Next Day Air Early AM">Next Day Air Early AM</mat-option>
+                              <mat-option value="Next Day Air">Next Day Air</mat-option>
+                              <mat-option value="Next Day Air Saver">Next Day Air Saver</mat-option>
+                              <mat-option value="2nd Day Air A.M.">2nd Day Air A.M.</mat-option>
+                              <mat-option value="2nd Day Air">2nd Day Air</mat-option>
+                              <mat-option value="3 Day Select">3 Day Select</mat-option>
+                              <mat-option value="Ground Commercial">Ground Commercial</mat-option>
+                              <mat-option value="Ground Residentials">Ground Residential</mat-option>
+                              <mat-option value="Ground Hundredweight">Ground Hundredweight</mat-option>
+                              <mat-option value="UPS Ground Saver Greater than 1 lb">UPS Ground Saver Greater than 1
+                                lb</mat-option>
+                              <mat-option value="UPS Ground Saver Less than 1 lb">UPS Ground Saver Less than 1
+                                lb</mat-option>
+                              <mat-option value="Standard to Canada">Standard to Canada</mat-option>
+                              <mat-option value="Standard to Mexico">Standard to Mexico</mat-option>
+                              <mat-option value="Worldwide Expedited">Worldwide Expedited</mat-option>
+                              <mat-option value="Worldwide Express">Worldwide Express</mat-option>
+                              <mat-option value="Worldwide Saver">Worldwide Saver</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-md-12 col-12">
+                          <label class="mt-3 mb-1">Reports</label>
+                          <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <mat-select formControlName="reporttype" required>
+                              <mat-option value="All">All</mat-option>
+                              <mat-option value="Package Count Report">Package Count Report</mat-option>
+                              <mat-option value="Average Package Cost Report (Service Charges)">Average Package Cost
+                                Report (Service
+                                Charges)</mat-option>
+                              <mat-option value="Average Package Cost Report (Total Charges)">Average Package Cost
+                                Report (Total
+                                Charges)</mat-option>
+                              <mat-option value="Total Service Charges">Total Service Charges</mat-option>
+                              <mat-option value="Total Charges">Total Charges</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-md-12 col-12">
+                          <label class="mt-3 mb-1">Account Number</label>
+                          <mat-form-field appearance="outline" class="w-100 compact-field  input_change">
+                            <mat-select #accNoSel formControlName="accountNumber" required multiple
+                              (valueChange)="toggleAllSelection()" [ngModel]="defaultArr">
+                              <mat-option #allSelectedValue [value]="Default">All</mat-option>
+                              <mat-option (onSelectionChange)="toggleSelection()"
+                                *ngFor="let account_detail of account_details; let i = index"
+                                value="{{account_detail.accountNo}}">
+                                <!-- {{account_detail.nickName}} -->
+                                <div class="nickName" [innerHTML]="account_detail.nickName"></div>
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-12 col-12 my-3">
+                          <mat-radio-group class="report-radio-group" formControlName="datetype">
+                            <mat-radio-button value="Invoice Date">
+                              Invoice Date
+                            </mat-radio-button>
+
+                            <mat-radio-button value="Transaction Date">
+                              Transaction Date
+                            </mat-radio-button>
+
+                          </mat-radio-group>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                          <label class="mt-3 mb-1">From Date</label>
+                          <mat-form-field appearance="outline"
+                            class="w-100 compact-field  input_change datepickerinput">
+                            <input matInput [matDatepicker]="fromPicker" [max]="dataasoffFormat"
+                              formControlName="fromdate">
+                            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromPicker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6 col-12">
+                          <label class="mt-3 mb-1">To Date</label>
+                          <mat-form-field appearance="outline"
+                            class="w-100 compact-field  input_change datepickerinput">
+                            <input matInput [matDatepicker]="endPicker"
+                              [min]="apiControllerFormGroup.get('fromdate')?.value" [max]="dataasoffFormat"
+                              formControlName="todate" (dateChange)="compareTwoDatesUps()">
+                            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endPicker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12 py-3 bb_1 text-center">
+                          <button mat-raised-button color="primary"
+                            class="btn me-3 btn_submit waves-effect waves-light " type="submit">
+                            Search
+                          </button>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="col-12 mt-4">
+                          <div class="d-flex justify-content-between align-items-center">
+
+                            <!-- Left Side: Date -->
+                            <div class="date-text-popup">
+                              <label class="mb-0">
+                                Data as of: <strong>{{dataasof}}</strong>
+                              </label>
+                            </div>
+
+                            <!-- Right Side: Excel Button -->
+                            <!-- <button type="button" class="btn p-0 download_btn material-shadow-none"
+                              aria-label="Download Excel file" (click)="image1_clickHandler()">
+                              <img src="assets/images/excel.svg" alt="Excel icon">
+                              <span> Excel</span>
+                            </button> -->
+                              <div class="more_btn_drop">
+                                                <button type="button" (click)="toggleColumnPicker()"
+                                                    class="btn btn-soft-info btn-sm material-shadow-none blueBackground1 ms-3 ">
+                                                    <!-- <i class=" ri-arrow-right-up-line  align-middle"></i> -->
+                                                    <!-- <img  src="assets/images/excel.svg"> -->
+                                                    <i class="ri-more-line fs-18 align-middle"></i>
+
+                                                </button>
+                                                <div *ngIf="showColumnPicker"  class="view_more showColumnPicker">
+
+
+
+                                                    <button type="button" class="btn p-0"
+                                                       (click)="image1_clickHandler()"><img
+                                                            src="assets/images/excel.svg"> <span>Export to Excel</span>
+                                                    </button>
+
+
+                                                </div>
+                                            </div>
+
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </form>
+                </ngx-simplebar>
+              </div>
+            </ng-template>
+          </div>
+
+        </div><!-- end card header -->
+      </div>
+    </div>
+    <!--end row-->
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-12" *ngIf="vbpackage_id_visible==true">
+    <div class="card mb-3">
+      <div class="card-body p-2">
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="inner-title mb-2">Package Count Report</p>
+          </div>
+
+
+          <div class="mt-3 mt-lg-0 col-6 text-left">
+            <div class="row g-3 mb-0 align-items-center">
+              <div class="d-flex align-items-center gap-2 justify-content-end pe-3">
+                <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M3.75 2.75V1.25C3.75 1.1837 3.77634 1.12011 3.82322 1.07322C3.87011 1.02634 3.9337 1 4 1C4.0663 1 4.12989 1.02634 4.17678 1.07322C4.22366 1.12011 4.25 1.1837 4.25 1.25V2.75C4.25 2.8163 4.22366 2.87989 4.17678 2.92678C4.12989 2.97366 4.0663 3 4 3C3.9337 3 3.87011 2.97366 3.82322 2.92678C3.77634 2.87989 3.75 2.8163 3.75 2.75ZM8 3C8.06624 2.9998 8.12972 2.9734 8.17656 2.92656C8.2234 2.87972 8.2498 2.81624 8.25 2.75V1.25C8.25 1.1837 8.22366 1.12011 8.17678 1.07322C8.12989 1.02634 8.0663 1 8 1C7.9337 1 7.87011 1.02634 7.82322 1.07322C7.77634 1.12011 7.75 1.1837 7.75 1.25V2.75C7.7502 2.81624 7.7766 2.87972 7.82344 2.92656C7.87028 2.9734 7.93376 2.9998 8 3ZM12 3C12.0662 2.9998 12.1297 2.9734 12.1766 2.92656C12.2234 2.87972 12.2498 2.81624 12.25 2.75V1.25C12.25 1.1837 12.2237 1.12011 12.1768 1.07322C12.1299 1.02634 12.0663 1 12 1C11.9337 1 11.8701 1.02634 11.8232 1.07322C11.7763 1.12011 11.75 1.1837 11.75 1.25V2.75C11.7502 2.81624 11.7766 2.87972 11.8234 2.92656C11.8703 2.9734 11.9338 2.9998 12 3ZM15 3.25V13.75C14.9999 14.0815 14.8681 14.3994 14.6338 14.6338C14.3994 14.8681 14.0815 14.9999 13.75 15H2.25C1.91852 14.9999 1.60064 14.8681 1.36625 14.6338C1.13185 14.3994 1.00012 14.0815 1 13.75V3.25C1.00012 2.91852 1.13185 2.60064 1.36625 2.36625C1.60064 2.13185 1.91852 2.00012 2.25 2H3.25V2.75C3.25 2.94891 3.32902 3.13968 3.46967 3.28033C3.61032 3.42098 3.80109 3.5 4 3.5C4.19891 3.5 4.38968 3.42098 4.53033 3.28033C4.67098 3.13968 4.75 2.94891 4.75 2.75V2H7.25V2.75C7.25 2.94891 7.32902 3.13968 7.46967 3.28033C7.61032 3.42098 7.80109 3.5 8 3.5C8.19891 3.5 8.38968 3.42098 8.53033 3.28033C8.67098 3.13968 8.75 2.94891 8.75 2.75V2H11.25V2.75C11.25 2.94891 11.329 3.13968 11.4697 3.28033C11.6103 3.42098 11.8011 3.5 12 3.5C12.1989 3.5 12.3897 3.42098 12.5303 3.28033C12.671 3.13968 12.75 2.94891 12.75 2.75V2H13.75C14.0815 2.00012 14.3994 2.13185 14.6338 2.36625C14.8681 2.60064 14.9999 2.91852 15 3.25ZM5.25 4.375C5.2502 4.44124 5.2766 4.50472 5.32344 4.55156C5.37028 4.5984 5.43376 4.6248 5.5 4.625H10.5C10.5663 4.625 10.6299 4.59866 10.6768 4.55178C10.7237 4.50489 10.75 4.4413 10.75 4.375C10.75 4.3087 10.7237 4.24511 10.6768 4.19822C10.6299 4.15134 10.5663 4.125 10.5 4.125H5.5C5.43376 4.1252 5.37028 4.1516 5.32344 4.19844C5.2766 4.24528 5.2502 4.30876 5.25 4.375ZM14.5 6H1.5V13.75C1.50058 13.9487 1.57979 14.1392 1.72031 14.2797C1.86084 14.4202 2.05127 14.4994 2.25 14.5H13.75C13.9487 14.4994 14.1392 14.4202 14.2797 14.2797C14.4202 14.1392 14.4994 13.9487 14.5 13.75V6ZM2.625 8.75H3.625C3.75749 8.74961 3.88444 8.69681 3.97812 8.60312C4.07181 8.50944 4.12461 8.38249 4.125 8.25V7.25C4.12461 7.11751 4.07181 6.99056 3.97813 6.89687C3.88444 6.80319 3.75749 6.75039 3.625 6.75H2.625C2.49251 6.75039 2.36556 6.80319 2.27187 6.89687C2.17819 6.99056 2.12539 7.11751 2.125 7.25V8.25C2.12539 8.38249 2.17819 8.50944 2.27188 8.60312C2.36556 8.69681 2.49251 8.74961 2.625 8.75ZM5.875 8.75H6.875C7.00749 8.74961 7.13444 8.69681 7.22812 8.60312C7.32181 8.50944 7.37461 8.38249 7.375 8.25V7.25C7.37461 7.11751 7.32181 6.99056 7.22813 6.89687C7.13444 6.80319 7.00749 6.75039 6.875 6.75H5.875C5.74251 6.75039 5.61556 6.80319 5.52187 6.89687C5.42819 6.99056 5.37539 7.11751 5.375 7.25V8.25C5.37539 8.38249 5.42819 8.50944 5.52188 8.60312C5.61556 8.69681 5.74251 8.74961 5.875 8.75ZM2.625 11.25H3.625C3.75749 11.2496 3.88444 11.1968 3.97812 11.1031C4.07181 11.0094 4.12461 10.8825 4.125 10.75V9.75C4.12461 9.61751 4.07181 9.49056 3.97813 9.39687C3.88444 9.30319 3.75749 9.25039 3.625 9.25H2.625C2.49251 9.25039 2.36556 9.30319 2.27187 9.39687C2.17819 9.49056 2.12539 9.61751 2.125 9.75V10.75C2.12539 10.8825 2.17819 11.0094 2.27188 11.1031C2.36556 11.1968 2.49251 11.2496 2.625 11.25ZM5.875 11.25H6.875C7.00749 11.2496 7.13444 11.1968 7.22812 11.1031C7.32181 11.0094 7.37461 10.8825 7.375 10.75V9.75C7.37461 9.61751 7.32181 9.49056 7.22813 9.39687C7.13444 9.30319 7.00749 9.25039 6.875 9.25H5.875C5.74251 9.25039 5.61556 9.30319 5.52187 9.39687C5.42819 9.49056 5.37539 9.61751 5.375 9.75V10.75C5.37539 10.8825 5.42819 11.0094 5.52188 11.1031C5.61556 11.1968 5.74251 11.2496 5.875 11.25ZM9.125 11.25H10.125C10.2575 11.2496 10.3844 11.1968 10.4781 11.1031C10.5718 11.0094 10.6246 10.8825 10.625 10.75V9.75C10.6246 9.61751 10.5718 9.49056 10.4781 9.39687C10.3844 9.30319 10.2575 9.25039 10.125 9.25H9.125C8.99251 9.25039 8.86556 9.30319 8.77187 9.39687C8.67819 9.49056 8.62539 9.61751 8.625 9.75V10.75C8.62539 10.8825 8.67819 11.0094 8.77188 11.1031C8.86556 11.1968 8.99251 11.2496 9.125 11.25ZM2.625 13.75H3.625C3.75749 13.7496 3.88444 13.6968 3.97812 13.6031C4.07181 13.5094 4.12461 13.3825 4.125 13.25V12.25C4.12461 12.1175 4.07181 11.9906 3.97813 11.8969C3.88444 11.8032 3.75749 11.7504 3.625 11.75H2.625C2.49251 11.7504 2.36556 11.8032 2.27187 11.8969C2.17819 11.9906 2.12539 12.1175 2.125 12.25V13.25C2.12539 13.3825 2.17819 13.5094 2.27188 13.6031C2.36556 13.6968 2.49251 13.7496 2.625 13.75ZM5.875 13.75H6.875C7.00749 13.7496 7.13444 13.6968 7.22812 13.6031C7.32181 13.5094 7.37461 13.3825 7.375 13.25V12.25C7.37461 12.1175 7.32181 11.9906 7.22813 11.8969C7.13444 11.8032 7.00749 11.7504 6.875 11.75H5.875C5.74251 11.7504 5.61556 11.8032 5.52187 11.8969C5.42819 11.9906 5.37539 12.1175 5.375 12.25V13.25C5.37539 13.3825 5.42819 13.5094 5.52188 13.6031C5.61556 13.6968 5.74251 13.7496 5.875 13.75ZM9.125 13.75H10.125C10.2575 13.7496 10.3844 13.6968 10.4781 13.6031C10.5718 13.5094 10.6246 13.3825 10.625 13.25V12.25C10.6246 12.1175 10.5718 11.9906 10.4781 11.8969C10.3844 11.8032 10.2575 11.7504 10.125 11.75H9.125C8.99251 11.7504 8.86556 11.8032 8.77187 11.8969C8.67819 11.9906 8.62539 12.1175 8.625 12.25V13.25C8.62539 13.3825 8.67819 13.5094 8.77188 13.6031C8.86556 13.6968 8.99251 13.7496 9.125 13.75ZM12.375 13.75H13.375C13.5075 13.7496 13.6344 13.6968 13.7281 13.6031C13.8218 13.5094 13.8746 13.3825 13.875 13.25V12.25C13.8746 12.1175 13.8218 11.9906 13.7281 11.8969C13.6344 11.8032 13.5075 11.7504 13.375 11.75H12.375C12.2425 11.7504 12.1156 11.8032 12.0219 11.8969C11.9282 11.9906 11.8754 12.1175 11.875 12.25V13.25C11.8754 13.3825 11.9282 13.5094 12.0219 13.6031C12.1156 13.6968 12.2425 13.7496 12.375 13.75Z"
+                    fill="url(#paint0_linear_280_427)" />
+                  <defs>
+                    <linearGradient id="paint0_linear_280_427" x1="1" y1="8" x2="15" y2="8"
+                      gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#00C0FF" />
+                      <stop offset="1" stop-color="#5558FF" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <span class="fw-semibold date-top">
+                  {{ fromDateFormat | date:'MMM d, yyyy' }} – {{ toDateFormat | date:'MMM d, yyyy' }}
+                </span>
+              </div>
+            </div>
+            <!--end row-->
+          </div>
+        </div>
+
+
+        <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+          <table class="metrics-table zone_distribution">
+            <thead>
+              <tr class="tabletotalRows">
+                <ng-container>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[0]==true">
+                    {{field1_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[2]==true">
+                    {{field3_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[3]==true">
+                    {{field4_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[4]==true">
+                    {{field5_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[5]==true">
+                    {{field6_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[6]==true">
+                    {{field7_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[7]==true">
+                    {{field8_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[8]==true">
+                    {{field9_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[9]==true">
+                    {{field10_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[10]==true">
+                    {{field11_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[11]==true">
+                    {{field12_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[12]==true">
+                    {{field13_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[13]==true">
+                    {{field14_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[14]==true">
+                    {{field15_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[15]==true">
+                    {{field16_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[16]==true">
+                    {{field17_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[17]==true">
+                    {{field18_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[18]==true">
+                    {{field19_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[19]==true">
+                    {{field20_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[20]==true">
+                    {{field21_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[21]==true">
+                    {{field22_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[22]==true">
+                    {{field23_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[23]==true">
+                    {{field24_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[24]==true">
+                    {{field25_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[25]==true">
+                    {{field26_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[26]==true">
+                    {{field27_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[27]==true">
+                    {{field28_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[28]==true">
+                    {{field29_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[29]==true">
+                    {{field30_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[30]==true">
+                    {{field31_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[31]==true">
+                    {{field32_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[32]==true">
+                    {{field33_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[33]==true">
+                    {{field34_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[34]==true">
+                    {{field35_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[35]==true">
+                    {{field36_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[36]==true">
+                    {{field37_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[37]==true">
+                    {{field38_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[38]==true">
+                    {{field39_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[39]==true">
+                    {{field40_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[40]==true">
+                    {{field41_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[41]==true">
+                    {{field42_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[42]==true">
+                    {{field43_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[43]==true">
+                    {{field44_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[44]==true">
+                    {{field45_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[45]==true">
+                    {{field46_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[46]==true">
+                    {{field47_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[47]==true">
+                    {{field48_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[48]==true">
+                    {{field49_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[49]==true">
+                    {{field50_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[50]==true">
+                    {{field51_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[51]==true">
+                    {{field52_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[52]==true">
+                    {{field53_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[53]==true">
+                    {{field54_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[54]==true">
+                    {{field55_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[55]==true">
+                    {{field56_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[56]==true">
+                    {{field57_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[57]==true">
+                    {{field58_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[58]==true">
+                    {{field59_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[59]==true">
+                    {{field60_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[60]==true">
+                    {{field61_packagecount_headerText}}</th>
+                  <th class="sticky-header" *ngIf="datagridpackagecount_id_columns[1]==true">
+                    {{field2_packagecount_headerText}}</th>
+
+                  <th class="sticky-header">%</th>
+
+                </ng-container>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngIf="datagridpackagecount_id_dataProvider.length == 0">
+                <td colspan="100" style="text-align: center;">No Records found</td>
+              </tr>
+              <tr
+                *ngFor="let datagridpackage of datagridpackagecount_id_dataProvider; let odd = odd; trackBy: trackByIdx"
+                [ngClass]="[
+                  odd ? 'table-odd' : 'table-even',
+                  isSummaryRow(datagridpackage.field) ? 'tabletotalRows' : ''
+                ]">
+
+                <td *ngIf="datagridaccscc_id_columns[0]==true">{{datagridpackage.field}}</td>
+
+                <td *ngIf="datagridavgfrt_id_columns[2]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field1/100 | percent:'1.1-1') :(datagridpackage.field1 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[3]==true">{{datagridpackage.field==='%'?(datagridpackage.field2/100
+                  | percent:'1.1-1') :(datagridpackage.field2 | number)}}
+                <td *ngIf="datagridavgfrt_id_columns[4]==true">{{datagridpackage.field==='%'?(datagridpackage.field3/100
+                  | percent:'1.1-1') :(datagridpackage.field3 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[5]==true">{{datagridpackage.field==='%'?(datagridpackage.field4/100
+                  | percent:'1.1-1') :(datagridpackage.field4 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[6]==true">{{datagridpackage.field==='%'?(datagridpackage.field5/100
+                  | percent:'1.1-1') :(datagridpackage.field5 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[7]==true">{{datagridpackage.field==='%'?(datagridpackage.field6/100
+                  | percent:'1.1-1') :(datagridpackage.field6 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[8]==true">{{datagridpackage.field==='%'?(datagridpackage.field7/100
+                  | percent:'1.1-1') :(datagridpackage.field7 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[9]==true">{{datagridpackage.field==='%'?(datagridpackage.field8/100
+                  | percent:'1.1-1') :(datagridpackage.field8 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[10]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field9/100 | percent:'1.1-1') :(datagridpackage.field9
+                  | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[11]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field10/100 | percent:'1.1-1')
+                  :(datagridpackage.field10 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[12]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field11/100 | percent:'1.1-1')
+                  :(datagridpackage.field11 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[13]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field12/100 | percent:'1.1-1')
+                  :(datagridpackage.field12 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[14]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field13/100 | percent:'1.1-1')
+                  :(datagridpackage.field13 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[15]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field14/100 | percent:'1.1-1')
+                  :(datagridpackage.field14 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[16]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field15/100 | percent:'1.1-1')
+                  :(datagridpackage.field15 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[17]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field16/100 | percent:'1.1-1')
+                  :(datagridpackage.field16 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[18]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field17/100 | percent:'1.1-1')
+                  :(datagridpackage.field17 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[19]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field18/100 | percent:'1.1-1')
+                  :(datagridpackage.field18 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[20]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field19/100 | percent:'1.1-1')
+                  :(datagridpackage.field19 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[21]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field20/100 | percent:'1.1-1')
+                  :(datagridpackage.field20 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[22]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field21/100 | percent:'1.1-1')
+                  :(datagridpackage.field21 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[23]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field22/100 | percent:'1.1-1')
+                  :(datagridpackage.field22 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[24]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field23/100 | percent:'1.1-1')
+                  :(datagridpackage.field23 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[25]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field24/100 | percent:'1.1-1')
+                  :(datagridpackage.field24 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[26]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field25/100 | percent:'1.1-1')
+                  :(datagridpackage.field25 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[27]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field26/100 | percent:'1.1-1')
+                  :(datagridpackage.field26 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[28]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field27/100 | percent:'1.1-1')
+                  :(datagridpackage.field27 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[29]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field28/100 | percent:'1.1-1')
+                  :(datagridpackage.field28 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[30]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field29/100 | percent:'1.1-1')
+                  :(datagridpackage.field29 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[31]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field30/100 | percent:'1.1-1')
+                  :(datagridpackage.field30 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[32]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field31/100 | percent:'1.1-1')
+                  :(datagridpackage.field31 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[33]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field32/100 | percent:'1.1-1')
+                  :(datagridpackage.field32 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[34]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field33/100 | percent:'1.1-1')
+                  :(datagridpackage.field33 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[35]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field34/100 | percent:'1.1-1')
+                  :(datagridpackage.field34 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[36]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field35/100 | percent:'1.1-1')
+                  :(datagridpackage.field35 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[37]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field36/100 | percent:'1.1-1')
+                  :(datagridpackage.field36 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[38]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field37/100 | percent:'1.1-1')
+                  :(datagridpackage.field37 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[39]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field38/100 | percent:'1.1-1')
+                  :(datagridpackage.field38 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[40]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field39/100 | percent:'1.1-1')
+                  :(datagridpackage.field39 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[41]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field40/100 | percent:'1.1-1')
+                  :(datagridpackage.field40 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[42]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field41/100 | percent:'1.1-1')
+                  :(datagridpackage.field41 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[43]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field42/100 | percent:'1.1-1')
+                  :(datagridpackage.field42 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[44]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field43/100 | percent:'1.1-1')
+                  :(datagridpackage.field43 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[45]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field44/100 | percent:'1.1-1')
+                  :(datagridpackage.field44 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[46]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field45/100 | percent:'1.1-1')
+                  :(datagridpackage.field45 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[47]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field46/100 | percent:'1.1-1')
+                  :(datagridpackage.field46 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[48]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field47/100 | percent:'1.1-1')
+                  :(datagridpackage.field47 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[49]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field48/100 | percent:'1.1-1')
+                  :(datagridpackage.field48 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[50]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field49/100 | percent:'1.1-1')
+                  :(datagridpackage.field49 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[51]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field50/100 | percent:'1.1-1')
+                  :(datagridpackage.field50 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[52]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field51/100 | percent:'1.1-1')
+                  :(datagridpackage.field51 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[53]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field52/100 | percent:'1.1-1')
+                  :(datagridpackage.field52 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[54]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field53/100 | percent:'1.1-1')
+                  :(datagridpackage.field53 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[55]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field54/100 | percent:'1.1-1')
+                  :(datagridpackage.field54 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[56]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field55/100 | percent:'1.1-1')
+                  :(datagridpackage.field55 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[57]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field56/100 | percent:'1.1-1')
+                  :(datagridpackage.field56 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[58]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field57/100 | percent:'1.1-1')
+                  :(datagridpackage.field57 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[59]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field58/100 | percent:'1.1-1')
+                  :(datagridpackage.field58 | number)}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[60]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field59/100 | percent:'1.1-1')
+                  :(datagridpackage.field59 | number)}}</td>
+                <td *ngIf="datagridfrtscc_id_columns[1]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field0/100 | percent:'1.1-1') :(datagridpackage.field0 | number)}} </td>
+                <td>{{datagridpackage.zonepercentage/100 | percent:'1.1-1'}}</td>
+
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-12" *ngIf="vbavgfrt_id_visible==true">
+
+    <div class="card mb-3">
+      <div class="card-body p-2">
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="inner-title mb-2">Average Package Cost Report (FRT)</p>
+          </div>
+
+
+        </div>
+
+
+        <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+          <table class="metrics-table zone_distribution">
+            <thead>
+              <tr class="tabletotalRows">
+
+
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[0]==true">{{field1_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[2]==true">{{field3_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[3]==true">{{field4_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[4]==true">{{field5_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[5]==true">{{field6_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[6]==true">{{field7_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[7]==true">{{field8_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[8]==true">{{field9_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[9]==true">{{field10_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[10]==true">{{field11_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[11]==true">{{field12_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[12]==true">{{field13_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[13]==true">{{field14_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[14]==true">{{field15_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[15]==true">{{field16_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[16]==true">{{field17_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[17]==true">{{field18_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[18]==true">{{field19_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[19]==true">{{field20_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[20]==true">{{field21_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[21]==true">{{field22_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[22]==true">{{field23_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[23]==true">{{field24_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[24]==true">{{field25_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[25]==true">{{field26_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[26]==true">{{field27_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[27]==true">{{field28_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[28]==true">{{field29_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[29]==true">{{field30_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[30]==true">{{field31_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[31]==true">{{field32_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[32]==true">{{field33_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[33]==true">{{field34_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[34]==true">{{field35_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[35]==true">{{field36_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[36]==true">{{field37_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[37]==true">{{field38_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[38]==true">{{field39_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[39]==true">{{field40_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[40]==true">{{field41_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[41]==true">{{field42_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[42]==true">{{field43_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[43]==true">{{field44_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[44]==true">{{field45_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[45]==true">{{field46_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[46]==true">{{field47_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[47]==true">{{field48_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[48]==true">{{field49_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[49]==true">{{field50_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[50]==true">{{field51_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[51]==true">{{field52_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[52]==true">{{field53_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[53]==true">{{field54_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[54]==true">{{field55_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[55]==true">{{field56_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[56]==true">{{field57_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[57]==true">{{field58_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[58]==true">{{field59_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[59]==true">{{field60_avgfrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgfrt_id_columns[60]==true">{{field61_avgfrt_headerText}}</th>
+
+            </thead>
+            <tbody>
+              <tr *ngIf="datagridavgfrt_id_dataProvider.length == 0">
+                <td colspan="100" style="text-align: center;">No Records found</td>
+              </tr>
+              <tr *ngFor="let datagridpackage of datagridavgfrt_id_dataProvider;let odd = odd; trackBy: trackByIdx"
+                [ngClass]="[
+                  odd ? 'table-odd' : 'table-even',
+                  isSummaryRow(datagridpackage.field) ? 'tabletotalRows' : ''
+                ]">
+                <td *ngIf="datagridavgfrt_id_columns[0]==true">{{datagridpackage.field}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[2]==true">{{datagridpackage.field1===0? datagridpackage.field1
+                  :datagridpackage.field1| currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[3]==true">{{datagridpackage.field2 ===0?datagridpackage.field2
+                  :datagridpackage.field2| currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[4]==true">{{datagridpackage.field3===0? datagridpackage.field3
+                  :datagridpackage.field3 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[5]==true">{{datagridpackage.field4===0? datagridpackage.field4
+                  :datagridpackage.field4 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[6]==true">{{datagridpackage.field5===0? datagridpackage.field5
+                  :datagridpackage.field5 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[7]==true">{{datagridpackage.field6===0? datagridpackage.field6
+                  :datagridpackage.field6 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[8]==true">{{datagridpackage.field7===0? datagridpackage.field7
+                  :datagridpackage.field7 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[9]==true">{{datagridpackage.field8===0? datagridpackage.field8
+                  :datagridpackage.field8 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[10]==true">{{datagridpackage.field9===0? datagridpackage.field9
+                  :datagridpackage.field9 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[11]==true">{{datagridpackage.field10===0? datagridpackage.field10
+                  :datagridpackage.field10 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[12]==true">{{datagridpackage.field11===0? datagridpackage.field11
+                  :datagridpackage.field11 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[13]==true">{{datagridpackage.field12===0? datagridpackage.field12
+                  :datagridpackage.field12 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[14]==true">{{datagridpackage.field13===0? datagridpackage.field13
+                  :datagridpackage.field13 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[15]==true">{{datagridpackage.field14===0? datagridpackage.field14
+                  :datagridpackage.field14 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[16]==true">{{datagridpackage.field15===0? datagridpackage.field15
+                  :datagridpackage.field15 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[17]==true">{{datagridpackage.field16===0? datagridpackage.field16
+                  :datagridpackage.field16 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[18]==true">{{datagridpackage.field17===0? datagridpackage.field17
+                  :datagridpackage.field17 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[19]==true">{{datagridpackage.field18===0? datagridpackage.field18
+                  :datagridpackage.field18 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[20]==true">{{datagridpackage.field19===0? datagridpackage.field19
+                  :datagridpackage.field19 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[21]==true">{{datagridpackage.field20===0? datagridpackage.field20
+                  :datagridpackage.field20 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[22]==true">{{datagridpackage.field21===0? datagridpackage.field21
+                  :datagridpackage.field21 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[23]==true">{{datagridpackage.field22===0? datagridpackage.field22
+                  :datagridpackage.field22 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[24]==true">{{datagridpackage.field23===0? datagridpackage.field23
+                  :datagridpackage.field23 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[25]==true">{{datagridpackage.field24===0? datagridpackage.field24
+                  :datagridpackage.field24 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[26]==true">{{datagridpackage.field25===0? datagridpackage.field25
+                  :datagridpackage.field25 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[27]==true">{{datagridpackage.field26===0? datagridpackage.field26
+                  :datagridpackage.field26 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[28]==true">{{datagridpackage.field27===0? datagridpackage.field27
+                  :datagridpackage.field27 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[29]==true">{{datagridpackage.field28===0? datagridpackage.field28
+                  :datagridpackage.field28 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[30]==true">{{datagridpackage.field29===0? datagridpackage.field29
+                  :datagridpackage.field29 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[31]==true">{{datagridpackage.field30===0? datagridpackage.field30
+                  :datagridpackage.field30 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[32]==true">{{datagridpackage.field31===0? datagridpackage.field31
+                  :datagridpackage.field31 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[33]==true">{{datagridpackage.field32===0? datagridpackage.field32
+                  :datagridpackage.field32 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[34]==true">{{datagridpackage.field33===0? datagridpackage.field33
+                  :datagridpackage.field33 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[35]==true">{{datagridpackage.field34===0? datagridpackage.field34
+                  :datagridpackage.field34 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[36]==true">{{datagridpackage.field35===0? datagridpackage.field35
+                  :datagridpackage.field35 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[37]==true">{{datagridpackage.field36===0? datagridpackage.field36
+                  :datagridpackage.field36 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[38]==true">{{datagridpackage.field37===0? datagridpackage.field37
+                  :datagridpackage.field37 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[39]==true">{{datagridpackage.field38===0? datagridpackage.field38
+                  :datagridpackage.field38 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[40]==true">{{datagridpackage.field39===0? datagridpackage.field39
+                  :datagridpackage.field39 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[41]==true">{{datagridpackage.field40===0? datagridpackage.field40
+                  :datagridpackage.field40 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[42]==true">{{datagridpackage.field41===0? datagridpackage.field41
+                  :datagridpackage.field41 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[43]==true">{{datagridpackage.field42===0? datagridpackage.field42
+                  :datagridpackage.field42 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[44]==true">{{datagridpackage.field43===0? datagridpackage.field43
+                  :datagridpackage.field43 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[45]==true">{{datagridpackage.field44===0? datagridpackage.field44
+                  :datagridpackage.field44 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[46]==true">{{datagridpackage.field45===0? datagridpackage.field45
+                  :datagridpackage.field45 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[47]==true">{{datagridpackage.field46===0? datagridpackage.field46
+                  :datagridpackage.field46 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[48]==true">{{datagridpackage.field47===0? datagridpackage.field47
+                  :datagridpackage.field47 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[49]==true">{{datagridpackage.field48===0? datagridpackage.field48
+                  :datagridpackage.field48 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[50]==true">{{datagridpackage.field49===0? datagridpackage.field49
+                  :datagridpackage.field49 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[51]==true">{{datagridpackage.field50===0? datagridpackage.field50
+                  :datagridpackage.field50 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[52]==true">{{datagridpackage.field51===0? datagridpackage.field51
+                  :datagridpackage.field51 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[53]==true">{{datagridpackage.field52===0? datagridpackage.field52
+                  :datagridpackage.field52 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[54]==true">{{datagridpackage.field53===0? datagridpackage.field53
+                  :datagridpackage.field53 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[55]==true">{{datagridpackage.field54===0? datagridpackage.field54
+                  :datagridpackage.field54 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[56]==true">{{datagridpackage.field55===0? datagridpackage.field55
+                  :datagridpackage.field55 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[57]==true">{{datagridpackage.field56===0? datagridpackage.field56
+                  :datagridpackage.field56 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[58]==true">{{datagridpackage.field57===0? datagridpackage.field57
+                  :datagridpackage.field57 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[59]==true">{{datagridpackage.field58===0? datagridpackage.field58
+                  :datagridpackage.field58 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[60]==true">{{datagridpackage.field59===0? datagridpackage.field59
+                  :datagridpackage.field59 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <!-- <td >{{datagridpackage.zonepercentage}}</td> -->
+
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-12" *ngIf="vbavgacc_id_visible==true">
+
+    <div class="card mb-3">
+      <div class="card-body p-2">
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="inner-title mb-2">Average Package Cost Report (ACC)</p>
+          </div>
+
+
+        </div>
+
+
+        <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+          <table class="metrics-table zone_distribution">
+            <thead>
+              <tr class="tabletotalRows">
+
+
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[0]==true">{{field1_avgacc_headerText}}</th>
+                <!-- <th class="sticky-header" *ngIf="datagridavgacc_id_columns[1]==true">{{field2_avgacc_headerText}}</th> -->
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[2]==true">{{field3_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[3]==true">{{field4_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[4]==true">{{field5_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[5]==true">{{field6_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[6]==true">{{field7_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[7]==true">{{field8_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[8]==true">{{field9_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[9]==true">{{field10_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[10]==true">{{field11_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[11]==true">{{field12_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[12]==true">{{field13_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[13]==true">{{field14_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[14]==true">{{field15_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[15]==true">{{field16_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[16]==true">{{field17_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[17]==true">{{field18_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[18]==true">{{field19_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[19]==true">{{field20_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[20]==true">{{field21_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[21]==true">{{field22_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[22]==true">{{field23_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[23]==true">{{field24_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[24]==true">{{field25_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[25]==true">{{field26_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[26]==true">{{field27_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[27]==true">{{field28_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[28]==true">{{field29_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[29]==true">{{field30_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[30]==true">{{field31_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[31]==true">{{field32_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[32]==true">{{field33_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[33]==true">{{field34_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[34]==true">{{field35_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[35]==true">{{field36_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[36]==true">{{field37_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[37]==true">{{field38_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[38]==true">{{field39_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[39]==true">{{field40_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[40]==true">{{field41_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[41]==true">{{field42_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[42]==true">{{field43_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[43]==true">{{field44_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[44]==true">{{field45_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[45]==true">{{field46_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[46]==true">{{field47_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[47]==true">{{field48_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[48]==true">{{field49_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[49]==true">{{field50_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[50]==true">{{field51_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[51]==true">{{field52_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[52]==true">{{field53_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[53]==true">{{field54_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[54]==true">{{field55_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[55]==true">{{field56_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[56]==true">{{field57_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[57]==true">{{field58_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[58]==true">{{field59_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[59]==true">{{field60_avgacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridavgacc_id_columns[60]==true">{{field61_avgacc_headerText}}</th>
+
+
+            </thead>
+            <tbody>
+              <tr *ngIf="datagridavgacc_id_dataProvider.length == 0">
+                <td colspan="100" style="text-align: center;">No Records found</td>
+              </tr>
+              <tr *ngFor="let datagridpackage of datagridavgacc_id_dataProvider;let odd = odd; trackBy: trackByIdx"
+                [ngClass]="[
+                  odd ? 'table-odd' : 'table-even',
+                  isSummaryRow(datagridpackage.field) ? 'tabletotalRows' : ''
+                ]">
+                <td *ngIf="datagridavgacc_id_columns[0]==true">{{datagridpackage.field}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[2]==true">{{datagridpackage.field1===0? datagridpackage.field1
+                  :datagridpackage.field1| currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[3]==true">{{datagridpackage.field2 ===0?datagridpackage.field2
+                  :datagridpackage.field2| currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[4]==true">{{datagridpackage.field3===0? datagridpackage.field3
+                  :datagridpackage.field3 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[5]==true">{{datagridpackage.field4===0? datagridpackage.field4
+                  :datagridpackage.field4 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[6]==true">{{datagridpackage.field5===0? datagridpackage.field5
+                  :datagridpackage.field5 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[7]==true">{{datagridpackage.field6===0? datagridpackage.field6
+                  :datagridpackage.field6 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[8]==true">{{datagridpackage.field7===0? datagridpackage.field7
+                  :datagridpackage.field7 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[9]==true">{{datagridpackage.field8===0? datagridpackage.field8
+                  :datagridpackage.field8 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[10]==true">{{datagridpackage.field9===0? datagridpackage.field9
+                  :datagridpackage.field9 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[11]==true">{{datagridpackage.field10===0? datagridpackage.field10
+                  :datagridpackage.field10 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[12]==true">{{datagridpackage.field11===0? datagridpackage.field11
+                  :datagridpackage.field11 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[13]==true">{{datagridpackage.field12===0? datagridpackage.field12
+                  :datagridpackage.field12 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[14]==true">{{datagridpackage.field13===0? datagridpackage.field13
+                  :datagridpackage.field13 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[15]==true">{{datagridpackage.field14===0? datagridpackage.field14
+                  :datagridpackage.field14 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[16]==true">{{datagridpackage.field15===0? datagridpackage.field15
+                  :datagridpackage.field15 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[17]==true">{{datagridpackage.field16===0? datagridpackage.field16
+                  :datagridpackage.field16 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[18]==true">{{datagridpackage.field17===0? datagridpackage.field17
+                  :datagridpackage.field17 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[19]==true">{{datagridpackage.field18===0? datagridpackage.field18
+                  :datagridpackage.field18 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[20]==true">{{datagridpackage.field19===0? datagridpackage.field19
+                  :datagridpackage.field19 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[21]==true">{{datagridpackage.field20===0? datagridpackage.field20
+                  :datagridpackage.field20 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[22]==true">{{datagridpackage.field21===0? datagridpackage.field21
+                  :datagridpackage.field21 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[23]==true">{{datagridpackage.field22===0? datagridpackage.field22
+                  :datagridpackage.field22 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[24]==true">{{datagridpackage.field23===0? datagridpackage.field23
+                  :datagridpackage.field23 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[25]==true">{{datagridpackage.field24===0? datagridpackage.field24
+                  :datagridpackage.field24 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[26]==true">{{datagridpackage.field25===0? datagridpackage.field25
+                  :datagridpackage.field25 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[27]==true">{{datagridpackage.field26===0? datagridpackage.field26
+                  :datagridpackage.field26 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[28]==true">{{datagridpackage.field27===0? datagridpackage.field27
+                  :datagridpackage.field27 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[29]==true">{{datagridpackage.field28===0? datagridpackage.field28
+                  :datagridpackage.field28 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[30]==true">{{datagridpackage.field29===0? datagridpackage.field29
+                  :datagridpackage.field29 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[31]==true">{{datagridpackage.field30===0? datagridpackage.field30
+                  :datagridpackage.field30 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[32]==true">{{datagridpackage.field31===0? datagridpackage.field31
+                  :datagridpackage.field31 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[33]==true">{{datagridpackage.field32===0? datagridpackage.field32
+                  :datagridpackage.field32 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[34]==true">{{datagridpackage.field33===0? datagridpackage.field33
+                  :datagridpackage.field33 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[35]==true">{{datagridpackage.field34===0? datagridpackage.field34
+                  :datagridpackage.field34 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[36]==true">{{datagridpackage.field35===0? datagridpackage.field35
+                  :datagridpackage.field35 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[37]==true">{{datagridpackage.field36===0? datagridpackage.field36
+                  :datagridpackage.field36 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[38]==true">{{datagridpackage.field37===0? datagridpackage.field37
+                  :datagridpackage.field37 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[39]==true">{{datagridpackage.field38===0? datagridpackage.field38
+                  :datagridpackage.field38 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[40]==true">{{datagridpackage.field39===0? datagridpackage.field39
+                  :datagridpackage.field39 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[41]==true">{{datagridpackage.field40===0? datagridpackage.field40
+                  :datagridpackage.field40 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[42]==true">{{datagridpackage.field41===0? datagridpackage.field41
+                  :datagridpackage.field41 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[43]==true">{{datagridpackage.field42===0? datagridpackage.field42
+                  :datagridpackage.field42 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[44]==true">{{datagridpackage.field43===0? datagridpackage.field43
+                  :datagridpackage.field43 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[45]==true">{{datagridpackage.field44===0? datagridpackage.field44
+                  :datagridpackage.field44 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[46]==true">{{datagridpackage.field45===0? datagridpackage.field45
+                  :datagridpackage.field45 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[47]==true">{{datagridpackage.field46===0? datagridpackage.field46
+                  :datagridpackage.field46 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[48]==true">{{datagridpackage.field47===0? datagridpackage.field47
+                  :datagridpackage.field47 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[49]==true">{{datagridpackage.field48===0? datagridpackage.field48
+                  :datagridpackage.field48 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[50]==true">{{datagridpackage.field49===0? datagridpackage.field49
+                  :datagridpackage.field49 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[51]==true">{{datagridpackage.field50===0? datagridpackage.field50
+                  :datagridpackage.field50 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[52]==true">{{datagridpackage.field51===0? datagridpackage.field51
+                  :datagridpackage.field51 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[53]==true">{{datagridpackage.field52===0? datagridpackage.field52
+                  :datagridpackage.field52 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[54]==true">{{datagridpackage.field53===0? datagridpackage.field53
+                  :datagridpackage.field53 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[55]==true">{{datagridpackage.field54===0? datagridpackage.field54
+                  :datagridpackage.field54 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[56]==true">{{datagridpackage.field55===0? datagridpackage.field55
+                  :datagridpackage.field55 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[57]==true">{{datagridpackage.field56===0? datagridpackage.field56
+                  :datagridpackage.field56 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[58]==true">{{datagridpackage.field57===0? datagridpackage.field57
+                  :datagridpackage.field57 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[59]==true">{{datagridpackage.field58===0? datagridpackage.field58
+                  :datagridpackage.field58 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[60]==true">{{datagridpackage.field59===0? datagridpackage.field59
+                  :datagridpackage.field59 | currency:'USD':'symbol':'1.2-2'}}</td>
+                <!-- <td >{{datagridpackage.zonepercentage}}</td> -->
+
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-12" *ngIf="vbfrtscc_id_visible==true">
+
+    <div class="card mb-3">
+      <div class="card-body p-2">
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="inner-title mb-2">Average Package Cost Report (FRT and ACC)</p>
+          </div>
+
+
+        </div>
+
+
+        <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+          <table class="metrics-table zone_distribution">
+            <thead>
+              <tr class="tabletotalRows">
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[0]==true">{{field1_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[2]==true">{{field3_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[3]==true">{{field4_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[4]==true">{{field5_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[5]==true">{{field6_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[6]==true">{{field7_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[7]==true">{{field8_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[8]==true">{{field9_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[9]==true">{{field10_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[10]==true">{{field11_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[11]==true">{{field12_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[12]==true">{{field13_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[13]==true">{{field14_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[14]==true">{{field15_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[15]==true">{{field16_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[16]==true">{{field17_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[17]==true">{{field18_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[18]==true">{{field19_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[19]==true">{{field20_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[20]==true">{{field21_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[21]==true">{{field22_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[22]==true">{{field23_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[23]==true">{{field24_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[24]==true">{{field25_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[25]==true">{{field26_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[26]==true">{{field27_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[27]==true">{{field28_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[28]==true">{{field29_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[29]==true">{{field30_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[30]==true">{{field31_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[31]==true">{{field32_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[32]==true">{{field33_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[33]==true">{{field34_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[34]==true">{{field35_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[35]==true">{{field36_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[36]==true">{{field37_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[37]==true">{{field38_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[38]==true">{{field39_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[39]==true">{{field40_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[40]==true">{{field41_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[41]==true">{{field42_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[42]==true">{{field43_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[43]==true">{{field44_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[44]==true">{{field45_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[45]==true">{{field46_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[46]==true">{{field47_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[47]==true">{{field48_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[48]==true">{{field49_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[49]==true">{{field50_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[50]==true">{{field51_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[51]==true">{{field52_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[52]==true">{{field53_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[53]==true">{{field54_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[54]==true">{{field55_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[55]==true">{{field56_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[56]==true">{{field57_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[57]==true">{{field58_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[58]==true">{{field59_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[59]==true">{{field60_frtscc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtscc_id_columns[60]==true">{{field61_frtscc_headerText}}</th>
+
+                <!-- <th *ngIf="datagridfrtscc_id_columns[1]==true">{{field2_frtscc_headerText}}</th> -->
+
+                <!-- <th>%</th> -->
+
+
+            </thead>
+            <tbody>
+              <tr *ngIf="datagridfrtscc_id_dataProvider.length == 0">
+                <td colspan="100" style="text-align: center;">No Records found</td>
+              </tr>
+              <tr *ngFor="let datagridpackage of datagridfrtscc_id_dataProvider; let odd = odd; trackBy: trackByIdx"
+                [ngClass]="[
+                  odd ? 'table-odd' : 'table-even',
+                  isSummaryRow(datagridpackage.field) ? 'tabletotalRows' : ''
+                ]">
+                <td *ngIf="datagridfrtscc_id_columns[0]==true">{{datagridpackage.field}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[2]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field1/100 | percent) :(datagridpackage.field1| currency:'USD':'symbol':'1.2-2')}}
+                </td>
+                <td *ngIf="datagridavgfrt_id_columns[3]==true">{{datagridpackage.field==='%'?(datagridpackage.field2/100
+                  | percent) :(datagridpackage.field2| currency:'USD':'symbol':'1.2-2')}}
+                <td *ngIf="datagridavgfrt_id_columns[4]==true">{{datagridpackage.field==='%'?(datagridpackage.field3/100
+                  | percent) :(datagridpackage.field3| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[5]==true">{{datagridpackage.field==='%'?(datagridpackage.field4/100
+                  | percent) :(datagridpackage.field4| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[6]==true">{{datagridpackage.field==='%'?(datagridpackage.field5/100
+                  | percent) :(datagridpackage.field5| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[7]==true">{{datagridpackage.field==='%'?(datagridpackage.field6/100
+                  | percent) :(datagridpackage.field6| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[8]==true">{{datagridpackage.field==='%'?(datagridpackage.field7/100
+                  | percent) :(datagridpackage.field7| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[9]==true">{{datagridpackage.field==='%'?(datagridpackage.field8/100
+                  | percent) :(datagridpackage.field8| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[10]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field9/100 | percent) :(datagridpackage.field9|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[11]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field10/100 | percent) :(datagridpackage.field10|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[12]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field11/100 | percent) :(datagridpackage.field11|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[13]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field12/100 | percent) :(datagridpackage.field12|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[14]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field13/100 | percent) :(datagridpackage.field13|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[15]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field14/100 | percent) :(datagridpackage.field14|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[16]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field15/100 | percent) :(datagridpackage.field15|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[17]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field16/100 | percent) :(datagridpackage.field16|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[18]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field17/100 | percent) :(datagridpackage.field17|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[19]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field18/100 | percent) :(datagridpackage.field18|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[20]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field19/100 | percent) :(datagridpackage.field19|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[21]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field20/100 | percent) :(datagridpackage.field20|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[22]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field21/100 | percent) :(datagridpackage.field21|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[23]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field22/100 | percent) :(datagridpackage.field22|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[24]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field23/100 | percent) :(datagridpackage.field23|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[25]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field24/100 | percent) :(datagridpackage.field24|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[26]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field25/100 | percent) :(datagridpackage.field25|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[27]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field26/100 | percent) :(datagridpackage.field26|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[28]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field27/100 | percent) :(datagridpackage.field27|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[29]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field28/100 | percent) :(datagridpackage.field28|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[30]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field29/100 | percent) :(datagridpackage.field29|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[31]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field30/100 | percent) :(datagridpackage.field30|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[32]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field31/100 | percent) :(datagridpackage.field31|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[33]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field32/100 | percent) :(datagridpackage.field32|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[34]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field33/100 | percent) :(datagridpackage.field33|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[35]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field34/100 | percent) :(datagridpackage.field34|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[36]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field35/100 | percent) :(datagridpackage.field35|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[37]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field36/100 | percent) :(datagridpackage.field36|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[38]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field37/100 | percent) :(datagridpackage.field37|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[39]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field38/100 | percent) :(datagridpackage.field38|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[40]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field39/100 | percent) :(datagridpackage.field39|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[41]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field40/100 | percent) :(datagridpackage.field40|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[42]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field41/100 | percent) :(datagridpackage.field41|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[43]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field42/100 | percent) :(datagridpackage.field42|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[44]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field43/100 | percent) :(datagridpackage.field43|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[45]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field44/100 | percent) :(datagridpackage.field44|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[46]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field45/100 | percent) :(datagridpackage.field45|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[47]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field46/100 | percent) :(datagridpackage.field46|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[48]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field47/100 | percent) :(datagridpackage.field47|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[49]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field48/100 | percent) :(datagridpackage.field48|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[50]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field49/100 | percent) :(datagridpackage.field49|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[51]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field50/100 | percent) :(datagridpackage.field50|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[52]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field51/100 | percent) :(datagridpackage.field51|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[53]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field52/100 | percent) :(datagridpackage.field52|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[54]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field53/100 | percent) :(datagridpackage.field53|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[55]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field54/100 | percent) :(datagridpackage.field54|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[56]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field55/100 | percent) :(datagridpackage.field55|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[57]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field56/100 | percent) :(datagridpackage.field56|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[58]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field57/100 | percent) :(datagridpackage.field57|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[59]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field58/100 | percent) :(datagridpackage.field58|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[60]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field59/100 | percent) :(datagridpackage.field59|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <!-- <td >{{datagridpackage.zonepercentage}}</td> -->
+                <!-- <td *ngIf="datagridfrtscc_id_columns[1]==true">{{datagridpackage.field==='%'? (datagridpackage.field0/100 | percent)
+                         :(datagridpackage.field0| currency:'USD':'symbol':'1.2-2')}} </td> -->
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-12" *ngIf="vbpackagefrt_id_visible==true">
+
+    <div class="card mb-3">
+      <div class="card-body p-2">
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="inner-title mb-2">Total Package Cost Report (FRT)</p>
+          </div>
+
+
+        </div>
+
+
+        <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+          <table class="metrics-table zone_distribution">
+            <thead>
+              <tr class="tabletotalRows">
+
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[0]==true">
+                  {{field1_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[2]==true">
+                  {{field3_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[3]==true">
+                  {{field4_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[4]==true">
+                  {{field5_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[5]==true">
+                  {{field6_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[6]==true">
+                  {{field7_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[7]==true">
+                  {{field8_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[8]==true">
+                  {{field9_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[9]==true">
+                  {{field10_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[10]==true">
+                  {{field11_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[11]==true">
+                  {{field12_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[12]==true">
+                  {{field13_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[13]==true">
+                  {{field14_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[14]==true">
+                  {{field15_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[15]==true">
+                  {{field16_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[16]==true">
+                  {{field17_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[17]==true">
+                  {{field18_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[18]==true">
+                  {{field19_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[19]==true">
+                  {{field20_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[20]==true">
+                  {{field21_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[21]==true">
+                  {{field22_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[22]==true">
+                  {{field23_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[23]==true">
+                  {{field24_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[24]==true">
+                  {{field25_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[25]==true">
+                  {{field26_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[26]==true">
+                  {{field27_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[27]==true">
+                  {{field28_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[28]==true">
+                  {{field29_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[29]==true">
+                  {{field30_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[30]==true">
+                  {{field31_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[31]==true">
+                  {{field32_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[32]==true">
+                  {{field33_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[33]==true">
+                  {{field34_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[34]==true">
+                  {{field35_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[35]==true">
+                  {{field36_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[36]==true">
+                  {{field37_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[37]==true">
+                  {{field38_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[38]==true">
+                  {{field39_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[39]==true">
+                  {{field40_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[40]==true">
+                  {{field41_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[41]==true">
+                  {{field42_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[42]==true">
+                  {{field43_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[43]==true">
+                  {{field44_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[44]==true">
+                  {{field45_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[45]==true">
+                  {{field46_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[46]==true">
+                  {{field47_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[47]==true">
+                  {{field48_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[48]==true">
+                  {{field49_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[49]==true">
+                  {{field50_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[50]==true">
+                  {{field51_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[51]==true">
+                  {{field52_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[52]==true">
+                  {{field53_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[53]==true">
+                  {{field54_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[54]==true">
+                  {{field55_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[55]==true">
+                  {{field56_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[56]==true">
+                  {{field57_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[57]==true">
+                  {{field58_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[58]==true">
+                  {{field59_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[59]==true">
+                  {{field60_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[60]==true">
+                  {{field61_packagefrt_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridpackagefrt_id_columns[1]==true">
+                  {{field2_packagefrt_headerText}}</th>
+
+                <th class="sticky-header">%</th>
+
+
+
+            </thead>
+            <tbody>
+              <tr *ngIf="datagridpackagefrt_id_dataProvider.length == 0">
+                <td colspan="100" style="text-align: center;">No Records found</td>
+              </tr>
+              <tr *ngFor="let datagridpackage of datagridpackagefrt_id_dataProvider; let odd = odd; trackBy: trackByIdx"
+                [ngClass]="[
+                  odd ? 'table-odd' : 'table-even',
+                  isSummaryRow(datagridpackage.field) ? 'tabletotalRows' : ''
+                ]">
+                <td *ngIf="datagridpackagefrt_id_columns[0]==true">{{datagridpackage.field}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[2]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field1/100 | percent:'1.1-1') :(datagridpackage.field1|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[3]==true">{{datagridpackage.field==='%'?(datagridpackage.field2/100
+                  | percent:'1.1-1') :(datagridpackage.field2| currency:'USD':'symbol':'1.2-2')}}
+                <td *ngIf="datagridavgfrt_id_columns[4]==true">{{datagridpackage.field==='%'?(datagridpackage.field3/100
+                  | percent:'1.1-1') :(datagridpackage.field3| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[5]==true">{{datagridpackage.field==='%'?(datagridpackage.field4/100
+                  | percent:'1.1-1') :(datagridpackage.field4| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[6]==true">{{datagridpackage.field==='%'?(datagridpackage.field5/100
+                  | percent:'1.1-1') :(datagridpackage.field5| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[7]==true">{{datagridpackage.field==='%'?(datagridpackage.field6/100
+                  | percent:'1.1-1') :(datagridpackage.field6| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[8]==true">{{datagridpackage.field==='%'?(datagridpackage.field7/100
+                  | percent:'1.1-1') :(datagridpackage.field7| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[9]==true">{{datagridpackage.field==='%'?(datagridpackage.field8/100
+                  | percent:'1.1-1') :(datagridpackage.field8| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[10]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field9/100 | percent:'1.1-1') :(datagridpackage.field9|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[11]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field10/100 | percent:'1.1-1')
+                  :(datagridpackage.field10| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[12]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field11/100 | percent:'1.1-1')
+                  :(datagridpackage.field11| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[13]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field12/100 | percent:'1.1-1')
+                  :(datagridpackage.field12| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[14]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field13/100 | percent:'1.1-1')
+                  :(datagridpackage.field13| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[15]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field14/100 | percent:'1.1-1')
+                  :(datagridpackage.field14| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[16]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field15/100 | percent:'1.1-1')
+                  :(datagridpackage.field15| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[17]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field16/100 | percent:'1.1-1')
+                  :(datagridpackage.field16| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[18]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field17/100 | percent:'1.1-1')
+                  :(datagridpackage.field17| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[19]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field18/100 | percent:'1.1-1')
+                  :(datagridpackage.field18| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[20]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field19/100 | percent:'1.1-1')
+                  :(datagridpackage.field19| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[21]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field20/100 | percent:'1.1-1')
+                  :(datagridpackage.field20| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[22]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field21/100 | percent:'1.1-1')
+                  :(datagridpackage.field21| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[23]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field22/100 | percent:'1.1-1')
+                  :(datagridpackage.field22| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[24]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field23/100 | percent:'1.1-1')
+                  :(datagridpackage.field23| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[25]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field24/100 | percent:'1.1-1')
+                  :(datagridpackage.field24| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[26]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field25/100 | percent:'1.1-1')
+                  :(datagridpackage.field25| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[27]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field26/100 | percent:'1.1-1')
+                  :(datagridpackage.field26| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[28]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field27/100 | percent:'1.1-1')
+                  :(datagridpackage.field27| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[29]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field28/100 | percent:'1.1-1')
+                  :(datagridpackage.field28| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[30]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field29/100 | percent:'1.1-1')
+                  :(datagridpackage.field29| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[31]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field30/100 | percent:'1.1-1')
+                  :(datagridpackage.field30| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[32]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field31/100 | percent:'1.1-1')
+                  :(datagridpackage.field31| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[33]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field32/100 | percent:'1.1-1')
+                  :(datagridpackage.field32| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[34]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field33/100 | percent:'1.1-1')
+                  :(datagridpackage.field33| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[35]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field34/100 | percent:'1.1-1')
+                  :(datagridpackage.field34| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[36]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field35/100 | percent:'1.1-1')
+                  :(datagridpackage.field35| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[37]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field36/100 | percent:'1.1-1')
+                  :(datagridpackage.field36| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[38]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field37/100 | percent:'1.1-1')
+                  :(datagridpackage.field37| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[39]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field38/100 | percent:'1.1-1')
+                  :(datagridpackage.field38| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[40]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field39/100 | percent:'1.1-1')
+                  :(datagridpackage.field39| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[41]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field40/100 | percent:'1.1-1')
+                  :(datagridpackage.field40| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[42]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field41/100 | percent:'1.1-1')
+                  :(datagridpackage.field41| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[43]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field42/100 | percent:'1.1-1')
+                  :(datagridpackage.field42| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[44]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field43/100 | percent:'1.1-1')
+                  :(datagridpackage.field43| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[45]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field44/100 | percent:'1.1-1')
+                  :(datagridpackage.field44| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[46]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field45/100 | percent:'1.1-1')
+                  :(datagridpackage.field45| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[47]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field46/100 | percent:'1.1-1')
+                  :(datagridpackage.field46| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[48]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field47/100 | percent:'1.1-1')
+                  :(datagridpackage.field47| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[49]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field48/100 | percent:'1.1-1')
+                  :(datagridpackage.field48| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[50]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field49/100 | percent:'1.1-1')
+                  :(datagridpackage.field49| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[51]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field50/100 | percent:'1.1-1')
+                  :(datagridpackage.field50| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[52]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field51/100 | percent:'1.1-1')
+                  :(datagridpackage.field51| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[53]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field52/100 | percent:'1.1-1')
+                  :(datagridpackage.field52| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[54]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field53/100 | percent:'1.1-1')
+                  :(datagridpackage.field53| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[55]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field54/100 | percent:'1.1-1')
+                  :(datagridpackage.field54| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[56]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field55/100 | percent:'1.1-1')
+                  :(datagridpackage.field55| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[57]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field56/100 | percent:'1.1-1')
+                  :(datagridpackage.field56| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[58]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field57/100 | percent:'1.1-1')
+                  :(datagridpackage.field57| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[59]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field58/100 | percent:'1.1-1')
+                  :(datagridpackage.field58| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[60]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field59/100 | percent:'1.1-1')
+                  :(datagridpackage.field59| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridfrtscc_id_columns[1]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field0/100 | percent:'1.1-1') :(datagridpackage.field0|
+                  currency:'USD':'symbol':'1.2-2')}} </td>
+
+                <td>{{datagridpackage.zonepercentage/100 | percent:'1.1-1'}}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="col-12" *ngIf="vbfrtacc_id_visible==true">
+
+    <div class="card mb-3">
+      <div class="card-body p-2">
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="inner-title mb-2">Total Package Cost Report (FRT and ACC)</p>
+          </div>
+
+
+        </div>
+
+
+        <div class="table-scroll" #tableScroll (scroll)="syncScroll($event, 'table')">
+          <table class="metrics-table zone_distribution">
+            <thead>
+              <tr class="tabletotalRows">
+
+
+
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[0]==true">{{field1_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[2]==true">{{field3_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[3]==true">{{field4_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[4]==true">{{field5_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[5]==true">{{field6_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[6]==true">{{field7_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[7]==true">{{field8_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[8]==true">{{field9_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[9]==true">{{field10_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[10]==true">{{field11_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[11]==true">{{field12_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[12]==true">{{field13_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[13]==true">{{field14_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[14]==true">{{field15_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[15]==true">{{field16_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[16]==true">{{field17_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[17]==true">{{field18_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[18]==true">{{field19_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[19]==true">{{field20_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[20]==true">{{field21_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[21]==true">{{field22_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[22]==true">{{field23_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[23]==true">{{field24_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[24]==true">{{field25_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[25]==true">{{field26_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[26]==true">{{field27_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[27]==true">{{field28_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[28]==true">{{field29_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[29]==true">{{field30_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[30]==true">{{field31_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[31]==true">{{field32_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[32]==true">{{field33_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[33]==true">{{field34_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[34]==true">{{field35_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[35]==true">{{field36_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[36]==true">{{field37_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[37]==true">{{field38_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[38]==true">{{field39_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[39]==true">{{field40_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[40]==true">{{field41_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[41]==true">{{field42_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[42]==true">{{field43_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[43]==true">{{field44_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[44]==true">{{field45_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[45]==true">{{field46_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[46]==true">{{field47_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[47]==true">{{field48_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[48]==true">{{field49_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[49]==true">{{field50_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[50]==true">{{field51_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[51]==true">{{field52_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[52]==true">{{field53_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[53]==true">{{field54_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[54]==true">{{field55_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[55]==true">{{field56_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[56]==true">{{field57_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[57]==true">{{field58_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[58]==true">{{field59_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[59]==true">{{field60_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[60]==true">{{field61_frtacc_headerText}}</th>
+                <th class="sticky-header" *ngIf="datagridfrtacc_id_columns[1]==true">{{field2_frtacc_headerText}}</th>
+
+                <th class="sticky-header">%</th>
+
+
+            </thead>
+            <tbody>
+              <tr *ngIf="datagridfrtacc_id_dataProvider.length == 0">
+                <td colspan="100" style="text-align: center;">No Records found</td>
+              </tr>
+              <tr *ngFor="let datagridpackage of datagridfrtacc_id_dataProvider; let odd = odd; trackBy: trackByIdx"
+                [ngClass]="[
+                  odd ? 'table-odd' : 'table-even',
+                  isSummaryRow(datagridpackage.field) ? 'tabletotalRows' : ''
+                ]">
+                <td *ngIf="datagridfrtacc_id_columns[0]==true">{{datagridpackage.field}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[2]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field1/100 | percent:'1.1-1') :(datagridpackage.field1|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[3]==true">{{datagridpackage.field==='%'?(datagridpackage.field2/100
+                  | percent:'1.1-1') :(datagridpackage.field2| currency:'USD':'symbol':'1.2-2')}}
+                <td *ngIf="datagridavgfrt_id_columns[4]==true">{{datagridpackage.field==='%'?(datagridpackage.field3/100
+                  | percent:'1.1-1') :(datagridpackage.field3| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[5]==true">{{datagridpackage.field==='%'?(datagridpackage.field4/100
+                  | percent:'1.1-1') :(datagridpackage.field4| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[6]==true">{{datagridpackage.field==='%'?(datagridpackage.field5/100
+                  | percent:'1.1-1') :(datagridpackage.field5| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[7]==true">{{datagridpackage.field==='%'?(datagridpackage.field6/100
+                  | percent:'1.1-1') :(datagridpackage.field6| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[8]==true">{{datagridpackage.field==='%'?(datagridpackage.field7/100
+                  | percent:'1.1-1') :(datagridpackage.field7| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[9]==true">{{datagridpackage.field==='%'?(datagridpackage.field8/100
+                  | percent:'1.1-1') :(datagridpackage.field8| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[10]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field9/100 | percent:'1.1-1') :(datagridpackage.field9|
+                  currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[11]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field10/100 | percent:'1.1-1')
+                  :(datagridpackage.field10| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[12]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field11/100 | percent:'1.1-1')
+                  :(datagridpackage.field11| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[13]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field12/100 | percent:'1.1-1')
+                  :(datagridpackage.field12| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[14]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field13/100 | percent:'1.1-1')
+                  :(datagridpackage.field13| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[15]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field14/100 | percent:'1.1-1')
+                  :(datagridpackage.field14| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[16]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field15/100 | percent:'1.1-1')
+                  :(datagridpackage.field15| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[17]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field16/100 | percent:'1.1-1')
+                  :(datagridpackage.field16| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[18]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field17/100 | percent:'1.1-1')
+                  :(datagridpackage.field17| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[19]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field18/100 | percent:'1.1-1')
+                  :(datagridpackage.field18| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[20]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field19/100 | percent:'1.1-1')
+                  :(datagridpackage.field19| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[21]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field20/100 | percent:'1.1-1')
+                  :(datagridpackage.field20| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[22]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field21/100 | percent:'1.1-1')
+                  :(datagridpackage.field21| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[23]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field22/100 | percent:'1.1-1')
+                  :(datagridpackage.field22| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[24]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field23/100 | percent:'1.1-1')
+                  :(datagridpackage.field23| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[25]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field24/100 | percent:'1.1-1')
+                  :(datagridpackage.field24| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[26]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field25/100 | percent:'1.1-1')
+                  :(datagridpackage.field25| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[27]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field26/100 | percent:'1.1-1')
+                  :(datagridpackage.field26| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[28]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field27/100 | percent:'1.1-1')
+                  :(datagridpackage.field27| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[29]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field28/100 | percent:'1.1-1')
+                  :(datagridpackage.field28| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[30]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field29/100 | percent:'1.1-1')
+                  :(datagridpackage.field29| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[31]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field30/100 | percent:'1.1-1')
+                  :(datagridpackage.field30| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[32]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field31/100 | percent:'1.1-1')
+                  :(datagridpackage.field31| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[33]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field32/100 | percent:'1.1-1')
+                  :(datagridpackage.field32| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[34]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field33/100 | percent:'1.1-1')
+                  :(datagridpackage.field33| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[35]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field34/100 | percent:'1.1-1')
+                  :(datagridpackage.field34| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[36]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field35/100 | percent:'1.1-1')
+                  :(datagridpackage.field35| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[37]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field36/100 | percent:'1.1-1')
+                  :(datagridpackage.field36| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[38]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field37/100 | percent:'1.1-1')
+                  :(datagridpackage.field37| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[39]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field38/100 | percent:'1.1-1')
+                  :(datagridpackage.field38| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[40]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field39/100 | percent:'1.1-1')
+                  :(datagridpackage.field39| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[41]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field40/100 | percent:'1.1-1')
+                  :(datagridpackage.field40| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[42]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field41/100 | percent:'1.1-1')
+                  :(datagridpackage.field41| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[43]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field42/100 | percent:'1.1-1')
+                  :(datagridpackage.field42| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[44]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field43/100 | percent:'1.1-1')
+                  :(datagridpackage.field43| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[45]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field44/100 | percent:'1.1-1')
+                  :(datagridpackage.field44| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[46]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field45/100 | percent:'1.1-1')
+                  :(datagridpackage.field45| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[47]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field46/100 | percent:'1.1-1')
+                  :(datagridpackage.field46| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[48]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field47/100 | percent:'1.1-1')
+                  :(datagridpackage.field47| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[49]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field48/100 | percent:'1.1-1')
+                  :(datagridpackage.field48| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[50]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field49/100 | percent:'1.1-1')
+                  :(datagridpackage.field49| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[51]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field50/100 | percent:'1.1-1')
+                  :(datagridpackage.field50| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[52]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field51/100 | percent:'1.1-1')
+                  :(datagridpackage.field51| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[53]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field52/100 | percent:'1.1-1')
+                  :(datagridpackage.field52| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[54]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field53/100 | percent:'1.1-1')
+                  :(datagridpackage.field53| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[55]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field54/100 | percent:'1.1-1')
+                  :(datagridpackage.field54| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[56]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field55/100 | percent:'1.1-1')
+                  :(datagridpackage.field55| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[57]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field56/100 | percent:'1.1-1')
+                  :(datagridpackage.field56| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[58]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field57/100 | percent:'1.1-1')
+                  :(datagridpackage.field57| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[59]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field58/100 | percent:'1.1-1')
+                  :(datagridpackage.field58| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridavgfrt_id_columns[60]==true">
+                  {{datagridpackage.field==='%'?(datagridpackage.field59/100 | percent:'1.1-1')
+                  :(datagridpackage.field59| currency:'USD':'symbol':'1.2-2')}}</td>
+                <td *ngIf="datagridfrtscc_id_columns[1]==true">{{datagridpackage.field==='%'?
+                  (datagridpackage.field0/100 | percent:'1.1-1') :(datagridpackage.field0|
+                  currency:'USD':'symbol':'1.2-2')}} </td>
+                <td>{{datagridpackage.zonepercentage/100 | percent:'1.1-1'}}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

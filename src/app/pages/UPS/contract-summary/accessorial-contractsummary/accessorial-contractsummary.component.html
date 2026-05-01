@@ -1,0 +1,146 @@
+@if(isLoading()){
+<div class="loader-overlay">
+  <div class="loader-content">
+    <img src="../../../../../assets/images/loader.gif" alt="Loading">
+  </div>
+</div>}
+<div class="px-2  py-2">
+    <div class="bg-pop-title">
+        <div class="row">
+            <div class="col-10">
+                <h2 class="mat-dialog-title mt-2"> {{serviceName}}</h2>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+                <div mat-dialog-actions align="end" class="close-btn p-0 justify-content-end marginRightDelet">
+                    <button mat-button (click)="delete()"><img class="closeBtn" style="height: 24px;"
+                            src="../../../../../assets/images/svg/delete.svg"></button>
+                </div>
+                <div mat-dialog-actions align="end" class="close-btn">
+                    <button mat-button (click)="close()"><img class="closeBtn"
+                            src="../../../../../assets/images/svg/close.svg"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab_sty px-2 py-2">
+        <div class="row">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChanged($event)">
+                <mat-tab label="Current Agreement">
+                    <div #scrollframe  >
+                        <div class="tab-table create-tab tableWrap" style="text-align: center; ">
+                            @if(dataSourceSignal().length>0){ <table mat-table [dataSource]="dataSourceSignal()"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of columns(); let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main" > {{
+                                        column.field
+                                        }} </th>
+                                    <td mat-cell *matCellDef="let row; let rowIndex = index"  class="create-proposal-table"
+                                        [ngStyle]="{'padding':(column.fieldVal == 'checkBox')?'0':''}"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [matTooltipDisabled]="column.field=='Service'?false:true">
+
+                                        <div *ngIf="column.fieldVal =='service' || column.fieldVal =='subGroup'"
+                                            matInput [ngStyle]="{'text-align':(column.fieldVal =='service')?'left':''}"
+                                            type="text" style="border-bottom:0px !important;text-transform: none;"
+                                            [style.display]="(row[column.fieldVal] == '' && (column.fieldVal =='subGroup' || column.fieldVal =='service'))  ?'none' : ''">
+                                            {{row[column.fieldVal]}}
+                                        </div>
+
+                                        <input *ngIf="column.fieldVal =='currentSpend'" matInput type="text"
+                                            value="{{(row[column.fieldVal] | currency:'USD' :'symbol':'1.2-2')}}"
+                                           class="weightText weightRange"
+                                            [style.display]="(row[column.fieldVal] == '' && (column.fieldVal =='subGroup' || column.fieldVal =='service'))  ?'none' : ''"
+                                            [readonly]="true">
+
+                                        <input *ngIf="column.fieldVal == 'currentDis'" matInput type="text"
+                                            value="{{(row['currentDisType'] == '$')?(row[column.fieldVal] | currency:'USD' :'symbol':'1.2-2'):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                            class="weightText weightRange"
+                                            [style.display]="(row[column.fieldVal] == '' && (column.fieldVal =='subGroup' || column.fieldVal =='service'))  ?'none' : ''"
+                                            [readonly]="true">
+                                        <input *ngIf="column.fieldVal == 'checkBox'" type="checkbox"
+                                            [checked]="isChecked(row, serviceName)"
+                                            (change)="onSelect($event, row.ratesheetGrouping)">
+                                        <!-- <input *ngIf="column.fieldVal == 'checkBox'" type="checkbox"
+                                            [checked]="currentAccCheckList.includes(row.ratesheetGrouping.toLowerCase()+serviceName.toLowerCase())"
+                                            (change)="onSelect($event,row.ratesheetGrouping)"> -->
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>}
+                            @if(dataSourceSignal().length == 0){ <p class="not-available">Data Not Available.</p>}
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab *ngFor="let data of AccTargetDetailsListSignal();let columnNumber = index"
+                    label="{{data.targetName}}">
+                    <div #scrollframe  >
+
+
+                        <div class="tab-table create-tab tableWrap" style="text-align: center; ">
+                            @if(data?.targetList?.length > 0) {
+                            <table mat-table [dataSource]="data.targetList"
+                                class="mat-elevation-z1 w-full border_table cont-sum-tab">
+                                <ng-container *ngFor="let column of columnsTarget(); let i = index"
+                                    [matColumnDef]="column.fieldVal">
+                                    <th mat-header-cell *matHeaderCellDef class="heading_main" > {{
+                                        column.field
+                                        }} </th>
+                                    <td mat-cell *matCellDef="let row; let rowIndex = index"  class="create-proposal-table"
+                                        matTooltip="{{row[column.fieldVal]}}" [matTooltipPosition]="'after'"
+                                        [ngStyle]="{'padding':(column.fieldVal == 'checkBox')?'0':''}"
+                                        [matTooltipDisabled]="column.field=='Service'?false:true">
+
+                                        <div *ngIf="column.fieldVal =='service' || column.fieldVal =='subGroup'"
+                                            matInput [ngStyle]="{'text-align':(column.fieldVal =='service')?'left':''}"
+                                            type="text" style="border-bottom:0px !important;text-transform: none;"
+                                            [style.display]="(row[column.fieldVal] == '' && (column.fieldVal =='subGroup' || column.fieldVal =='service'))  ?'none' : ''">
+                                            {{row[column.fieldVal]}}
+                                        </div>
+
+                                        <input *ngIf="column.fieldVal =='targetSpend'" matInput type="text"
+                                            value="{{(row[column.fieldVal] | currency:'USD' :'symbol':'1.2-2')}}"
+                                            class="weightText weightRange"
+                                            [style.display]="(row[column.fieldVal] == '' && (column.fieldVal =='subGroup' || column.fieldVal =='service'))  ?'none' : ''"
+                                            [readonly]="true">
+
+                                        <input *ngIf="column.fieldVal == 'targetDis'" matInput type="text"
+                                            value="{{(row['targetDisType'] == '$')?(row[column.fieldVal] | currency:'USD' :'symbol':'1.2-2'):(row[column.fieldVal] | number:'1.2-2')+'%'}}"
+                                            class="weightText weightRange"
+                                            [style.display]="(row[column.fieldVal] == '' && (column.fieldVal =='subGroup' || column.fieldVal =='service'))  ?'none' : ''"
+                                            [readonly]="true">
+                                        <input *ngIf="column.fieldVal == 'checkBox'" type="checkbox"
+                                            [checked]="isChecked(row, serviceName)"
+                                            (change)="onSelect($event, row.ratesheetGrouping)">
+                                        <!-- <input *ngIf="column.fieldVal == 'checkBox'" type="checkbox"
+                                            [checked]="data.targetAccCheckList.includes(row.ratesheetGrouping.toLowerCase()+serviceName.toLowerCase())"
+                                            (change)="onSelect($event,row.ratesheetGrouping,columnNumber)"> -->
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsTarget;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsTarget;"></tr>
+                            </table>
+                            }
+                            @if((data?.targetList?.length ?? 0) === 0)
+                            { <p class="not-available">Data Not Available.</p>}
+
+
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+            @if(tabIndex != 0){
+            <div class="col-12  mt-3">
+                <div class="d-flex justify-content-end">
+                    <button mat-button class="btn-cancel" (click)="Edit('Edit')">Edit</button>
+                    <button mat-raised-button color="primary" class="btn-save" (click)="close()">Close </button>
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>
+</div>

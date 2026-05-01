@@ -1,0 +1,599 @@
+<div class="row">
+    <div class="col">
+        <div class="px-0 py-3">
+            <div class="row header_section pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center py-2 flex-lg-row flex-column">
+                        <div class="col-12">
+                            <h4 class="fs-16 mb-1 pageTitle">Settings</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="px-0 pt-0 setup py-3" *ngIf="clientType().toUpperCase()=='ONTRAC'">
+            <div class="row">
+                <div class="col-lg-5 col-xl-4 col-xxl-4 col-md-5 p-1">
+                    <div>
+                        <img src="assets/images/web_data.png" class="img-fluid" alt="web data" />
+                    </div>
+                    <div class="card mt-2">
+                        <div class="card-body p-0">
+                            <form [formGroup]="setUpFirstFormGroup">
+                                <div class="row">
+                                    <div class="col m12 file-field input-field setting-space button_center">
+                                        <div class="col m4 setting-space input-fieldnone check_lable">
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regUps">
+                                                    Is customer registered for UPS
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regFedEx">
+                                                    Is customer registered for FedEx
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regDhl">
+                                                    Is customer registered for DHL
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regUsps">
+                                                    Is customer registered for USPS
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="contractReview"
+                                                    (change)="showRegisterBtn==false?updateContractReviewStatus():false">
+                                                    Contract Analysis Review
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox"
+                                                    formControlName="contractSavingsPopup"
+                                                    (change)="showRegisterBtn==false?updateContractSavingsPopup():false">
+                                                    Carrier Agreement Savings Pop-up
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="payStatus"
+                                                    (change)="showRegisterBtn==false?updatePayWebPortal():false">
+                                                    Pay for Web Portal
+                                                </mat-checkbox>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-xl-8 col-xxl-8 col-md-7 p-1">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card card-height-100">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">Client Profile</h4>
+                                </div>
+                                <div class="card-body pt-2 pb-4">
+                                    <form class="search-container" [formGroup]="setUpFirstFormGroup">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="mt-3 mb-1">Client Name</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="clientName"
+                                                        [readonly]="isClientNameReadOnly" />
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">User Name <span
+                                                        class="text-danger">*</span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="user_name" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Password <span
+                                                        class="text-danger">*</span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput [type]="passwordFieldType"
+                                                        formControlName="password" />
+
+                                                    <button matSuffix type="button" (click)="togglePasswordVisibility()"
+                                                        class="bit_eye_icon btn btn-link text-decoration-none text-muted material-shadow-none">
+                                                        <i class="mdi align-middle" [ngClass]="{'mdi-eye-outline': passwordFieldType === 'password',
+                                                            'mdi-eye-off-outline': passwordFieldType === 'text'  }">
+                                                        </i>
+                                                    </button>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Address</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 mat-form-field-textarea">
+                                                    <textarea matInput rows="3" formControlName="address"></textarea>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Status <span
+                                                        class="text-danger">*</span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <mat-select formControlName="statusSelected">
+                                                        <mat-option value="ACTIVE">Active</mat-option>
+                                                        <mat-option value="INACTIVE">Inactive</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Account Owner Email</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput type="email" formControlName="email" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Contact Number</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="phone" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Account Owner</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="repname" />
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">CRM Account Number</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="crmAccountNumber"
+                                                        [readonly]="dialogValue !== 'true'" />
+                                                    <button
+                                                        *ngIf="setUpSecondFormGroup.get('clientNameSelected')?.value"
+                                                        mat-icon-button matSuffix type="button"
+                                                        (click)="openAuthModal()" aria-label="Edit CRM Account Number">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="file_upload">
+                                                    <label class="mt-3 ms-3 w-100 mb-3">
+                                                        <button mat-raised-button color="primary" type="button"
+                                                            class="uplode_btn" (click)="fileInput.click()">
+                                                            Upload Logo
+                                                        </button>
+
+                                                        <input #fileInput type="file" hidden accept="image/*"
+                                                            (change)="fileProgress($event)" />
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mt-4 text-center">
+                                                <span
+                                                    class="avatar-status avatar-online_sett btn me-3 ms-2  waves-effect"
+                                                    *ngIf="showAddUser" (click)="openUpdatePopup()">
+                                                    <img src="assets/images/icons/ProfileIcon.png"
+                                                        alt="Add or Update User" class="profile-icon-btn"
+                                                        [matTooltip]="'Add New User'" />
+                                                </span>
+                                                <button *ngIf="showRegisterBtn" mat-raised-button color="primary"
+                                                    class="btn me-3 btn_submit waves-effect waves-light" type="button"
+                                                    (click)="regClickHandler()">
+                                                    REGISTER
+                                                </button>
+
+                                                <button *ngIf="showUpdateBtn" mat-raised-button color="primary"
+                                                    class="btn me-3 btn_submit waves-effect waves-light" type="button"
+                                                    (click)="updateClickHandler()">
+                                                    UPDATE
+                                                </button>
+
+                                                <button mat-raised-button color="warn"
+                                                    class="btn btn_clear waves-effect waves-light" type="button"
+                                                    (click)="clearClickHandler()">
+                                                    CLEAR
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-xl-4 col-xxl-4 col-md-5 p-1">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div>
+                                <img src="assets/images/data_warehouse.png" class="img-fluid" alt="data warehousing" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-xl-8 col-xxl-8 col-md-7 p-1">
+                    <div class="card">
+                        <div class="card-body pt-2 pb-4">
+                            <form class="search-container" [formGroup]="setUpSecondFormGroup">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="mt-3 mb-1">Client Name: <span class="text-danger">*</span></label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <mat-select formControlName="clientNameSelected"
+                                                (selectionChange)="custChangeHandler($event.value)">
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="ontracClientNameFilterCtrl"
+                                                        placeholderLabel="Search" noEntriesFoundLabel="No data">
+                                                    </ngx-mat-select-search>
+                                                </mat-option>
+
+                                                <mat-option class="matoption"
+                                                    *ngFor="let option of ontracfilteredOptions | async"
+                                                    [value]="option">
+                                                    {{ option }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">File Start Date</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="fileStartDate" readonly />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">File End Date</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="fileEndDate" readonly />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Status</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="status" readonly />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Customer Type</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="customertype" readonly />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Data Loaded by</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="dataLoadBy" readonly />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Comments</label>
+                                        <mat-form-field appearance="outline" class="w-100 mat-form-field-textarea">
+                                            <textarea matInput rows="3" formControlName="comments"></textarea>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Account Owner</label>
+                                        <mat-form-field appearance="outline" class="w-100 mat-form-field-textarea">
+                                            <textarea matInput rows="3" formControlName="repname" readonly></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-0 pt-0 setup py-3" *ngIf="clientType().toUpperCase()=='DHL'">
+            <div class="row">
+                <div class="col-lg-5 col-xl-4 col-xxl-4 col-md-5 p-1">
+                    <div>
+                        <img src="assets/images/web_data.png" class="img-fluid" alt="web data" />
+                    </div>
+                    <div class="card mt-2">
+                        <div class="card-body p-0">
+                            <form [formGroup]="setUpFirstDhlFormGroup">
+                                <div class="row">
+                                    <div class="col m12 file-field input-field setting-space button_center">
+                                        <div class="col m4 setting-space input-fieldnone check_lable">
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regUps">
+                                                    Is customer registered for UPS
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regFedEx">
+                                                    Is customer registered for FedEx
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regOntrac">
+                                                    Is customer registered for OnTrac
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="regUsps">
+                                                    Is customer registered for USPS
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="contractReview"
+                                                    (change)="showRegisterBtn==false?updateContractReviewStatusDhl():false">
+                                                    Contract Analysis Review
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox"
+                                                    formControlName="contractSavingsPopup"
+                                                    (change)="showRegisterBtn==false?updateContractSavingsPopupDhl():false">
+                                                    Carrier Agreement Savings Pop-up
+                                                </mat-checkbox>
+                                            </label>
+
+                                            <label>
+                                                <mat-checkbox class="custom_checkbox" formControlName="payStatus"
+                                                    (change)="showRegisterBtn==false?updatePayWebPortalDhl():false">
+                                                    Pay for Web Portal
+                                                </mat-checkbox>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-xl-8 col-xxl-8 col-md-7 p-1">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card card-height-100">
+                                <div class="card-header border-0 align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">Client Profile</h4>
+                                </div>
+                                <div class="card-body pt-2 pb-4">
+                                    <form class="search-container" [formGroup]="setUpFirstDhlFormGroup">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="mt-3 mb-1">Client Name</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="clientName"
+                                                        [readonly]="isClientNameReadOnlyDhl" />
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">User Name <span
+                                                        class="text-danger">*</span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="user_name" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Password <span
+                                                        class="text-danger">*</span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput [type]="passwordFieldType"
+                                                        formControlName="password" />
+
+                                                    <button matSuffix type="button" (click)="togglePasswordVisibility()"
+                                                        class="bit_eye_icon btn btn-link text-decoration-none text-muted material-shadow-none">
+                                                        <i class="mdi align-middle" [ngClass]="{'mdi-eye-outline': passwordFieldType === 'password',
+                                                            'mdi-eye-off-outline': passwordFieldType === 'text'  }">
+                                                        </i>
+                                                    </button>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Address</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 mat-form-field-textarea">
+                                                    <textarea matInput rows="3" formControlName="address"></textarea>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Status <span
+                                                        class="text-danger">*</span></label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <mat-select formControlName="statusSelected">
+                                                        <mat-option value="ACTIVE">Active</mat-option>
+                                                        <mat-option value="INACTIVE">Inactive</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Account Owner Email</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput type="email" formControlName="email" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">Contact Number</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="phone" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-md-6 col-12">
+                                                <label class="mt-3 mb-1">CRM Account Number</label>
+                                                <mat-form-field appearance="outline"
+                                                    class="w-100 compact-field input_change">
+                                                    <input matInput formControlName="crmAccountNumber"
+                                                        [readonly]="dialogValue !== 'true'" />
+                                                    <button
+                                                        *ngIf="setUpSecondDhlFormGroup.get('clientNameSelected')?.value!=''"
+                                                        mat-icon-button matSuffix type="button"
+                                                        (click)="openAuthModal()" aria-label="Edit CRM Account Number">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="file_upload">
+                                                    <label class="mt-3 ms-3 w-100 mb-3">
+                                                        <button mat-raised-button color="primary" type="button"
+                                                            class="uplode_btn" (click)="fileInput.click()">
+                                                            Upload Logo
+                                                        </button>
+
+                                                        <input #fileInput type="file" hidden accept="image/*"
+                                                            (change)="fileProgress($event)" />
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mt-4 text-center">
+                                                <span
+                                                    class="avatar-status avatar-online_sett btn me-3 ms-2  waves-effect"
+                                                    *ngIf="showAddUser" (click)="openUpdatePopup()">
+                                                    <img src="assets/images/icons/ProfileIcon.png"
+                                                        alt="Add or Update User" class="profile-icon-btn"
+                                                        [matTooltip]="'Add New User'" />
+                                                </span>
+                                                <button *ngIf="showRegisterBtn" mat-raised-button color="primary"
+                                                    class="btn me-3 btn_submit waves-effect waves-light" type="button"
+                                                    (click)="save_clickHandlerDhl()">
+                                                    Register
+                                                </button>
+
+                                                <button *ngIf="showUpdateBtn" mat-raised-button color="primary"
+                                                    class="btn me-3 btn_submit waves-effect waves-light" type="button"
+                                                    (click)="update_clickHandlerDhl()">
+                                                    Update
+                                                </button>
+
+                                                <button mat-raised-button color="warn"
+                                                    class="btn btn_clear waves-effect waves-light" type="button"
+                                                    (click)="clearClickHandlerDhl()">
+                                                    Clear
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-xl-4 col-xxl-4 col-md-5 p-1">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div>
+                                <img src="assets/images/data_warehouse.png" class="img-fluid" alt="data warehousing" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-xl-8 col-xxl-8 col-md-7 p-1">
+                    <div class="card">
+                        <div class="card-body pt-2 pb-4">
+                            <form class="search-container" [formGroup]="setUpSecondDhlFormGroup">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label class="mt-3 mb-1">Client Name: <span class="text-danger">*</span></label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <mat-select formControlName="clientNameSelected"
+                                                (selectionChange)="uptuser_changeHandler($event.value)">
+                                                <mat-option>
+                                                    <ngx-mat-select-search [formControl]="dhlClientNameFilterCtrl"
+                                                        placeholderLabel="Search" noEntriesFoundLabel="No data">
+                                                    </ngx-mat-select-search>
+                                                </mat-option>
+
+                                                <mat-option class="matoption"
+                                                    *ngFor="let option of dhlfilteredOptions | async" [value]="option">
+                                                    {{ option }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">File Start Date</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="fileStartDate" readonly />
+                                            <!-- <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #fromPicker></mat-datepicker> -->
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">File End Date</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="fileEndDate" readonly />
+                                            <!-- <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #endPicker></mat-datepicker> -->
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Customer Type</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="customertype" readonly />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-md-6 col-12">
+                                        <label class="mt-3 mb-1">Data Loaded by</label>
+                                        <mat-form-field appearance="outline" class="w-100 compact-field input_change">
+                                            <input matInput formControlName="dataLoadBy" readonly />
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

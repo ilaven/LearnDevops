@@ -1,0 +1,240 @@
+.table-wrapper {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ccc;
+    // background: #fff;
+  }
+  
+  /* TOP SCROLLBAR */
+  .top-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 16px;
+  }
+  
+  .scroll-content {
+    height: 1px;
+  }
+  
+  /* TABLE STYLES */
+  .metrics-table {
+    border-collapse: collapse;
+    min-width: 1600px;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid #dcdcdc;
+    padding: 8px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  /* HEADER */
+  thead th {
+    background:#2AAAE6;
+    color: #fff;
+    z-index: 3;
+  }
+  .groupClassLink{text-decoration: underline !important;}
+  /* STICKY HEADER */
+  .sticky-header {
+    position: sticky;
+    top: 0;
+  }
+  
+  /* STICKY FIRST COLUMN */
+  .sticky-col {
+    position: sticky;
+    left: 0;
+    background: #f4f6f8;
+    z-index: 2;
+    font-weight: 600;
+  }
+  
+  /* HEADER + FIRST COLUMN */
+  .sticky-col.sticky-header {
+    z-index: 4;
+    background:#2AAAE6;
+    color: #fff;
+  }
+  .table-wrapper {
+    position: relative;
+    width: 100%;
+    border: 1px solid #ccc;
+    // background: #fff;
+  }
+  
+  /* TOP SCROLLBAR */
+  .top-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 16px;
+  }
+  
+  .scroll-content {
+    height: 1px;
+  }
+  
+  /* MAIN TABLE SCROLL */
+  .table-scroll {
+    max-height: 750px !important;
+    overflow: auto;
+  }
+  
+  /* TABLE STYLES */
+  .metrics-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid #dcdcdc;
+    padding: 8px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  /* HEADER */
+  thead th {
+    background: #2AAAE6;
+    color: #fff;
+    z-index: 3;
+  }
+
+
+  .table-odd {
+    background-color: #F4F4F4;
+  }
+  
+  .table-even {
+    background-color: #ffffff;
+  }
+  p.inner-title {
+    color: var( --inner-title ) !important;
+    padding-left: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+span.date-top{
+    color: #617484;
+}
+  
+  /* STICKY HEADER */
+  .sticky-header {
+    position: sticky;
+    top: 0;
+  } filter-btn{
+    position:absolute;
+    top:110%;
+    left:0;
+    z-index:9999;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:6px;
+    padding:10px;
+    width:300px;
+    box-shadow:0 6px 16px rgba(0,0,0,0.12);
+  }
+//   tr.freight-row th, tr.ground-row th, tr.freight-row td{
+//     background: #DDE5F6;
+// }
+tr.freight-row td:first-child{
+    font-size: 14px;
+    font-weight: 600;
+}
+tr.accessorial-row td:first-child{
+    font-size: 14px;
+    font-weight: 600;
+}
+// tr.accessorial-row th, tr.air-row th, tr.accessorial-row td{
+//     background: #E0E5DF;
+// }
+tr.tabletotalRows th {
+    background: #2AAAE6;
+    color: white;
+}
+  /* STICKY FIRST COLUMN */
+  .sticky-col {
+    position: sticky;
+    left: 0;
+    background: #f4f6f8;
+    z-index: 2;
+    font-weight: 600;
+  }
+  
+  /* HEADER + FIRST COLUMN */
+  .sticky-col.sticky-header {
+    z-index: 4;
+    background: #2AAAE6;
+    color: #fff;
+  }
+  /* ODD / EVEN ROW COLORS */
+  .odd-row td {
+    background-color: #F4F4F4;
+  }
+  
+  .even-row td {
+    background-color: #ffffff;
+  }
+  
+  /* KEEP STICKY COLUMN COLOR IN SYNC */
+  .odd-row .sticky-col {
+    background-color: #E5E7EB;
+  }
+  
+  .even-row .sticky-col {
+    background-color: #fff;
+  }
+  .btn-filter{
+      z-index: 1001;
+    position: relative;
+  }
+
+  ::ng-deep .mat-mdc-radio-button.mat-accent {
+    --mdc-radio-selected-icon-color: #2AAAE6 !important;
+    --mdc-radio-selected-focus-icon-color: #2AAAE6 !important;
+    --mdc-radio-selected-hover-icon-color: #2AAAE6 !important;
+    --mdc-radio-selected-pressed-icon-color: #2AAAE6 !important;
+}
+
+::ng-deep .mat-mdc-radio-button {
+    --mdc-radio-selected-focus-state-layer-color: #2AAAE6 !important;
+    --mdc-radio-selected-hover-state-layer-color: #2AAAE6 !important;
+}
+ .bg-gradient{
+        background: #2AAAE6 !important;
+    background: linear-gradient(90deg, rgba(42, 170, 230, 1) 0%, rgba(0, 39, 118, 1) 100%) !important;
+ }
+ .date-text-popup label{
+    color: #2AAAE6 ;
+ }
+ .date-text-popup label strong{
+    color: var(--search-date);
+ }
+ .download_btn span{
+    color: #23A566 ;
+ }
+ .btn_clear ,.btn_clear:active{
+        border: 1px solid #EBF1F8;
+    background: white;
+    color: black;
+}
+.bb_1{
+   border-bottom: 1px solid #d9d9d9; 
+}
+tr.freight-row{
+ background:  #DDE5F6;
+}
+
+tr.accessorial-row{
+  background: #E0E5DF
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}
+tr.tabletotalRows {
+    background: #2AAAE6;
+    color: white;
+}

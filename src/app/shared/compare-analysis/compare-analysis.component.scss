@@ -1,0 +1,87 @@
+   ::ng-deep .custom-tooltip {
+      /*left: -100% !important;*/
+      bottom: 45% !important;
+      position: relative !important;
+      width: auto !important;
+      height: auto !important;
+      font-size: 15px;
+   }
+   .color_1{
+    background: #9D51AF;
+   }
+    .color_2{
+    background: #FC5698;
+   }
+    .color_3{
+    background: #FC605C;
+   }
+    .color_4{
+    background: #FD9246;
+   }
+   img.fedex{
+    width: 80px !important;
+   }
+   img.ups-img{
+    width: 40px !important;
+   }
+   .br_card{
+      border-right: 1px solid #D9D9D9;
+   }
+   .footer_radius{
+          border-radius: 5px !important;
+   }
+   .compare_analysis_title{
+    color:  var(--popup_title);
+    font-size: 18px !important;
+   }
+   .ups_count{
+      color: #C07301;
+   }
+   .fedex_count{
+      color: #824FE7;
+   }
+   .border_design{
+     border:1px solid #0079F2 ;
+     border-radius: 5px !important;
+     padding: 3px;
+   }
+   .border_design label{
+      margin: 0px;
+      padding: 0px 8px !important;
+   }
+   .ups-fedex-comp{
+      width: 130px !important;
+      height:50px !important;
+   }
+   .card-header{
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+   }
+   .card-footer{
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 30px;      
+   }
+   .toggle-pill {
+    background: #1c7ed6;
+    border-radius: 25px;
+    padding: 4px;
+    display: flex;
+}
+
+.toggle-pill span {
+    padding: 6px 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.toggle-pill .active {
+    background: #fff;
+    color: #1c7ed6;
+    border-radius: 20px;
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}

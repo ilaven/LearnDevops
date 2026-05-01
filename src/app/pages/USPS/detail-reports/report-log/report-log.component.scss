@@ -1,0 +1,252 @@
+.table-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+/* TOP SCROLLBAR */
+.top-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 16px;
+}
+
+.scroll-content {
+  height: 1px;
+}
+
+.updated_sort {
+  color: #FFCC00;
+  font-size: 14px;
+  padding: 15px 0px;
+  text-decoration: underline;
+}
+
+/* MAIN TABLE SCROLL */
+.table-scroll {
+  max-height: 450px;
+  overflow: auto;
+}
+
+/* TABLE STYLES */
+.metrics-table {
+  border-collapse: collapse;
+  min-width: 1600px;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* HEADER */
+thead th {
+  background: #2AAAE6;
+  color: #fff;
+  z-index: 3;
+}
+
+/* STICKY HEADER */
+.sticky-header {
+  position: sticky;
+  top: 0;
+}
+
+/* STICKY FIRST COLUMN */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #f4f6f8;
+  z-index: 2;
+  font-weight: 600;
+}
+
+/* HEADER + FIRST COLUMN */
+.sticky-col.sticky-header {
+  z-index: 4;
+  background: #2AAAE6;
+  color: #fff;
+}
+
+.table-wrapper {
+  position: relative;
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+/* TOP SCROLLBAR */
+.top-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 16px;
+}
+
+.scroll-content {
+  height: 1px;
+}
+
+/* MAIN TABLE SCROLL */
+.table-scroll {
+  max-height: 450px;
+  overflow: auto;
+}
+
+/* TABLE STYLES */
+.metrics-table {
+  border-collapse: collapse;
+  min-width: 1600px;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #dcdcdc;
+  padding: 8px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* HEADER */
+thead th {
+  background: #2AAAE6;
+  color: #fff;
+  z-index: 3;
+}
+
+/* STICKY HEADER */
+.sticky-header {
+  position: sticky;
+  top: 0;
+}
+
+/* STICKY FIRST COLUMN */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #f4f6f8;
+  z-index: 2;
+  font-weight: 600;
+}
+
+/* HEADER + FIRST COLUMN */
+.sticky-col.sticky-header {
+  z-index: 4;
+  background: #2AAAE6;
+  color: #fff;
+}
+
+/* ODD / EVEN ROW COLORS */
+.odd-row td {
+  background-color: #F4F4F4;
+}
+
+.even-row td {
+  background-color: #ffffff;
+}
+
+/* KEEP STICKY COLUMN COLOR IN SYNC */
+.odd-row .sticky-col {
+  background-color: #E5E7EB;
+}
+
+.even-row .sticky-col {
+  background-color: #fff;
+}
+
+
+
+div.header_section .mat-mdc-form-field .mdc-notched-outline.mdc-notched-outline--no-label .mat-mdc-notch-piece.mdc-notched-outline__trailing {
+  border-left: 1px solid !important;
+  border-radius: 10px !important;
+  border: 2px solid !important;
+  border-image: linear-gradient(90deg, rgba(46, 167, 255, 1) 80%, rgba(16, 157, 227, 1) 100%) 1 !important;
+}
+
+.header_section label,
+.header_section .mat-datepicker-input {
+  color: white !important;
+}
+
+div.header_section mat-datepicker-toggle.mat-datepicker-toggle svg.mat-datepicker-toggle-default-icon {
+  fill: white !important;
+}
+
+.search_btn {
+  background: #F06548 !important;
+  color: white;
+}
+
+.excel_btn {
+  color: #44BC60;
+}
+
+.updat_btn {
+  background: #299CDB;
+  color: white;
+}
+
+.textBoxStyle {
+  width: 45px !important;
+}
+
+.textBoxStyle input {
+  text-align: center;
+}
+
+.table-input.compact-field.textBoxStyle .mat-mdc-text-field-wrapper {
+  border: 1px solid #C5C7CD;
+}
+
+.updated_sort {
+  color: #FFCC00;
+  padding: 13px 0px;
+}
+
+.edit-btn {
+  margin-left: auto;
+  border: 0px;
+  display: block;
+  background: none;
+}
+
+.popup-design {
+  background-image: url("/assets/images/popup_design.png");
+    background-repeat: no-repeat;
+       background-size: 100% auto;
+    background-position: top center;
+}
+
+.popup-design .card-header {
+  background: none !important;
+}
+
+td.status {
+  color: #1DAA38 !important;
+  font-weight: 600 !important;
+}
+
+.reportlog_pone{
+    text-align: right;
+    font-style: italic;
+    margin: 0px;
+}
+.reportlog_ptwo{
+    text-align: right;
+    font-style: italic;
+    color: red;
+    font-weight: bold;
+    margin: 0px;
+}
+::ng-deep  .mat-mdc-dialog-surface{
+   background: var( --card-dashboard);
+}
+.card,
+.card .card-header {
+    background: var(--card-dashboard);
+}

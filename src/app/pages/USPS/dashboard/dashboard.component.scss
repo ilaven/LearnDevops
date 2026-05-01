@@ -1,0 +1,193 @@
+.customer-select {
+    width: 160px;
+}
+
+.carrier-icons img {
+    width: 40px;
+    margin-left: 6px;
+    border-radius: 50%;
+}
+
+
+
+.section-title {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.pill-group {
+    display: flex;
+    gap: 8px;
+}
+
+.pill {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    color: #fff;
+    padding: 4px 14px;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+.margin-alignment {
+    margin-left: 5vw;
+}
+
+.pill.active {
+    background: #fff;
+    color: #0079F2;
+}
+
+.stat-card {
+    padding: 16px;
+    border-radius: 14px;
+    height: 100%;
+    box-shadow: 0px 8px 8px 0px #5AA7B840;
+    text-align: center;
+ background: var( --my-gradient);
+}
+
+.datadisplayedCls {
+    color: #040405;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.stat-card .label {
+    font-size: 13px;
+  color: var(--dashboard-card-text);
+    font-weight: 500;
+}
+
+.stat-card .value {
+    font-size: 20px;
+    font-weight: 500;
+   color: var(--dashboard-card-value);
+}
+
+.toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-card hr {
+    box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 46%);
+    border-bottom: 1px solid rgb(0 0 0 / 19%);
+    margin: 0.2rem 0;
+
+}
+
+.toggle-pill {
+    background: #1c7ed6;
+    border-radius: 25px;
+    padding: 4px;
+    display: flex;
+}
+
+.toggle-pill span {
+    padding: 6px 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.toggle-pill .active {
+    background: #fff;
+    color: #1c7ed6;
+    border-radius: 20px;
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}
+
+.invoice-box {
+    background: #007bff;
+    color: #fff;
+    padding: 7px 10px;
+    border-radius: 6px;
+    line-height: 20px;
+    text-align: center;
+    height: 55px;
+    margin-top: 7px;
+    margin-right: 10px;
+    border: 1px dashed #b7d9fe87;
+}
+
+.invoice-box .title {
+    font-size: 15px;
+    border-bottom: 1px solid #ffffff6e;
+    font-weight: 600;
+}
+
+.invoice-box .date {
+    font-size: 14px;
+}
+
+.customerLogo {
+    margin: 6px;
+    height: 50px;
+}
+
+.serviceType {
+    margin: 5px;
+    box-shadow: 0px 2px 0px 1px #d7d7d7cf;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
+
+.serviceType.active {
+    border: 3px solid #239EF5;
+    box-shadow: none !important;
+}
+
+.serviceLogo {
+       height: 32px;
+    width: 32px;
+}
+
+.profileIcon {
+    border: 3px solid #ccc;
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.customer-select {
+    width: 180px;
+}
+
+.serviceTypeGrid {
+    width: 240px;
+}
+
+.client-form {
+    margin-top: -15px;
+}
+.total-spend-excluder{
+      
+     color: var(--tser-color);
+    text-transform: capitalize !important;
+}
+.dashboard-label{
+    color:var(--dashboard-label) !important;
+}
+.amt_color{
+    color:var(--amt-color) !important; 
+}
+.min_h_weight_distribution{
+        min-height: 484px;
+}
+.account_select{
+        background: #ffffff;
+    color: #0079F2
+}
+::ng-deep .mat-mdc-tooltip-surface{
+  max-width: 250px !important;
+}
+
+::ng-deep .mat-mdc-tooltip-panel{
+  overflow: hidden !important;
+}
+.ground_commercial{
+    color: var(--ground-commercial) !important;
+}

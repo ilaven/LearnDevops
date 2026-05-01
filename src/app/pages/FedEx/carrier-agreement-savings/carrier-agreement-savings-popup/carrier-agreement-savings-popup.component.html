@@ -1,0 +1,83 @@
+<div class="popup-wrapper">
+    <div class="card popup-design shadow-none">
+
+        <!-- Header -->
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h4 class="card-title text-center w-100 mb-0 title-sty">
+                {{ clientName }}
+            </h4>
+
+            <button mat-icon-button type="button" (click)="close()" class="close-btn">
+                <img src="assets/images/close_icon.svg" alt="close" />
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                <div class="row">
+
+                    <!-- Full Name -->
+                    <div class="col-12">
+                        <mat-form-field appearance="outline" class="w-100 compact-field">
+                            <mat-label>Full Name</mat-label>
+                            <input matInput formControlName="fullname" />
+                        </mat-form-field>
+                        @if(submitted && f['fullname'].errors?.['required']){
+                        <div class="invalid-feedback d-block">
+                            <div>
+                                <span>Full Name is required</span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6 col-12">
+                        <mat-form-field appearance="outline" class="w-100 compact-field">
+                            <mat-label>Email</mat-label>
+                            <input matInput type="email" formControlName="email" />
+                        </mat-form-field>
+                        @if(submitted && f['email'].errors){
+                        <div class="invalid-feedback d-block">
+                            <div>
+                                <span *ngIf="f['email'].errors['required']">Email is required</span>
+                                <span *ngIf="f['email'].errors['email']">Invalid email</span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6 col-12">
+                        <mat-form-field appearance="outline" class="w-100 compact-field">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput formControlName="phone" phoneMask (input)="numbersOnlyValidator($event)" />
+                        </mat-form-field>
+                        @if(submitted && f['phone'].errors){
+                        <div class="invalid-feedback d-block">
+                            <div>
+                                <span *ngIf="f['phone'].errors['required']">Phone is required</span>
+                                <span *ngIf="f['phone'].errors['minlength'] || f['phone'].errors['maxlength']">
+                                    Enter 10 digit number
+                                </span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Button -->
+                    <div class="col-12 text-center mt-4">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="click" class="submit-btn">
+                            Submit
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

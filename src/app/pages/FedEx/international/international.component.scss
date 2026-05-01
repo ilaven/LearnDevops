@@ -1,0 +1,49 @@
+.priceColor{
+    color:#D82222
+}
+
+.toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-card hr {
+    box-shadow: 0px 0px 2px 0px rgb(0 0 0 / 46%);
+    border-bottom: 1px solid rgb(0 0 0 / 19%);
+    margin: 0.2rem 0;
+
+}
+
+.toggle-pill {
+    background: #1c7ed6;
+    border-radius: 25px;
+    padding: 4px;
+    display: flex;
+}
+
+.toggle-pill span {
+    padding: 6px 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.toggle-pill .active {
+    background: #fff;
+    color: #1c7ed6;
+    border-radius: 20px;
+}
+.amt_color{
+    color:var(--amt-color) !important; 
+}
+.card ,.card .card-header {
+    background: var( --card-dashboard);
+}
+.international_text{
+    color: var(--international-text) !important;
+}
+::ng-deep .serviceDataClass {
+    color: var(--serviceDataclass-color);
+    font-weight: 600;
+    font-size: 14px;
+}

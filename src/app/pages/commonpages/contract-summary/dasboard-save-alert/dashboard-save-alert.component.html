@@ -1,0 +1,57 @@
+<style>
+    .popup-design {
+        background-image: url("/assets/images/popup_design.png");
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        background-position: top center;
+    }
+</style>
+<div class="modal-body text-center p-5 popup-design">
+    <div class="mt-0">
+        <a class="logo logo-dark">
+            <span class="logo">
+                <img src="/assets/images/logo-dark.svg" alt="" height="60">
+            </span>
+        </a>
+        <!-- Light Logo-->
+        <a class="logo logo-light">
+            <span class="logo">
+                <img src="/assets/images/logo-light.svg" alt="" height="60">
+            </span>
+        </a>
+        <p class="text-muted mb-4 messageStyle  w-100"> {{message}} <br>
+            {{(agreementList[0] != undefined)?agreementList[0].targetName:'Baseline Spend'}} </p>
+        <div class="hstack gap-2 justify-content-center">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="close()">NO</button>
+            <button type="button" (click)="save()" class="btn rounded-0 btn_submit bdr_radius">YES</button>
+        </div>
+    </div>
+</div>
+<div class="modal-body text-center p-5 popup-design" *ngIf="createAsNewAgreement">
+    <div class="mt-4">
+        <div class="container" style="width: 60%;">
+            <div *ngIf="!createAsNewAgreement" class="disable"></div>
+            <div style="text-align: left;font-family: 'Lato', sans-serif !important;"
+                [ngStyle]="{'color':(saveClicked && proposalName.trim() == '')?'#D22B2B':'#353935'}">
+                {{(saveClicked && proposalName == '')?'Enter Agreement Name':'Agreement Name'}}</div>
+            <div style="text-align: left;font-family: 'Lato', sans-serif !important">
+                <input matInput [(ngModel)]="proposalName" style="margin-bottom: 0px !important;height: 30px;"
+                    maxlength="35">
+            </div>
+        </div>
+        <div class="container" style="width: 40%;" *ngIf="createAsNewAgreement">
+            <div *ngIf="!createAsNewAgreement" class="disable"></div>
+            <div style="text-align: left;font-family: 'Lato', sans-serif !important"
+                [ngStyle]="{'color':(saveClicked && proposalNickname.trim() == '')?'#D22B2B':'#353935'}">
+                {{(saveClicked && proposalNickname == '')?'Enter Agreement Nickame':'Agreement Nickname'}}</div>
+            <div style="text-align: left;font-family: 'Lato', sans-serif !important">
+                <input matInput type="text" [(ngModel)]="proposalNickname" maxlength="8"
+                    style="margin-bottom: 0px !important;height:30px">
+            </div>
+        </div>
+        <div class="hstack gap-2 justify-content-center">
+            <button type="button" class="btn btn-light bdr_radius" data-bs-dismiss="modal" (click)="close()">CANCEL</button>
+            <button type="button" (click)="newAgreement()" class="btn rounded-0 btn_submit bdr_radius">SAVE</button>
+        </div>
+    </div>
+</div>
